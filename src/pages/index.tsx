@@ -1,7 +1,8 @@
+import { Button } from '@nextui-org/react'
 import { NextPage } from 'next'
 
 const HomePage: NextPage = () => {
-	return <div className='text-3xl font-bold underline'>HomePage</div>
+	return <Button className='btn-base'>Click me</Button>
 }
 
 export default HomePage
