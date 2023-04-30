@@ -1,24 +1,32 @@
-import { NextUIProvider, createTheme } from '@nextui-org/react'
+import { Container, NextUIProvider, createTheme } from '@nextui-org/react'
 import type { AppProps } from 'next/app'
+import { Roboto } from 'next/font/google'
 
 import '@/assets/styles/globals.css'
 
+const roboto = Roboto({
+	subsets: ['cyrillic', 'latin'],
+	weight: ['400', '700']
+})
+
 const theme = createTheme({
-	type: 'light', // it could be "light" or "dark"
+	type: 'light',
 	theme: {
 		colors: {
-			background: '#F0F0F0',
-			text: '#3C486B'
+			primary: '#F45050',
+			// background: '#F0F0F0',
+			text: '#3C486B',
+			link: '#3C486B'
 		}
 	}
 })
 
-function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppProps) {
 	return (
 		<NextUIProvider theme={theme}>
-			<Component {...pageProps} />
+			<Container className={roboto.className}>
+				<Component {...pageProps} />
+			</Container>
 		</NextUIProvider>
 	)
 }
-
-export default App

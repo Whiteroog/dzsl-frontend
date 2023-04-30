@@ -2,7 +2,7 @@
 
 const colors = {
 	primary: '#F45050',
-	secondary: '#F0F0F0',
+	white: '#F0F0F0',
 	gray: '#3C486B',
 	yellow: '#F9D949'
 }
@@ -17,7 +17,7 @@ module.exports = {
 		extend: {
 			colors: {
 				'dzsl-primary': colors.primary,
-				'dzsl-secondary': colors.secondary,
+				'dzsl-white': colors.white,
 				'dzsl-gray': colors.gray,
 				'dzsl-yellow': colors.yellow
 			}

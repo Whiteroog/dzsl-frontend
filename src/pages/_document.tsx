@@ -14,7 +14,6 @@ class DzslDocument extends Document {
 		ctx: DocumentContext
 	): Promise<DocumentInitialProps> {
 		const initialProps = await Document.getInitialProps(ctx)
-
 		return {
 			...initialProps,
 			styles: React.Children.toArray([initialProps.styles])
@@ -23,7 +22,7 @@ class DzslDocument extends Document {
 
 	render() {
 		return (
-			<Html lang='ru'>
+			<Html lang='en'>
 				<Head>{CssBaseline.flush()}</Head>
 				<body>
 					<Main />
