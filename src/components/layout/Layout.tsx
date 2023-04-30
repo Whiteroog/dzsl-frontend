@@ -1,20 +1,19 @@
 import { Dropdown, Image, Link, Navbar } from '@nextui-org/react'
 import { FC, PropsWithChildren } from 'react'
 
+import { TypeCategory, testDataCategory } from '@/service/category.data'
+
 type TypeMenuItem = {
 	key: string
 	name: string
 	slug?: string
 }
 
-const menuItems: TypeMenuItem[] = [
-	{ key: '1', name: 'Строительные леса', slug: '/products/category/1' },
-	{ key: '2', name: 'Вышки-туры', slug: '/products/category/2' },
-	{ key: '3', name: 'Стойки опалубки', slug: '/products/category/3' },
-	{ key: '4', name: 'Щитовая опалубка', slug: '/products/category/4' }
-]
+interface INavPage {
+	slug: string | null
+}
 
-const Layout: FC<PropsWithChildren<unknown>> = ({ children }) => {
+const Layout: FC<PropsWithChildren<INavPage>> = ({ children, slug }) => {
 	return (
 		<>
 			<header className='mb-10'>
@@ -39,28 +38,34 @@ const Layout: FC<PropsWithChildren<unknown>> = ({ children }) => {
 					<Navbar.Content
 						activeColor={'primary'}
 						variant='underline-rounded'
-						className='ml-4'
+						className='ml-10 pt-10'
 					>
 						<Dropdown>
-							<Navbar.Item>
+							<Navbar.Item isActive={'products' === slug}>
 								<Dropdown.Button auto light>
 									Продукция
 								</Dropdown.Button>
 							</Navbar.Item>
 							<Dropdown.Menu>
-								{menuItems.map((item: TypeMenuItem) => (
-									<Dropdown.Item key={item.key}>
-										<Link href={item.slug}>{item.name}</Link>
+								{testDataCategory.map((item: TypeCategory) => (
+									<Dropdown.Item key={item.slug}>
+										<Link href={'/products/category/' + item.slug}>
+											{item.name}
+										</Link>
 									</Dropdown.Item>
 								))}
 							</Dropdown.Menu>
 						</Dropdown>
 
-						<Navbar.Link isActive href='/about-us'>
-							О Нас
+						<Navbar.Link isActive={'about-us' === slug} href='/about-us'>
+							О Нас
 						</Navbar.Link>
-						<Navbar.Link href='/delivery'>Доставка</Navbar.Link>
-						<Navbar.Link href='/contacts'>Контакты</Navbar.Link>
+						<Navbar.Link isActive={'delivery' === slug} href='/delivery'>
+							Доставка
+						</Navbar.Link>
+						<Navbar.Link isActive={'contacts' === slug} href='/contacts'>
+							Контакты
+						</Navbar.Link>
 					</Navbar.Content>
 				</Navbar>
 			</header>

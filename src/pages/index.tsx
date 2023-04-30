@@ -5,9 +5,9 @@ import Layout from '@/components/layout/Layout'
 
 const HomePage: NextPage = () => {
 	return (
-		<Layout>
-			<Grid.Container justify='center' alignItems='center' gap={4}>
-				<Grid>
+		<Layout slug={null}>
+			<Grid.Container justify='center' alignItems='center' gap={2}>
+				<Grid xs={12} sm={6}>
 					<div>
 						<h1 className='text-4xl'>Дмитровский Завод Строительный Лесов</h1>
 						<p className='text-md'>
@@ -16,7 +16,7 @@ const HomePage: NextPage = () => {
 						</p>
 					</div>
 				</Grid>
-				<Grid>
+				<Grid xs={12} sm={6}>
 					<Image
 						src='http://localhost:3000/images/home-image-1.jpg'
 						width={500}

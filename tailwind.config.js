@@ -28,7 +28,8 @@ module.exports = {
 			addComponents({
 				'.btn-base': {
 					backgroundColor: colors.primary,
-					color: colors.secondary
+					color: colors.white,
+					padding: '0.7rem 1.2rem'
 				}
 			})
 		}
