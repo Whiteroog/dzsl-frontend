@@ -1,9 +1,9 @@
-export type TypeCategory = {
+export interface ICategory {
 	name: string
 	slug: string
 }
 
-export const testDataCategory: TypeCategory[] = [
+export const testDataCategory: ICategory[] = [
 	{
 		name: 'Строительные леса',
 		slug: 'scaffolding'

@@ -1,11 +1,11 @@
 import { Grid, Image } from '@nextui-org/react'
 import { NextPage } from 'next'
 
-import Layout from '@/components/layout/Layout'
+import Layout from '@/components/ui/layout/Layout'
 
 const HomePage: NextPage = () => {
 	return (
-		<Layout slug={null}>
+		<Layout>
 			<Grid.Container justify='center' alignItems='center' gap={2}>
 				<Grid xs={12} sm={6}>
 					<div>

@@ -20,6 +20,9 @@ module.exports = {
 				'dzsl-white': colors.white,
 				'dzsl-gray': colors.gray,
 				'dzsl-yellow': colors.yellow
+			},
+			screens: {
+				'dzsl-sm': '960px'
 			}
 		}
 	},
