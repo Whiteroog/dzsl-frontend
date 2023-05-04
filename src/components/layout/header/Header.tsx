@@ -22,6 +22,7 @@ const Header: FC = () => {
 							alt='Логотип компании'
 							width={209}
 							height={100}
+							autoResize={true}
 						/>
 					</Link>
 				</Navbar.Brand>

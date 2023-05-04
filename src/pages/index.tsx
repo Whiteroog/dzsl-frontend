@@ -1,7 +1,7 @@
 import { Grid, Image } from '@nextui-org/react'
 import { NextPage } from 'next'
 
-import Layout from '@/components/ui/layout/Layout'
+import Layout from '@/components/layout/Layout'
 
 const HomePage: NextPage = () => {
 	return (
@@ -22,6 +22,7 @@ const HomePage: NextPage = () => {
 						width={500}
 						height={500}
 						alt='Картинка показывающая деятельность компании'
+						autoResize={true}
 					/>
 				</Grid>
 			</Grid.Container>

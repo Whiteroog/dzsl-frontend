@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
-import Layout from '@/components/ui/layout/Layout'
+import Layout from '@/components/layout/Layout'
 
 import { testDataProducts } from '@/types/product.interface'
 
@@ -11,7 +11,7 @@ const ProductPage: NextPage = () => {
 
 	const product = testDataProducts.find(item => item.slug === slug)
 	return (
-		<Layout slug={'products'}>
+		<Layout>
 			<h1 className='mb-10 text-2xl font-bold'>{product?.name}</h1>
 		</Layout>
 	)

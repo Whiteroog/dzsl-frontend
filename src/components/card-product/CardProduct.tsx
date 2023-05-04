@@ -11,11 +11,7 @@ interface ICardProduct {
 
 const CardProduct: FC<ICardProduct> = ({ dataProduct }) => {
 	return (
-		<Card
-			key={dataProduct.slug}
-			className='min-w-[413px] max-w-[916px]'
-			variant='bordered'
-		>
+		<Card key={dataProduct.slug} className='max-w-[916px]' variant='bordered'>
 			<Card.Header className='justify-center'>
 				<h2 className='text-lg font-bold'>{dataProduct.name}</h2>
 			</Card.Header>
@@ -28,6 +24,7 @@ const CardProduct: FC<ICardProduct> = ({ dataProduct }) => {
 							alt='ЛРСП-30'
 							width={250}
 							height={375}
+							autoResize={true}
 						/>
 					</Grid>
 					<Grid xs={12} sm={8} justify='center'>

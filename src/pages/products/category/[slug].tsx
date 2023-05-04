@@ -2,9 +2,9 @@ import { Row } from '@nextui-org/react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
-import CardProduct from '@/components/ui/card-product/CardProduct'
-import Layout from '@/components/ui/layout/Layout'
-import TitlePage from '@/components/ui/title-page/TitlePage'
+import CardProduct from '@/components/card-product/CardProduct'
+import Layout from '@/components/layout/Layout'
+import TitlePage from '@/components/title-page/TitlePage'
 
 import { testDataCategory } from '@/types/category.interface'
 import { testDataProducts } from '@/types/product.interface'
