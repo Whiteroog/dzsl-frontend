@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1,
+h2,
+h3,
+p,
+span,
+th,
+td,
+.nextui-collapse-title,
+.nextui-link,
+.nextui-button {
+	@apply text-base font-normal text-gray;
+
+	font-family: 'Nunito', sans-serif;
+}
+
+p {
+	@apply text-lg;
+}
+
+strong {
+	@apply font-bold text-primary;
+}
+
+.nextui-link {
+	@apply py-2;
+	&:hover {
+		@apply text-primary;
+	}
+}
+
+.nextui-button {
+	&:hover {
+		@apply text-primary;
+	}
+}
+
+.is-focused {
+	@apply bg-transparent;
+}
+
+.nextui-collapse {
+	.nextui-collapse-view {
+		@apply py-2;
+
+		.nextui-collapse-title {
+			@apply text-base font-normal text-gray;
+		}
+	}
+}
+
+.nextui-table-container {
+	@apply border-gray border-opacity-30;
+}
+
+.button-link {
+	@apply bg-primary px-5 py-3 text-white;
+
+	&:hover {
+		@apply bg-primary bg-opacity-80 text-white text-opacity-100;
+	}
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&display=swap');

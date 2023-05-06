@@ -6,11 +6,13 @@ import Layout from '@/components/layout/Layout'
 const HomePage: NextPage = () => {
 	return (
 		<Layout>
-			<Grid.Container justify='center' alignItems='center' gap={2}>
+			<Grid.Container alignItems='center' gap={2}>
 				<Grid xs={12} sm={6}>
 					<div>
-						<h1 className='text-4xl'>Дмитровский Завод Строительный Лесов</h1>
-						<p className='text-md'>
+						<h1 className='mb-2 text-3xl font-medium'>
+							Дмитровский Завод Строительный Лесов
+						</h1>
+						<p className='text-lg'>
 							Лучший отечественный производитель строительных конструкций для
 							высотных работ
 						</p>

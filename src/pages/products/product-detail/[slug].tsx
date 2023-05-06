@@ -2,17 +2,17 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
 import Layout from '@/components/layout/Layout'
+import TitlePage from '@/components/title-page/TitlePage'
 
-import { testDataProducts } from '@/types/product.interface'
+import { testProducts } from '@/interfaces/product.interface'
 
 const ProductPage: NextPage = () => {
-	const { asPath } = useRouter()
-	const slug = asPath.split('/').at(-1)
+	const slug = useRouter().query.slug
 
-	const product = testDataProducts.find(item => item.slug === slug)
+	const product = testProducts.find(product => product.slug === slug)
 	return (
 		<Layout>
-			<h1 className='mb-10 text-2xl font-bold'>{product?.name}</h1>
+			<TitlePage title={product?.name} />
 		</Layout>
 	)
 }

@@ -22,7 +22,7 @@ class DzslDocument extends Document {
 
 	render() {
 		return (
-			<Html lang='en'>
+			<Html lang='ru'>
 				<Head>{CssBaseline.flush()}</Head>
 				<body>
 					<Main />

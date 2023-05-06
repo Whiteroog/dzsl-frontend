@@ -1,81 +1,29 @@
-import { Collapse, Dropdown, Image, Link, Navbar } from '@nextui-org/react'
+import { Navbar } from '@nextui-org/react'
 import { FC } from 'react'
 
-import { ICategory, testDataCategory } from '@/types/category.interface'
+import DzslNavbarCollapse from './collapse/DzslNavbarCollapse'
+import Logo from './logo/Logo'
+import Products from './products/Products'
+import { Links } from '@/links/Links'
 
 const Header: FC = () => {
 	return (
 		<header className='mb-10'>
 			<Navbar
-				containerCss={{
-					justifyContent: 'start'
-				}}
 				disableBlur={true}
 				disableShadow={true}
 				height={100}
+				containerCss={{ justifyContent: 'start' }}
 			>
 				<Navbar.Toggle showIn='sm' className='px-6' />
-				<Navbar.Brand className='mx-auto dzsl-sm:mx-0'>
-					<Link href='/'>
-						<Image
-							src='http://localhost:3000/images/logo.png'
-							alt='Логотип компании'
-							width={209}
-							height={100}
-							autoResize={true}
-						/>
-					</Link>
-				</Navbar.Brand>
-				<Navbar.Content
-					hideIn='sm'
-					variant='underline-rounded'
-					className='ml-10 pt-10'
-				>
-					<Dropdown>
-						<Navbar.Item>
-							<Dropdown.Button auto light>
-								Продукция
-							</Dropdown.Button>
-						</Navbar.Item>
-						<Dropdown.Menu>
-							{testDataCategory.map((item: ICategory) => (
-								<Dropdown.Item key={item.slug}>
-									<Link href={'/products/category/' + item.slug}>
-										{item.name}
-									</Link>
-								</Dropdown.Item>
-							))}
-						</Dropdown.Menu>
-					</Dropdown>
-
-					<Navbar.Link href='/about-us'>О Нас</Navbar.Link>
-					<Navbar.Link href='/delivery'>Доставка</Navbar.Link>
-					<Navbar.Link href='/contacts'>Контакты</Navbar.Link>
+				<Logo />
+				<Navbar.Content hideIn='sm' className='ml-10 pt-10'>
+					<Products />
+					<Navbar.Link href={Links.ABOUT_US}>О Нас</Navbar.Link>
+					<Navbar.Link href={Links.DELIVERY}>Доставка</Navbar.Link>
+					<Navbar.Link href={Links.CONTACTS}>Контакты</Navbar.Link>
 				</Navbar.Content>
-				<Navbar.Collapse>
-					<Navbar.CollapseItem>
-						<Collapse title='Продукция' divider={false}>
-							<ul>
-								{testDataCategory.map((item: ICategory) => (
-									<li>
-										<Link href={'/products/category/' + item.slug}>
-											{item.name}
-										</Link>
-									</li>
-								))}
-							</ul>
-						</Collapse>
-					</Navbar.CollapseItem>
-					<Navbar.CollapseItem>
-						<Link href='/about-us'>О Нас</Link>
-					</Navbar.CollapseItem>
-					<Navbar.CollapseItem>
-						<Link href='/delivery'>Доставка</Link>
-					</Navbar.CollapseItem>
-					<Navbar.CollapseItem>
-						<Link href='/contacts'>Контакты</Link>
-					</Navbar.CollapseItem>
-				</Navbar.Collapse>
+				<DzslNavbarCollapse />
 			</Navbar>
 		</header>
 	)

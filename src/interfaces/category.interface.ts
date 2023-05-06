@@ -1,15 +1,18 @@
 export interface ICategory {
+	id: number
 	name: string
 	slug: string
 }
 
-export const testDataCategory: ICategory[] = [
+export const testCategory: ICategory[] = [
 	{
+		id: 1,
 		name: 'Строительные леса',
 		slug: 'scaffolding'
 	},
 	{
+		id: 2,
 		name: 'Вышки-туры',
-		slug: 'tour-towers'
+		slug: 'tour-tower'
 	}
 ]

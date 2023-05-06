@@ -1,0 +1,33 @@
+.specifications {
+	thead {
+		tr {
+			th {
+				@apply text-base text-gray;
+
+				&::after {
+					@apply bg-gray bg-opacity-30 #{!important};
+				}
+
+				&:nth-child(2) {
+					@apply text-center;
+				}
+			}
+		}
+	}
+
+	tbody {
+		tr {
+			td {
+				@apply text-base text-gray;
+
+				&::after {
+					@apply bg-gray bg-opacity-30 #{!important};
+				}
+
+				&:nth-child(2) {
+					@apply text-center;
+				}
+			}
+		}
+	}
+}

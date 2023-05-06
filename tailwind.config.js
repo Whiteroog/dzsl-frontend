@@ -14,27 +14,19 @@ module.exports = {
 		'./src/app/**/*.{js,ts,jsx,tsx,mdx}'
 	],
 	theme: {
-		extend: {
-			colors: {
-				'dzsl-primary': colors.primary,
-				'dzsl-white': colors.white,
-				'dzsl-gray': colors.gray,
-				'dzsl-yellow': colors.yellow
-			},
-			screens: {
-				'dzsl-sm': '960px'
-			}
-		}
+		colors: {
+			primary: colors.primary,
+			white: colors.white,
+			gray: colors.gray,
+			yellow: colors.yellow,
+			transparent: 'transparent'
+		},
+
+		screens: {
+			sm: '960px'
+		},
+
+		extend: {}
 	},
-	plugins: [
-		({ addComponents }) => {
-			addComponents({
-				'.btn-base': {
-					backgroundColor: colors.primary,
-					color: colors.white,
-					padding: '0.7rem 1.2rem'
-				}
-			})
-		}
-	]
+	plugins: []
 }
