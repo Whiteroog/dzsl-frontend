@@ -1,0 +1,13 @@
+.businessCard {
+	div {
+		@apply flex-col justify-end;
+
+		&:nth-child(1) {
+			@apply items-center;
+		}
+
+		span {
+			@apply text-end text-sm;
+		}
+	}
+}

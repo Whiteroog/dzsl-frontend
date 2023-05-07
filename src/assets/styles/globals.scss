@@ -6,19 +6,22 @@ h1,
 h2,
 h3,
 p,
+div,
+a,
 span,
 th,
 td,
 .nextui-collapse-title,
 .nextui-link,
-.nextui-button {
+.nextui-button,
+.default-style {
 	@apply text-base font-normal text-gray;
 
 	font-family: 'Nunito', sans-serif;
 }
 
 p {
-	@apply text-lg;
+	@apply p-4 indent-4 text-lg;
 }
 
 strong {
@@ -27,12 +30,6 @@ strong {
 
 .nextui-link {
 	@apply py-2;
-	&:hover {
-		@apply text-primary;
-	}
-}
-
-.nextui-button {
 	&:hover {
 		@apply text-primary;
 	}
