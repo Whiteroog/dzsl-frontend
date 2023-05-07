@@ -33,23 +33,23 @@ const CardProduct: FC<IProductProps> = ({ product }) => {
 						<Specifications specifications={product.specifications} />
 					</Grid>
 				</Grid.Container>
-				<Card.Footer>
-					<Row justify='flex-end'>
-						<div>
-							<div className='text-lg'>
-								от <strong>{product.price}</strong> р.
-							</div>
-							<Link
-								className='button-link mt-2'
-								href={Links.DETAIL + product.slug}
-								block={true}
-							>
-								Купить
-							</Link>
-						</div>
-					</Row>
-				</Card.Footer>
 			</Card.Body>
+			<Card.Footer>
+				<Row justify='flex-end' className='p-4'>
+					<div>
+						<div className='text-lg'>
+							от <strong>{product.price}</strong> р.
+						</div>
+						<Link
+							className='button-link mt-2'
+							href={Links.DETAIL + product.slug}
+							block={true}
+						>
+							Купить
+						</Link>
+					</div>
+				</Row>
+			</Card.Footer>
 		</Card>
 	)
 }

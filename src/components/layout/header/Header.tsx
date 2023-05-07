@@ -9,7 +9,7 @@ import { Links } from '@/links/Links'
 
 const Header: FC = () => {
 	return (
-		<header className='pb-10 pt-4'>
+		<header className={styles.header}>
 			<Grid.Container gap={2} className={styles.businessCard}>
 				<Grid xs={12} sm={3}>
 					<Logo />
@@ -27,7 +27,7 @@ const Header: FC = () => {
 					<span>г.Яхрома, ул.Ленина, д.42</span>
 				</Grid>
 			</Grid.Container>
-			<Navbar disableBlur={true} disableShadow={true} className='z-40'>
+			<Navbar disableBlur={true} disableShadow={true}>
 				<Navbar.Toggle showIn='sm' className='px-6' />
 				<Navbar.Content hideIn='sm' className=''>
 					<Products />

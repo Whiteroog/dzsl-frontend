@@ -14,7 +14,9 @@ td,
 .nextui-collapse-title,
 .nextui-link,
 .nextui-button,
-.default-style {
+.default-style,
+.nextui-input-block-label,
+.nextui-input {
 	@apply text-base font-normal text-gray;
 
 	font-family: 'Nunito', sans-serif;
@@ -58,6 +60,30 @@ strong {
 
 	&:hover {
 		@apply bg-primary bg-opacity-80 text-white text-opacity-100;
+	}
+}
+
+.nextui-button {
+	@apply bg-primary;
+}
+
+.nextui-button-text {
+	@apply text-white;
+}
+
+.nextui-dropdown-button {
+	@apply bg-transparent;
+
+	.nextui-button-text {
+		@apply text-gray;
+	}
+
+	&:hover {
+		.nextui-button-text {
+			@apply text-primary;
+		}
+
+		@apply text-primary;
 	}
 }
 
