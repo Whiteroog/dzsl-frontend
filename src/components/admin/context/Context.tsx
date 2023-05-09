@@ -1,13 +1,11 @@
 import { Button, Checkbox, Grid, Input } from '@nextui-org/react'
+import { useRouter } from 'next/router'
 import { FC } from 'react'
 
 import { adminLinks } from '@/links/Links'
 
-interface IContextProps {
-	slug: string | string[] | undefined
-}
-
-const Context: FC<IContextProps> = ({ slug }) => {
+const Context: FC = () => {
+	const slug = useRouter().query.slug
 	const title = adminLinks.find(link => link.slug === slug)?.name
 
 	return (
