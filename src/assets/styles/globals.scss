@@ -64,6 +64,10 @@ strong {
 	}
 }
 
+.button-icon {
+	@apply bg-transparent #{!important};
+}
+
 .nextui-button {
 	@apply bg-primary;
 }

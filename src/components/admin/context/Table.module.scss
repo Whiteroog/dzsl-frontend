@@ -1,0 +1,37 @@
+.table {
+	thead {
+		tr {
+			th {
+				@apply text-sm text-gray;
+
+				&:first-child {
+					@apply text-center;
+				}
+
+				&:last-child {
+					@apply text-center;
+				}
+			}
+		}
+	}
+
+	tbody {
+		tr {
+			td {
+				@apply text-xs text-gray;
+
+				&:first-child {
+					@apply text-center;
+				}
+
+				&:last-child {
+					@apply flex justify-between;
+				}
+
+				&::after {
+					@apply bg-gray bg-opacity-30 #{!important};
+				}
+			}
+		}
+	}
+}

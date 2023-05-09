@@ -1,7 +1,7 @@
 import { Grid } from '@nextui-org/react'
 import { FC } from 'react'
 
-import styles from './Admin.module.scss'
+import styles from './AdminPanel.module.scss'
 import Context from './context/Context'
 import Sidebar from './sidebar/Sidebar'
 
