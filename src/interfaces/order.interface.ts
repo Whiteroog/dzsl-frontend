@@ -19,7 +19,7 @@ export interface IOrder {
 
 	status: EnumOrderStatus
 
-	total: number
+	totalPrice: number
 
 	orderProducts: IOrderProduct[]
 }
@@ -43,3 +43,16 @@ export interface IOrderProductItem {
 	quantity: number
 	price: number
 }
+
+export const testOrders: IOrder[] = [
+	{
+		id: 1,
+		createdAt: '09/05/23',
+		fullName: 'Иванов Иван',
+		email: 'ivan@mail.ru',
+		phone: '7923423423',
+		status: EnumOrderStatus.NEW,
+		totalPrice: 56500,
+		orderProducts: []
+	}
+]

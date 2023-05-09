@@ -2,15 +2,16 @@ export interface IProduct {
 	id: number
 	name: string
 	slug: string
+	category: string
 	price: number
-	image: string
+
 	description: string
+
+	image: string
 
 	specifications: ISpecifications[]
 
 	productItems: IProductItem[]
-
-	categoryId: number
 }
 
 export interface ISpecifications {
@@ -48,7 +49,7 @@ export const testProducts: IProduct[] = [
 			}
 		],
 		productItems: [],
-		categoryId: 1
+		category: 'Строительные-леса'
 	},
 	{
 		id: 2,
@@ -71,7 +72,7 @@ export const testProducts: IProduct[] = [
 			}
 		],
 		productItems: [],
-		categoryId: 1
+		category: 'Строительные-леса'
 	},
 	{
 		id: 3,
@@ -94,6 +95,6 @@ export const testProducts: IProduct[] = [
 			}
 		],
 		productItems: [],
-		categoryId: 2
+		category: 'Вышки-туры'
 	}
 ]

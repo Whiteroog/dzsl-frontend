@@ -25,7 +25,7 @@
 				}
 
 				&:last-child {
-					@apply flex justify-between;
+					@apply flex items-center justify-between;
 				}
 
 				&::after {
@@ -33,5 +33,14 @@
 				}
 			}
 		}
+	}
+}
+
+.dropdownButtonFlat {
+	@apply bg-primary bg-opacity-10;
+
+	div,
+	span {
+		@apply text-primary #{!important};
 	}
 }

@@ -1,14 +1,30 @@
-import { Button, Checkbox, Grid, Input, Table } from '@nextui-org/react'
+import { Button, Grid, Input } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
-import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from 'react-icons/ai'
 
-import styles from './Table.module.scss'
+import ProductFilter from './filters/ProductFilter'
+import CategoryTable from './tables/CategoryTable'
+import OrdersTable from './tables/OrdersTable'
+import ProductTable from './tables/ProductTable'
+import UserTable from './tables/UserTable'
 import { adminLinks } from '@/links/Links'
 
 const Context: FC = () => {
 	const slug = useRouter().query.slug
 	const title = adminLinks.find(link => link.slug === slug)?.name
+
+	const selectTable: { [key: string]: JSX.Element } = {
+		products: <ProductTable />,
+		category: <CategoryTable />,
+		orders: <OrdersTable />,
+		users: <UserTable />
+	}
+
+	const selectFilter: { [key: string]: JSX.Element } = {
+		products: <ProductFilter />
+	}
+
+	const showFilter = selectFilter[slug as string] ? true : false
 
 	return (
 		<>
@@ -18,71 +34,14 @@ const Context: FC = () => {
 				<Button auto>Создать</Button>
 			</div>
 			<Grid.Container className='mt-2' gap={2}>
-				<Grid xs={2} direction='column'>
-					<h2 className='text-center'>Фильтр</h2>
-					<div>
-						<div>
-							<Checkbox.Group label='Категории'>
-								<Checkbox value='scaffolding'>Строительные леса</Checkbox>
-								<Checkbox value='tour-tower'>Вышки-туры</Checkbox>
-							</Checkbox.Group>
-						</div>
-					</div>
-				</Grid>
-				<Grid xs={10} direction='column'>
-					<Table
-						bordered={true}
-						borderWeight='light'
-						shadow={false}
-						lined={true}
-						lineWeight='light'
-						className={styles.table}
-					>
-						<Table.Header>
-							<Table.Column width={80}>Id</Table.Column>
-							<Table.Column>Название</Table.Column>
-							<Table.Column>Slug</Table.Column>
-							<Table.Column hideHeader={true} width={100}>
-								Действия
-							</Table.Column>
-						</Table.Header>
-						<Table.Body>
-							<Table.Row>
-								<Table.Cell>1</Table.Cell>
-								<Table.Cell>Строительные леса</Table.Cell>
-								<Table.Cell>scaffolding</Table.Cell>
-								<Table.Cell>
-									<Button
-										auto
-										icon={<AiOutlineEye />}
-										className='button-icon'
-									></Button>
-									<Button
-										auto
-										icon={<AiOutlineEdit />}
-										className='button-icon'
-									></Button>
-									<Button
-										auto
-										icon={<AiOutlineDelete color='red' />}
-										className='button-icon'
-									></Button>
-								</Table.Cell>
-							</Table.Row>
-							<Table.Row>
-								<Table.Cell>2</Table.Cell>
-								<Table.Cell>Вышки-туры</Table.Cell>
-								<Table.Cell>tour-tower</Table.Cell>
-								<Table.Cell>
-									<Button
-										auto
-										icon={<AiOutlineEye />}
-										className='button-icon'
-									></Button>
-								</Table.Cell>
-							</Table.Row>
-						</Table.Body>
-					</Table>
+				{showFilter ? (
+					<Grid xs={2} direction='column'>
+						<h2 className='text-center'>Фильтр</h2>
+						{selectFilter[slug as string]}
+					</Grid>
+				) : null}
+				<Grid xs={showFilter ? 10 : 12} direction='column' className='w-full'>
+					{selectTable[slug as string]}
 				</Grid>
 			</Grid.Container>
 		</>
