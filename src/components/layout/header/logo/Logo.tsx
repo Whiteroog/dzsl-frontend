@@ -3,7 +3,7 @@ import { FC } from 'react'
 
 const Logo: FC = () => {
 	return (
-		<Link href='/'>
+		<Link href='/' className='max-w-full'>
 			<Image
 				src='http://localhost:3000/images/logo.png'
 				alt='Логотип компании'

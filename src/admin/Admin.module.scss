@@ -1,0 +1,22 @@
+.adminPanel {
+	@apply min-h-screen p-8;
+
+	span,
+	div,
+	label {
+		@apply text-xs #{!important};
+	}
+
+	h2 {
+		@apply text-sm;
+	}
+
+	h1 {
+		@apply text-lg;
+	}
+
+	h1,
+	h2 {
+		@apply py-2;
+	}
+}

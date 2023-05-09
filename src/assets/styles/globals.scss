@@ -16,7 +16,8 @@ td,
 .nextui-button,
 .default-style,
 .nextui-input-block-label,
-.nextui-input {
+.nextui-input,
+.nextui-checkbox-text {
 	@apply text-base font-normal text-gray;
 
 	font-family: 'Nunito', sans-serif;

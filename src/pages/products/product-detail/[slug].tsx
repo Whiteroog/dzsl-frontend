@@ -1,4 +1,4 @@
-import { Button, Card, Col, Grid, Image, Input, Row } from '@nextui-org/react'
+import { Button, Card, Grid, Image, Input } from '@nextui-org/react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
@@ -16,7 +16,7 @@ const ProductPage: NextPage = () => {
 
 	const product = testProducts.find(product => product.slug === slug)
 
-	const quantityInput = useInput('2')
+	const quantityInput = useInput('1')
 
 	const price = product?.price ?? 0
 
@@ -52,30 +52,45 @@ const ProductPage: NextPage = () => {
 					<h2 className='text-lg font-bold'>Форма составления заказа</h2>
 				</Card.Header>
 				<Card.Body>
-					<Row align='center'>
-						<Col className='text-center'>
+					<Grid.Container>
+						<Grid
+							xs={4}
+							direction='column'
+							alignItems='center'
+							justify='center'
+						>
 							<div>
 								Цена за <strong>1</strong> шт.
 							</div>
 							<div className='text-lg'>
 								<strong>{price}</strong> р.
 							</div>
-						</Col>
-						<Col className='text-center'>
+						</Grid>
+						<Grid
+							xs={4}
+							direction='column'
+							alignItems='center'
+							justify='center'
+						>
 							<Input
 								width='100px'
 								type='number'
 								label='Количество'
 								{...quantityInput}
 							/>
-						</Col>
-						<Col className='text-center'>
+						</Grid>
+						<Grid
+							xs={4}
+							direction='column'
+							alignItems='center'
+							justify='center'
+						>
 							<div>Итоговая цена</div>
 							<div className='text-lg'>
 								<strong>{price * getQuantity()}</strong> р.
 							</div>
-						</Col>
-					</Row>
+						</Grid>
+					</Grid.Container>
 				</Card.Body>
 				<Card.Footer className='mt-8 flex-col pb-10'>
 					<div className='flex flex-col space-y-4'>

@@ -1,4 +1,4 @@
-import { Row } from '@nextui-org/react'
+import { Grid } from '@nextui-org/react'
 import cn from 'classnames'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
@@ -21,12 +21,17 @@ const CategoryPage: NextPage = () => {
 	return (
 		<Layout>
 			<TitlePage title={category?.name} />
-
-			{products.map((product, index) => (
-				<Row justify='center' className={cn('mt-10', { 'mt-0': index === 0 })}>
-					<CardProduct product={product} />
-				</Row>
-			))}
+			<Grid.Container gap={4}>
+				{products.map((product, index) => (
+					<Grid
+						xs={12}
+						justify='center'
+						className={cn('mt-10', { 'mt-0': index === 0 })}
+					>
+						<CardProduct product={product} />
+					</Grid>
+				))}
+			</Grid.Container>
 		</Layout>
 	)
 }
