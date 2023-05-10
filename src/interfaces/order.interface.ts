@@ -1,5 +1,3 @@
-import { IProduct, IProductItem } from './product.interface'
-
 export enum EnumOrderStatus {
 	NEW = 'NEW',
 	MAKING = 'MAKING',
@@ -17,20 +15,19 @@ export interface IOrder {
 	email: string
 	phone: string
 
-	status: EnumOrderStatus
-
 	totalPrice: number
 
-	orderProducts: IOrderProduct[]
+	status: EnumOrderStatus
+
+	orderProducts: IOrderProduct
 }
 
 export interface IOrderProduct {
 	id: number
-
+	name: string
+	category: string
 	quantity: number
 	price: number
-
-	product: IProduct
 
 	orderProductItems: IOrderProductItem[]
 }
@@ -38,7 +35,7 @@ export interface IOrderProduct {
 export interface IOrderProductItem {
 	id: number
 
-	productItem: IProductItem
+	name: string
 
 	quantity: number
 	price: number
@@ -51,8 +48,15 @@ export const testOrders: IOrder[] = [
 		fullName: 'Иванов Иван',
 		email: 'ivan@mail.ru',
 		phone: '7923423423',
-		status: EnumOrderStatus.NEW,
 		totalPrice: 56500,
-		orderProducts: []
+		status: EnumOrderStatus.NEW,
+		orderProducts: {
+			id: 1,
+			name: 'ЛРСП-40',
+			category: 'Строительные леса',
+			quantity: 1,
+			price: 10_000,
+			orderProductItems: []
+		}
 	}
 ]

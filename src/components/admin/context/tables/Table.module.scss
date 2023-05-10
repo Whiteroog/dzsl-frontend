@@ -2,15 +2,15 @@
 	thead {
 		tr {
 			th {
-				@apply text-sm text-gray;
+				@apply text-center text-sm text-gray;
 
-				&:first-child {
-					@apply text-center;
-				}
+				// &:first-child {
+				// 	@apply text-center;
+				// }
 
-				&:last-child {
-					@apply text-center;
-				}
+				// &:last-child {
+				// 	@apply text-center;
+				// }
 			}
 		}
 	}
@@ -18,11 +18,11 @@
 	tbody {
 		tr {
 			td {
-				@apply text-xs text-gray;
+				@apply text-center text-xs text-gray;
 
-				&:first-child {
-					@apply text-center;
-				}
+				// &:first-child {
+				// 	@apply text-center;
+				// }
 
 				&:last-child {
 					@apply flex items-center justify-between;
@@ -37,7 +37,7 @@
 }
 
 .dropdownButtonFlat {
-	@apply bg-primary bg-opacity-10;
+	@apply mx-auto bg-primary bg-opacity-10;
 
 	div,
 	span {
