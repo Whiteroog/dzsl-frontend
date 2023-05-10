@@ -1,4 +1,4 @@
-import { IOrder } from '@/types/order.interface'
+import { EnumOrderStatus, IOrder } from '@/types/order.interface'
 
 import { instance } from '@/api/api.interceptor'
 
@@ -42,6 +42,14 @@ export const OrderService = {
 		return instance<IOrder>({
 			url: `${ORDERS}/${id}`,
 			method: 'GET'
+		})
+	},
+
+	async updateOrderStatus(id: string, status: EnumOrderStatus) {
+		return instance<IOrder>({
+			url: `${ORDERS}/${id}`,
+			method: 'PATCH',
+			data: { status }
 		})
 	},
 

@@ -28,7 +28,7 @@ export const UserService = {
 	async setNewPassword(id: string, newPassword: string) {
 		return instance<IUser>({
 			url: `${USERS}/${id}`,
-			method: 'PUT',
+			method: 'PATCH',
 			data: { newPassword }
 		})
 	},
