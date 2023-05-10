@@ -10,16 +10,12 @@ export enum EnumOrderStatus {
 export interface IOrder {
 	id: number
 	createdAt: string
-
 	fullName: string
 	email: string
 	phone: string
-
 	totalPrice: number
-
 	status: EnumOrderStatus
-
-	orderProducts: IOrderProduct
+	orderProducts: IOrderProduct[]
 }
 
 export interface IOrderProduct {
@@ -34,9 +30,7 @@ export interface IOrderProduct {
 
 export interface IOrderProductItem {
 	id: number
-
 	name: string
-
 	quantity: number
 	price: number
 }
@@ -50,13 +44,15 @@ export const testOrders: IOrder[] = [
 		phone: '7923423423',
 		totalPrice: 56500,
 		status: EnumOrderStatus.NEW,
-		orderProducts: {
-			id: 1,
-			name: 'ЛРСП-40',
-			category: 'Строительные леса',
-			quantity: 1,
-			price: 10_000,
-			orderProductItems: []
-		}
+		orderProducts: [
+			{
+				id: 1,
+				name: 'ЛРСП-40',
+				category: 'Строительные леса',
+				quantity: 1,
+				price: 10_000,
+				orderProductItems: []
+			}
+		]
 	}
 ]

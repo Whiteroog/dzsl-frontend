@@ -1,10 +1,11 @@
 import { Card, Grid, Image, Link, Row } from '@nextui-org/react'
 import { FC } from 'react'
 
+import { EnumLinks } from '@/types/links.enum'
+
 import Specifications from '../specifications/Specifications'
 
 import { IProduct } from '@/interfaces/product.interface'
-import { Links } from '@/links/Links'
 
 interface IProductProps {
 	product: IProduct
@@ -21,7 +22,7 @@ const CardProduct: FC<IProductProps> = ({ product }) => {
 				<Grid.Container gap={2}>
 					<Grid xs={12} sm={4}>
 						<Image
-							src={Links.IMAGES + product.image}
+							src={EnumLinks.IMAGES + product.image}
 							alt={product.name}
 							width={250}
 							height={375}
@@ -42,7 +43,7 @@ const CardProduct: FC<IProductProps> = ({ product }) => {
 						</div>
 						<Link
 							className='button-link mt-2'
-							href={Links.DETAIL + product.slug}
+							href={EnumLinks.DETAIL + product.slug}
 							block={true}
 						>
 							Купить

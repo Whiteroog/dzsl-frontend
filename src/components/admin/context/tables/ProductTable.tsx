@@ -2,8 +2,9 @@ import { Button, Table } from '@nextui-org/react'
 import { FC } from 'react'
 import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from 'react-icons/ai'
 
+import { testProducts } from '@/types/product.interface'
+
 import styles from './Table.module.scss'
-import { testProducts } from '@/interfaces/product.interface'
 
 const ProductTable: FC = () => {
 	return (
@@ -31,7 +32,7 @@ const ProductTable: FC = () => {
 						<Table.Cell>{product.id}</Table.Cell>
 						<Table.Cell>{product.name}</Table.Cell>
 						<Table.Cell>{product.slug}</Table.Cell>
-						<Table.Cell>{product.category}</Table.Cell>
+						<Table.Cell>{product.category.name}</Table.Cell>
 						<Table.Cell>{product.price}</Table.Cell>
 						<Table.Cell>
 							<Button

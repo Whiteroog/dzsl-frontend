@@ -1,8 +1,8 @@
 import { Collapse, Link, Navbar } from '@nextui-org/react'
 import { FC } from 'react'
 
-import { testCategory } from '@/interfaces/category.interface'
-import { Links } from '@/links/Links'
+import { testCategory } from '@/types/category.interface'
+import { EnumLinks } from '@/types/links.enum'
 
 const DzslNavbarCollapse: FC = () => {
 	return (
@@ -12,7 +12,7 @@ const DzslNavbarCollapse: FC = () => {
 					<ul className='pl-2'>
 						{testCategory.map(category => (
 							<li key={category.id}>
-								<Link href={Links.PRODUCTS + category.slug}>
+								<Link href={EnumLinks.PRODUCTS + category.slug}>
 									{category.name}
 								</Link>
 							</li>

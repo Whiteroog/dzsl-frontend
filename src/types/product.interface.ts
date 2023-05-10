@@ -1,16 +1,14 @@
+import { ICategory, testCategory } from './category.interface'
+
 export interface IProduct {
 	id: number
 	name: string
 	slug: string
-	category: string
 	price: number
-
-	description: string
-
 	image: string
-
+	description: string
 	specifications: ISpecifications[]
-
+	category: ICategory
 	productItems: IProductItem[]
 }
 
@@ -49,7 +47,7 @@ export const testProducts: IProduct[] = [
 			}
 		],
 		productItems: [],
-		category: 'Строительные-леса'
+		category: testCategory[0]
 	},
 	{
 		id: 2,
@@ -72,7 +70,7 @@ export const testProducts: IProduct[] = [
 			}
 		],
 		productItems: [],
-		category: 'Строительные-леса'
+		category: testCategory[0]
 	},
 	{
 		id: 3,
@@ -95,6 +93,6 @@ export const testProducts: IProduct[] = [
 			}
 		],
 		productItems: [],
-		category: 'Вышки-туры'
+		category: testCategory[1]
 	}
 ]

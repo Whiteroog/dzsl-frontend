@@ -1,11 +1,12 @@
 import { Grid, Navbar } from '@nextui-org/react'
 import { FC } from 'react'
 
+import { EnumLinks } from '@/types/links.enum'
+
 import styles from './Header.module.scss'
 import DzslNavbarCollapse from './collapse/DzslNavbarCollapse'
 import Logo from './logo/Logo'
 import Products from './products/Products'
-import { Links } from '@/links/Links'
 
 const Header: FC = () => {
 	return (
@@ -31,9 +32,9 @@ const Header: FC = () => {
 				<Navbar.Toggle showIn='sm' className='px-6' />
 				<Navbar.Content hideIn='sm' className=''>
 					<Products />
-					<Navbar.Link href={Links.ABOUT_US}>О Нас</Navbar.Link>
-					<Navbar.Link href={Links.DELIVERY}>Доставка</Navbar.Link>
-					<Navbar.Link href={Links.CONTACTS}>Контакты</Navbar.Link>
+					<Navbar.Link href={EnumLinks.ABOUT_US}>О Нас</Navbar.Link>
+					<Navbar.Link href={EnumLinks.DELIVERY}>Доставка</Navbar.Link>
+					<Navbar.Link href={EnumLinks.CONTACTS}>Контакты</Navbar.Link>
 				</Navbar.Content>
 				<DzslNavbarCollapse />
 			</Navbar>

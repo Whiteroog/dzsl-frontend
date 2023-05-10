@@ -1,8 +1,8 @@
 import { Dropdown, Link, Navbar } from '@nextui-org/react'
 import { FC } from 'react'
 
-import { testCategory } from '@/interfaces/category.interface'
-import { Links } from '@/links/Links'
+import { testCategory } from '@/types/category.interface'
+import { EnumLinks } from '@/types/links.enum'
 
 const Products: FC = () => {
 	return (
@@ -13,7 +13,9 @@ const Products: FC = () => {
 			<Dropdown.Menu>
 				{testCategory.map(category => (
 					<Dropdown.Item key={category.id}>
-						<Link href={Links.PRODUCTS + category.slug}>{category.name}</Link>
+						<Link href={EnumLinks.PRODUCTS + category.slug}>
+							{category.name}
+						</Link>
 					</Dropdown.Item>
 				))}
 			</Dropdown.Menu>

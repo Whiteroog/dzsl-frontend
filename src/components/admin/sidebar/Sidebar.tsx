@@ -3,7 +3,7 @@ import { FC } from 'react'
 
 import Logo from '@/components/layout/header/logo/Logo'
 
-import { Links } from '@/links/Links'
+import { EnumLinks } from '@/types/links.enum'
 
 const Sidebar: FC = () => {
 	return (
@@ -19,7 +19,7 @@ const Sidebar: FC = () => {
 					<Link href={'users'}>Пользователи</Link>
 				</div>
 				<div className='mt-20'>
-					<Link href={Links.LOGOUT}>Выйти</Link>
+					<Link href={EnumLinks.LOGOUT}>Выйти</Link>
 				</div>
 			</div>
 		</>

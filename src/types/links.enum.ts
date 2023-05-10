@@ -1,4 +1,4 @@
-export enum Links {
+export enum EnumLinks {
 	PRODUCTS = '/products/category/',
 	DETAIL = '/products/product-detail/',
 	ABOUT_US = '/about-us',
@@ -9,12 +9,12 @@ export enum Links {
 	LOGOUT = 'admin/login/'
 }
 
-export interface AdminLinks {
+export interface IAdminLinks {
 	name: string
 	slug: string
 }
 
-export const adminLinks: AdminLinks[] = [
+export const adminLinks: IAdminLinks[] = [
 	{
 		name: 'Продукция',
 		slug: 'products'

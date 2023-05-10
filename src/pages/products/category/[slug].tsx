@@ -7,7 +7,8 @@ import CardProduct from '@/components/card-product/CardProduct'
 import Layout from '@/components/layout/Layout'
 import TitlePage from '@/components/title-page/TitlePage'
 
-import { testCategory } from '@/interfaces/category.interface'
+import { testCategory } from '@/types/category.interface'
+
 import { testProducts } from '@/interfaces/product.interface'
 
 const CategoryPage: NextPage = () => {

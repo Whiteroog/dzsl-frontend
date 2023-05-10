@@ -2,12 +2,13 @@ import { Button, Grid, Input } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 
+import { adminLinks } from '@/types/links.enum'
+
 import ProductFilter from './filters/ProductFilter'
 import CategoryTable from './tables/CategoryTable'
 import OrdersTable from './tables/OrdersTable'
 import ProductTable from './tables/ProductTable'
 import UserTable from './tables/UserTable'
-import { adminLinks } from '@/links/Links'
 
 const Context: FC = () => {
 	const slug = useRouter().query.slug

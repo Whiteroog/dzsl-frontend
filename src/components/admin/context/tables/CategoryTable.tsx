@@ -2,8 +2,9 @@ import { Button, Table } from '@nextui-org/react'
 import { FC } from 'react'
 import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from 'react-icons/ai'
 
+import { testCategory } from '@/types/category.interface'
+
 import styles from './Table.module.scss'
-import { testCategory } from '@/interfaces/category.interface'
 
 const CategoryTable: FC = () => {
 	return (

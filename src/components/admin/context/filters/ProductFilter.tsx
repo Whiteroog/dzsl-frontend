@@ -1,7 +1,7 @@
 import { Checkbox } from '@nextui-org/react'
 import { FC } from 'react'
 
-import { testCategory } from '@/interfaces/category.interface'
+import { testCategory } from '@/types/category.interface'
 
 interface IProductFilter {}
 

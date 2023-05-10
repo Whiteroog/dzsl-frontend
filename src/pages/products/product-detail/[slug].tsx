@@ -8,8 +8,9 @@ import TitlePage from '@/components/title-page/TitlePage'
 
 import useInput from '@/hooks/useInput'
 
+import { EnumLinks } from '@/types/links.enum'
+
 import { testProducts } from '@/interfaces/product.interface'
-import { Links } from '@/links/Links'
 
 const ProductPage: NextPage = () => {
 	const slug = useRouter().query.slug
@@ -33,7 +34,7 @@ const ProductPage: NextPage = () => {
 			<Grid.Container gap={2}>
 				<Grid xs={12} sm={4}>
 					<Image
-						src={Links.IMAGES + product?.image}
+						src={EnumLinks.IMAGES + product?.image}
 						alt={product?.name}
 						width={250}
 						height={375}
