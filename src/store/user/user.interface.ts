@@ -1,7 +1,8 @@
 import { IUser } from '@/types/user.interface'
 
-export interface IUserState {
+export interface ILoginPassword {
 	login: string
+	password: string
 }
 
 export interface ITokens {
@@ -9,16 +10,15 @@ export interface ITokens {
 	refreshToken: string
 }
 
+export interface IAuthResponse extends ITokens {
+	user: IUser
+}
+
+export interface IUserState {
+	login: string
+}
+
 export interface IInitialState {
 	user: IUserState | null
 	isLoading: boolean
-}
-
-export interface ILoginPassword {
-	login: string
-	password: string
-}
-
-export interface IAuthResponse extends ITokens {
-	user: IUser
 }

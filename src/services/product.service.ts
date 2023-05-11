@@ -47,14 +47,14 @@ export const ProductService = {
 		})
 	},
 
-	async getProductsBySlug(slug: string) {
+	async getProductBySlug(slug: string) {
 		return instance<IProduct>({
 			url: `${PRODUCTS}/${slug}`,
 			method: 'GET'
 		})
 	},
 
-	async getProductsById(id: string) {
+	async getProductById(id: string) {
 		return instance<IProduct>({
 			url: `${PRODUCTS}/${id}`,
 			method: 'GET'
