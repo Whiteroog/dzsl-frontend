@@ -6,25 +6,12 @@ import { IAuthResponse, ILoginPassword } from './user.interface'
 import { removeFromStorage } from '@/services/auth/auth.helper'
 import { AuthService } from '@/services/auth/auth.service'
 
-/* register */
-export const register = createAsyncThunk<IAuthResponse, ILoginPassword>(
-	'auth/register',
-	async (data, thunkApi) => {
-		try {
-			const response = await AuthService.main('register', data)
-			return response
-		} catch (error) {
-			return thunkApi.rejectWithValue(error)
-		}
-	}
-)
-
 /* login */
 export const login = createAsyncThunk<IAuthResponse, ILoginPassword>(
 	'auth/login',
 	async (data, thunkApi) => {
 		try {
-			const response = await AuthService.main('login', data)
+			const response = await AuthService.login(data)
 			return response
 		} catch (error) {
 			return thunkApi.rejectWithValue(error)

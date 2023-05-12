@@ -7,8 +7,8 @@ export interface IProduct {
 	price: number
 	image: string
 	description: string
-	specifications: ISpecifications[]
 	category: ICategory
+	specifications: ISpecifications[]
 	productItems: IProductItem[]
 }
 

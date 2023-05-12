@@ -1,82 +1,45 @@
 import { EnumOrderStatus, IOrder } from '@/types/order.interface'
 
-import { instance } from '@/api/api.interceptor'
+import { axiosAuth } from '@/api/api.interceptor'
 
 export type TypeOrderData = {
 	fullName: string
 	email: string
 	phone: string
-
 	totalPrice: number
+	orderProduct: TypeOrderProduct
 }
 
-export type TypeOrderProductData = {
+export type TypeOrderProduct = {
 	name: string
 	category: string
 	quantity: number
 	price: number
+	orderProductItems: TypeOrderProductItem[]
 }
 
-export type TypeOrderProductItemData = {
+export type TypeOrderProductItem = {
 	name: string
-
 	quantity: number
 	price: number
 }
 
-const ORDERS = 'products'
-
-const ORDERS_PRODUCT = `${ORDERS}/product`
-
-const ORDERS_PRODUCT_ITEM = `${ORDERS_PRODUCT}/item`
+const ORDERS_URL = 'products'
 
 export const OrderService = {
 	async getAll() {
-		return instance<IOrder[]>({
-			url: ORDERS,
-			method: 'GET'
-		})
+		return axiosAuth.get<IOrder[]>(ORDERS_URL)
 	},
 
-	async getOrdersById(id: string) {
-		return instance<IOrder>({
-			url: `${ORDERS}/${id}`,
-			method: 'GET'
-		})
+	async getById(id: string) {
+		return axiosAuth.get<IOrder>(`${ORDERS_URL}/${id}`)
 	},
 
-	async updateOrderStatus(id: string, status: EnumOrderStatus) {
-		return instance<IOrder>({
-			url: `${ORDERS}/${id}`,
-			method: 'PATCH',
-			data: { status }
-		})
+	async updateStatus(id: string, status: EnumOrderStatus) {
+		return axiosAuth.patch<IOrder>(`${ORDERS_URL}/${id}`, { status })
 	},
 
-	async createOrder(data: TypeOrderData) {
-		return instance<IOrder>({
-			url: ORDERS,
-			method: 'POST',
-			data
-		})
-	},
-
-	async createOrderProduct(orderId: string, data: TypeOrderProductData) {
-		return instance<IOrder>({
-			url: `${ORDERS_PRODUCT}/${orderId}`,
-			method: 'POST',
-			data
-		})
-	},
-
-	async createOrderProductItem(
-		orderProductId: string,
-		data: TypeOrderProductItemData
-	) {
-		return instance<IOrder>({
-			url: `${ORDERS_PRODUCT_ITEM}/${orderProductId}`,
-			method: 'POST',
-			data
-		})
+	async create(data: TypeOrderData) {
+		return axiosAuth.post<IOrder>(ORDERS_URL, data)
 	}
 }

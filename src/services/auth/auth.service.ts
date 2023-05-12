@@ -8,13 +8,12 @@ import { axiosClassic } from '@/api/api.interceptor'
 
 import { saveToStorage } from './auth.helper'
 
+const LOGIN_URL = '/auth/login'
+const ACCESS_TOKEN_URL = '/auth/login/access-token'
+
 export const AuthService = {
-	async main(type: 'login' | 'register', data: ILoginPassword) {
-		const response = await axiosClassic<IAuthResponse>({
-			url: `/auth/${type}`,
-			method: 'POST',
-			data
-		})
+	async login(data: ILoginPassword) {
+		const response = await axiosClassic.post<IAuthResponse>(LOGIN_URL, data)
 
 		if (response.data.accessToken) saveToStorage(response.data)
 
@@ -24,10 +23,9 @@ export const AuthService = {
 	async getNewTokens() {
 		const refreshToken = Cookies.get(EnumAuth.REFRESH_TOKEN)
 
-		const response = await axiosClassic.post<string, { data: IAuthResponse }>(
-			'/auth/login/access-token',
-			{ refreshToken }
-		)
+		const response = await axiosClassic.post<IAuthResponse>(ACCESS_TOKEN_URL, {
+			refreshToken
+		})
 
 		if (response.data.accessToken) saveToStorage(response.data)
 

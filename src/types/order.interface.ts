@@ -15,7 +15,7 @@ export interface IOrder {
 	phone: string
 	totalPrice: number
 	status: EnumOrderStatus
-	orderProducts: IOrderProduct[]
+	orderProduct: IOrderProduct
 }
 
 export interface IOrderProduct {
@@ -24,7 +24,6 @@ export interface IOrderProduct {
 	category: string
 	quantity: number
 	price: number
-
 	orderProductItems: IOrderProductItem[]
 }
 
@@ -44,15 +43,13 @@ export const testOrders: IOrder[] = [
 		phone: '7923423423',
 		totalPrice: 56500,
 		status: EnumOrderStatus.NEW,
-		orderProducts: [
-			{
-				id: 1,
-				name: 'ЛРСП-40',
-				category: 'Строительные леса',
-				quantity: 1,
-				price: 10_000,
-				orderProductItems: []
-			}
-		]
+		orderProduct: {
+			id: 1,
+			name: 'ЛРСП-40',
+			category: 'Строительные леса',
+			quantity: 1,
+			price: 10_000,
+			orderProductItems: []
+		}
 	}
 ]

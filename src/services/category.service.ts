@@ -1,55 +1,36 @@
 import { ICategory } from '@/types/category.interface'
 
-import { axiosClassic, instance } from '@/api/api.interceptor'
+import { axiosAuth, axiosClassic } from '@/api/api.interceptor'
 
 export type TypeCategoryData = {
 	name: string
 	slug: string
 }
 
-const CATEGORIES = 'categories'
+const CATEGORIES_URL = 'categories'
 
 export const CategoryService = {
 	async getAll() {
-		return axiosClassic<ICategory[]>({
-			url: CATEGORIES,
-			method: 'GET'
-		})
+		return axiosClassic.get<ICategory[]>(CATEGORIES_URL)
 	},
 
 	async getBySlug(slug: string) {
-		return axiosClassic<ICategory>({
-			url: `${CATEGORIES}/by-slug/${slug}`,
-			method: 'GET'
-		})
+		return axiosClassic.get<ICategory>(`${CATEGORIES_URL}/by-slug/${slug}`)
 	},
 
 	async getById(id: string) {
-		return instance<ICategory>({
-			url: `${CATEGORIES}/${id}`,
-			method: 'GET'
-		})
+		return axiosAuth<ICategory>(`${CATEGORIES_URL}/${id}`)
 	},
 
 	async create() {
-		return instance<ICategory>({
-			url: CATEGORIES,
-			method: 'POST'
-		})
+		return axiosAuth.post<ICategory>(CATEGORIES_URL)
 	},
 
 	async update(id: string, data: TypeCategoryData) {
-		return instance<ICategory>({
-			url: `${CATEGORIES}/${id}`,
-			method: 'PUT',
-			data
-		})
+		return axiosAuth.put<ICategory>(`${CATEGORIES_URL}/${id}`, data)
 	},
 
 	async delete(id: string) {
-		return instance<ICategory>({
-			url: `${CATEGORIES}/${id}`,
-			method: 'DELETE'
-		})
+		return axiosAuth.delete<ICategory>(`${CATEGORIES_URL}/${id}`)
 	}
 }

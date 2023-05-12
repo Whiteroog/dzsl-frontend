@@ -1,10 +1,6 @@
-import {
-	IProduct,
-	IProductItem,
-	ISpecifications
-} from '@/types/product.interface'
+import { IProduct } from '@/types/product.interface'
 
-import { axiosClassic, instance } from '@/api/api.interceptor'
+import { axiosAuth, axiosClassic } from '@/api/api.interceptor'
 
 export type TypeProductData = {
 	name: string
@@ -12,118 +8,70 @@ export type TypeProductData = {
 	price: number
 	image: string
 	description: string
-	categoryId: number
+	category: TypeCategoryData
+	specifications?: TypeSpecificationsData[]
+	productItems?: TypeProductItemData[]
 }
 
 export type TypeSpecificationsData = {
+	id?: number
 	name: string
 	value: number
 }
 
 export type TypeProductItemData = {
+	id?: number
 	name: string
 	quantity: number
 	price: number
 }
 
-const PRODUCTS = 'products'
+export type TypeCategoryData = {
+	id?: number
+	name: string
+	slug: string
+}
 
-const SPECIFICATIONS = `${PRODUCTS}/specifications`
+export type TypeUpdateProductData = {
+	product: TypeProductData
 
-const PRODUCT_ITEM = `${PRODUCTS}/product-item`
+	createSpecifications?: TypeSpecificationsData[]
+	updateSpecifications?: TypeSpecificationsData[]
+	deleteSpecifications?: TypeSpecificationsData[]
+
+	createProductItems?: TypeProductItemData[]
+	updateProductItems?: TypeProductItemData[]
+	deleteProductItems?: TypeProductItemData[]
+}
+
+const PRODUCTS_URL = 'products'
 
 export const ProductService = {
 	async getAll() {
-		return axiosClassic<IProduct[]>({
-			url: PRODUCTS,
-			method: 'GET'
-		})
+		return axiosClassic.get<IProduct[]>(PRODUCTS_URL)
 	},
 
-	async getProductsByCategory(categorySlug: string) {
-		return axiosClassic<IProduct[]>({
-			url: `${PRODUCTS}/${categorySlug}`,
-			method: 'GET'
-		})
+	async getByCategory(categorySlug: string) {
+		return axiosClassic.get<IProduct[]>(`${PRODUCTS_URL}/${categorySlug}`)
 	},
 
-	async getProductBySlug(slug: string) {
-		return instance<IProduct>({
-			url: `${PRODUCTS}/${slug}`,
-			method: 'GET'
-		})
+	async getBySlug(slug: string) {
+		return axiosAuth.get<IProduct>(`${PRODUCTS_URL}/${slug}`)
 	},
 
-	async getProductById(id: string) {
-		return instance<IProduct>({
-			url: `${PRODUCTS}/${id}`,
-			method: 'GET'
-		})
+	async getById(id: string) {
+		return axiosAuth.get<IProduct>(`${PRODUCTS_URL}/${id}`)
 	},
 
-	async createProduct() {
-		return instance<IProduct>({
-			url: PRODUCTS,
-			method: 'POST'
-		})
+	async create(data: TypeProductData) {
+		return axiosAuth.post<IProduct>(PRODUCTS_URL, data)
 	},
 
-	async updateProduct(id: string, data: TypeProductData) {
-		return instance<IProduct>({
-			url: `${PRODUCTS}/${id}`,
-			method: 'PUT',
-			data
-		})
+	async update(id: string, data: TypeUpdateProductData) {
+		return axiosAuth.put<IProduct>(`${PRODUCTS_URL}/${id}`, data)
 	},
 
-	async deleteProduct(id: string) {
-		return instance<IProduct>({
-			url: `${PRODUCTS}/${id}`,
-			method: 'DELETE'
-		})
-	},
-
-	async createSpecifications(productId: string) {
-		return instance<ISpecifications>({
-			url: `${SPECIFICATIONS}/${productId}`,
-			method: 'POST'
-		})
-	},
-
-	async updateSpecifications(id: string, data: TypeSpecificationsData) {
-		return instance<ISpecifications>({
-			url: `${SPECIFICATIONS}/${id}`,
-			method: 'PUT',
-			data
-		})
-	},
-
-	async deleteSpecifications(id: string) {
-		return instance<ISpecifications>({
-			url: `${SPECIFICATIONS}/${id}`,
-			method: 'DELETE'
-		})
-	},
-
-	async createProductItem(productId: string) {
-		return instance<IProductItem>({
-			url: `${PRODUCT_ITEM}/${productId}`,
-			method: 'POST'
-		})
-	},
-
-	async updateProductItem(id: string, data: TypeProductItemData) {
-		return instance<IProductItem>({
-			url: `${PRODUCT_ITEM}/${id}`,
-			method: 'PUT',
-			data
-		})
-	},
-
-	async deleteProductItem(id: string) {
-		return instance<IProductItem>({
-			url: `${PRODUCT_ITEM}/${id}`,
-			method: 'DELETE'
-		})
+	async delete(id: string) {
+		return axiosAuth.delete<IProduct>(`${PRODUCTS_URL}/${id}`)
 	}
 }

@@ -13,13 +13,3 @@ export interface ITokens {
 export interface IAuthResponse extends ITokens {
 	user: IUser
 }
-
-export interface IUserState {
-	login: string
-}
-
-export interface IInitialState {
-	user: IUserState | null
-	isLoading: boolean
-	message: string
-}

@@ -23,13 +23,13 @@ export const saveTokensStorage = (data: ITokens) => {
 	Cookies.set(EnumAuth.REFRESH_TOKEN, data.refreshToken)
 }
 
+export const saveToStorage = (data: IAuthResponse) => {
+	saveTokensStorage(data)
+	localStorage.setItem(EnumAuth.USER, JSON.stringify(data.user))
+}
+
 export const removeFromStorage = () => {
 	Cookies.remove(EnumAuth.ACCESS_TOKEN)
 	Cookies.remove(EnumAuth.REFRESH_TOKEN)
 	localStorage.removeItem(EnumAuth.USER)
-}
-
-export const saveToStorage = (data: IAuthResponse) => {
-	saveTokensStorage(data)
-	localStorage.setItem(EnumAuth.USER, JSON.stringify(data.user))
 }
