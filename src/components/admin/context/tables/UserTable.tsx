@@ -2,8 +2,9 @@ import { Button, Table } from '@nextui-org/react'
 import { FC } from 'react'
 import { AiOutlineDelete } from 'react-icons/ai'
 
+import { testUsers } from '@/types/user.interface'
+
 import styles from './Table.module.scss'
-import { testUsers } from '@/interfaces/user.interface'
 
 const UserTable: FC = () => {
 	return (

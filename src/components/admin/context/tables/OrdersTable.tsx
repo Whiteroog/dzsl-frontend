@@ -2,8 +2,9 @@ import { Button, Dropdown, Table } from '@nextui-org/react'
 import { FC } from 'react'
 import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from 'react-icons/ai'
 
+import { testOrders } from '@/types/order.interface'
+
 import styles from './Table.module.scss'
-import { testOrders } from '@/interfaces/order.interface'
 
 const OrdersTable: FC = () => {
 	return (
