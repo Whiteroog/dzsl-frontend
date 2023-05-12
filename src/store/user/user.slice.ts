@@ -7,7 +7,8 @@ import { IInitialState } from './user.interface'
 
 const initialState: IInitialState = {
 	user: getStoreLocal('user'),
-	isLoading: false
+	isLoading: false,
+	message: ''
 }
 
 export const userSlice = createSlice({
@@ -26,6 +27,7 @@ export const userSlice = createSlice({
 			.addCase(register.rejected, state => {
 				state.isLoading = false
 				state.user = null
+				state.message = 'Неверная форма регистрации'
 			})
 			.addCase(login.pending, state => {
 				state.isLoading = true
@@ -37,6 +39,7 @@ export const userSlice = createSlice({
 			.addCase(login.rejected, state => {
 				state.isLoading = false
 				state.user = null
+				state.message = 'Неверный логин или пароль'
 			})
 			.addCase(logout.fulfilled, state => {
 				state.isLoading = false

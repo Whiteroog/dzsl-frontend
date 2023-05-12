@@ -21,4 +21,5 @@ export interface IUserState {
 export interface IInitialState {
 	user: IUserState | null
 	isLoading: boolean
+	message: string
 }
