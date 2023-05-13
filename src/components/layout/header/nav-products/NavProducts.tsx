@@ -4,7 +4,7 @@ import { FC } from 'react'
 import { testCategory } from '@/types/category.interface'
 import { EnumLinks } from '@/types/links.enum'
 
-const Products: FC = () => {
+const NavProducts: FC = () => {
 	return (
 		<Dropdown>
 			<Navbar.Item>
@@ -23,4 +23,4 @@ const Products: FC = () => {
 	)
 }
 
-export default Products
+export default NavProducts

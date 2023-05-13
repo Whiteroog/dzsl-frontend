@@ -11,7 +11,7 @@ import { getAccessToken, getRefreshToken } from '@/services/auth/auth.helper'
 const DynamicCheckRole = dynamic(() => import('./CheckRole'), { ssr: false })
 
 const AuthProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = ({
-	Component: { isOnlyUser },
+	Component: { isOnlyAdmin },
 	children
 }) => {
 	const { user } = useAuth()
@@ -28,8 +28,8 @@ const AuthProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = ({
 		if (!refreshToken && user) logout()
 	}, [pathname])
 
-	return isOnlyUser ? (
-		<DynamicCheckRole Component={{ isOnlyUser }} children={children} />
+	return isOnlyAdmin ? (
+		<DynamicCheckRole Component={{ isOnlyAdmin }} children={children} />
 	) : (
 		<>{children}</>
 	)

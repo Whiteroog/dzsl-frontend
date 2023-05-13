@@ -1,11 +1,12 @@
 import { Table } from '@nextui-org/react'
 import { FC } from 'react'
 
+import { ISpecifications } from '@/types/product.interface'
+
 import styles from './Specifications.module.scss'
-import { ISpecifications } from '@/interfaces/product.interface'
 
 interface ISpecificationsProps {
-	specifications?: ISpecifications[]
+	specifications: ISpecifications[]
 }
 
 const Specifications: FC<ISpecificationsProps> = ({ specifications }) => {
@@ -28,7 +29,7 @@ const Specifications: FC<ISpecificationsProps> = ({ specifications }) => {
 					<Table.Column>Значение</Table.Column>
 				</Table.Header>
 				<Table.Body>
-					{specifications!.map((spec, index) => (
+					{specifications.map((spec, index) => (
 						<Table.Row key={index}>
 							<Table.Cell>{spec.name}</Table.Cell>
 							<Table.Cell>{spec.value}</Table.Cell>

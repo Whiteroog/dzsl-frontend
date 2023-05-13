@@ -9,7 +9,6 @@ const Sidebar: FC = () => {
 	return (
 		<>
 			<Logo />
-
 			<div className='mt-8 flex flex-col'>
 				{/* Menu */}
 				<div className='flex flex-col space-y-2'>

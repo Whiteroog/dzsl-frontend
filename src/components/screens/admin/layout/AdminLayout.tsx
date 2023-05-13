@@ -1,13 +1,12 @@
 import { Grid } from '@nextui-org/react'
-import { FC } from 'react'
+import { FC, PropsWithChildren } from 'react'
 
-import styles from './AdminPanel.module.scss'
-import Context from './context/Context'
+import styles from './AdminLayout.module.scss'
 import Sidebar from './sidebar/Sidebar'
 
-const AdminPanel: FC = () => {
+const AdminLayout: FC<PropsWithChildren> = ({ children }) => {
 	return (
-		<Grid.Container direction='row' className={styles.adminPanel} gap={2}>
+		<Grid.Container direction='row' className={styles.adminLayout} gap={2}>
 			<Grid
 				direction='column'
 				className='border-r border-gray border-opacity-30'
@@ -16,10 +15,10 @@ const AdminPanel: FC = () => {
 				<Sidebar />
 			</Grid>
 			<Grid direction='column' xs={10}>
-				<Context />
+				{children}
 			</Grid>
 		</Grid.Container>
 	)
 }
 
-export default AdminPanel
+export default AdminLayout

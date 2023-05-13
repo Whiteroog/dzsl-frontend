@@ -12,7 +12,7 @@ import { useActions } from '@/hooks/useActions'
 import { useAuth } from '@/hooks/useAuth'
 
 const LoginPage: NextPage = () => {
-	const { user, message } = useAuth()
+	const { user } = useAuth()
 	const { login } = useActions()
 
 	const {
@@ -39,7 +39,9 @@ const LoginPage: NextPage = () => {
 					<Card.Header className='flex-col'>
 						<Logo />
 						<h1 className='py-4 text-2xl'>Авторизация</h1>
-						<p className='text-error'>{message}</p>
+						<p className='text-error'>
+							{login === undefined ? <>Неверный логин или пароль</> : <></>}
+						</p>
 					</Card.Header>
 					<Card.Body>
 						<div className='flex flex-col items-center space-y-4'>

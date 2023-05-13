@@ -6,13 +6,13 @@ import { useAuth } from '@/hooks/useAuth'
 import { TypeComponentAuthFields } from './auth-page.types'
 
 const CheckRole: FC<PropsWithChildren<TypeComponentAuthFields>> = ({
-	Component: { isOnlyUser },
+	Component: { isOnlyAdmin },
 	children
 }) => {
 	const { user } = useAuth()
 	const router = useRouter()
 
-	if (user && isOnlyUser) return <>{children}</>
+	if (user && isOnlyAdmin) return <>{children}</>
 
 	router.pathname !== '/admin/login' && router.replace('/admin/login')
 	return null
