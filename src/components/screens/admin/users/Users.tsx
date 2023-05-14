@@ -1,22 +1,51 @@
-import { Button, Grid, Input, Table } from '@nextui-org/react'
+import {
+	Button,
+	FormElement,
+	Grid,
+	Input,
+	Modal,
+	Popover,
+	Table
+} from '@nextui-org/react'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { FC } from 'react'
+import { FC, KeyboardEvent, useState } from 'react'
 import { AiOutlineDelete } from 'react-icons/ai'
+
+import { ILoginPassword } from '@/store/user/user.interface'
+
+import { useAuth } from '@/hooks/useAuth'
+import useInput from '@/hooks/useInput'
+
+import { INewPassword, IUser } from '@/types/user.interface'
 
 import styles from '../tables/Table.module.scss'
 
 import { UserService } from '@/services/user.service'
 
 const Users: FC = () => {
+	const { user } = useAuth()
+
 	/* Get all */
 	const queryGetAllUsers = useQuery({
 		queryKey: ['get all users'],
-		queryFn: UserService.getAll
+		queryFn: UserService.getAll,
+		onSuccess(data) {
+			setUsers(data.data)
+		}
 	})
 
-	const users = queryGetAllUsers.data?.data ?? []
+	const [users, setUsers] = useState<IUser[]>([])
 
 	/* Delete */
+	const deleteHandler = (id: number) => {
+		if (user?.id === id) {
+			setIsOpenPopover(true)
+			return
+		}
+
+		deleteUser(id)
+	}
+
 	const { mutateAsync: deleteUser } = useMutation({
 		mutationKey: ['delete user'],
 		mutationFn: (id: number) => UserService.delete(id),
@@ -25,14 +54,78 @@ const Users: FC = () => {
 		}
 	})
 
+	/* new password */
+	const [modalPassword, setModalPassword] = useState(false)
+	const [selectId, setSelectId] = useState(-1)
+	const passwordInput = useInput('')
+
+	const { mutateAsync: setNewPassword } = useMutation({
+		mutationKey: ['set new password'],
+		mutationFn: (data: INewPassword) => UserService.setNewPassword(data)
+	})
+
+	const closeModelPasswordHandler = () => {
+		passwordInput.setValue('')
+		setModalPassword(false)
+	}
+
+	/* create user */
+	const [modalCreateUser, setModalCreateUser] = useState(false)
+
+	const loginInput = useInput('')
+
+	const { mutateAsync: createUser } = useMutation({
+		mutationKey: ['create user'],
+		mutationFn: (data: ILoginPassword) => UserService.create(data),
+		onSuccess() {
+			queryGetAllUsers.refetch()
+		}
+	})
+
+	const closeModelCreateUserHandler = () => {
+		passwordInput.setValue('')
+		loginInput.setValue('')
+		setModalCreateUser(false)
+	}
+
+	/* Error popover */
+	const [isOpenPopover, setIsOpenPopover] = useState(false)
+
+	/* search */
+	const searchFilter = (term: string) => {
+		const filteredUsers = users.filter(user =>
+			user.login.toLowerCase().includes(term)
+		)
+
+		setUsers(filteredUsers)
+	}
+
+	const handleKeyDown = (e: KeyboardEvent<FormElement>) => {
+		if (e.key === 'Enter') {
+			if (e.currentTarget.value.length === 0) {
+				setUsers(queryGetAllUsers.data?.data as IUser[])
+			} else {
+				searchFilter(e.currentTarget.value)
+			}
+		}
+	}
+
 	return (
 		<>
 			<h1 className='ml-[17%]'>Пользователи</h1>
-			<div className='flex items-end justify-between'>
-				<Input size='sm' type='search' label='Поиск' width='250px' />
-				<Button auto>Создать</Button>
+			<div className='flex items-end justify-between p-4'>
+				<Input
+					size='sm'
+					type='search'
+					label='Поиск'
+					width='250px'
+					onKeyDown={handleKeyDown}
+				/>
+				<Button auto onClick={() => setModalCreateUser(true)}>
+					Создать
+				</Button>
 			</div>
-			<Grid.Container className='mt-2' gap={2}>
+			<Grid.Container className='mt-4'>
 				<Grid xs={12} direction='column' className='w-full'>
 					<Table
 						bordered={true}
@@ -55,15 +148,33 @@ const Users: FC = () => {
 									<Table.Cell>{user.id}</Table.Cell>
 									<Table.Cell>{user.login}</Table.Cell>
 									<Table.Cell>
-										<Button auto size={'sm'}>
-											Сбросить пароль
-										</Button>
 										<Button
 											auto
-											icon={<AiOutlineDelete color='red' />}
-											className='button-icon'
-											onClick={() => deleteUser(user.id)}
-										></Button>
+											size={'sm'}
+											onClick={() => {
+												setModalPassword(true)
+												setSelectId(user.id)
+											}}
+										>
+											Сбросить пароль
+										</Button>
+										<Popover
+											isOpen={isOpenPopover}
+											onOpenChange={setIsOpenPopover}
+											placement='bottom-right'
+										>
+											<Popover.Trigger>
+												<Button
+													auto
+													icon={<AiOutlineDelete color='red' />}
+													className='button-icon'
+													onClick={() => deleteHandler(user.id)}
+												/>
+											</Popover.Trigger>
+											<Popover.Content>
+												<p>Нельзя удалить авторизированного пользователя</p>
+											</Popover.Content>
+										</Popover>
 									</Table.Cell>
 								</Table.Row>
 							))}
@@ -71,6 +182,80 @@ const Users: FC = () => {
 					</Table>
 				</Grid>
 			</Grid.Container>
+
+			<Modal
+				className='p-6'
+				closeButton
+				open={modalPassword}
+				onClose={() => {
+					closeModelPasswordHandler()
+				}}
+			>
+				<Modal.Header>
+					<h2 className='py-4 text-lg'>Новый пароль</h2>
+				</Modal.Header>
+				<Modal.Body className='flex flex-col items-center'>
+					<Input
+						size='sm'
+						type='text'
+						label='Пароль'
+						width='250px'
+						{...passwordInput}
+					/>
+					<Button
+						className='mt-6'
+						auto
+						onClick={() => {
+							setNewPassword({ id: selectId, newPassword: passwordInput.value })
+							closeModelPasswordHandler()
+						}}
+					>
+						Изменить
+					</Button>
+				</Modal.Body>
+			</Modal>
+
+			<Modal
+				closeButton
+				open={modalCreateUser}
+				onClose={() => {
+					closeModelCreateUserHandler()
+				}}
+				className='p-6'
+			>
+				<Modal.Header>
+					<h2 className='py-4 text-lg'>Новый пользователь</h2>
+				</Modal.Header>
+				<Modal.Body className='flex flex-col items-center'>
+					<Input
+						size='sm'
+						type='text'
+						label='Логин'
+						width='250px'
+						{...loginInput}
+					/>
+					<Input
+						size='sm'
+						type='text'
+						label='Пароль'
+						width='250px'
+						{...passwordInput}
+					/>
+					<Button
+						className='mt-6'
+						auto
+						onClick={() => {
+							createUser({
+								login: loginInput.value,
+								password: passwordInput.value
+							})
+							closeModelCreateUserHandler()
+						}}
+					>
+						Создать
+					</Button>
+				</Modal.Body>
+			</Modal>
 		</>
 	)
 }

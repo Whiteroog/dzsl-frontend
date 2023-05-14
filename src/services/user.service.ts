@@ -1,6 +1,6 @@
 import { ILoginPassword } from '@/store/user/user.interface'
 
-import { IUser } from '@/types/user.interface'
+import { INewPassword, IUser } from '@/types/user.interface'
 
 import { axiosAuth } from '@/api/api.interceptor'
 
@@ -15,8 +15,10 @@ export const UserService = {
 		return axiosAuth.post<IUser>(USERS_URL, data)
 	},
 
-	async setNewPassword(id: number, newPassword: string) {
-		return axiosAuth.patch<IUser>(`${USERS_URL}/${id}`, { newPassword })
+	async setNewPassword(data: INewPassword) {
+		return axiosAuth.patch<IUser>(`${USERS_URL}/${data.id}`, {
+			newPassword: data.newPassword
+		})
 	},
 
 	async delete(id: number) {

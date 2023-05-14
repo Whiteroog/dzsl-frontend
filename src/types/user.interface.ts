@@ -3,6 +3,11 @@ export interface IUser {
 	login: string
 }
 
+export interface INewPassword {
+	id: number
+	newPassword: string
+}
+
 export const testUsers: IUser[] = [
 	{
 		id: 1,
