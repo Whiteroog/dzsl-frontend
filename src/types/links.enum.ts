@@ -13,5 +13,7 @@ export enum EnumLinks {
 	TABLE_ORDERS = '/admin/panel/orders',
 	TABLE_USERS = '/admin/panel/users',
 
-	LOGIN = '/admin/login/'
+	LOGIN = '/admin/login',
+
+	HOME_PAGE = 'http://localhost:3000/'
 }

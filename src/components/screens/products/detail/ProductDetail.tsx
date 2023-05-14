@@ -16,12 +16,12 @@ import { ProductService } from '@/services/product.service'
 const ProductDetail: FC = () => {
 	const slug = (useRouter().query.slug as string) ?? ''
 
-	const queryProductsBySlug = useQuery({
+	const queryGetProductsBySlug = useQuery({
 		queryKey: ['get products by slug', slug],
 		queryFn: () => ProductService.getBySlug(slug)
 	})
 
-	const product = queryProductsBySlug.data?.data ?? ({} as IProduct)
+	const product = queryGetProductsBySlug.data?.data ?? ({} as IProduct)
 
 	const title = product ? product.category?.name : 'Нет категории'
 

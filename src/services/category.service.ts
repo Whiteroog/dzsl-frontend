@@ -18,7 +18,7 @@ export const CategoryService = {
 		return axiosClassic.get<ICategory>(`${CATEGORIES_URL}/by-slug/${slug}`)
 	},
 
-	async getById(id: string) {
+	async getById(id: number) {
 		return axiosAuth<ICategory>(`${CATEGORIES_URL}/${id}`)
 	},
 
@@ -26,11 +26,11 @@ export const CategoryService = {
 		return axiosAuth.post<ICategory>(CATEGORIES_URL)
 	},
 
-	async update(id: string, data: TypeCategoryData) {
+	async update(id: number, data: TypeCategoryData) {
 		return axiosAuth.put<ICategory>(`${CATEGORIES_URL}/${id}`, data)
 	},
 
-	async delete(id: string) {
+	async delete(id: number) {
 		return axiosAuth.delete<ICategory>(`${CATEGORIES_URL}/${id}`)
 	}
 }

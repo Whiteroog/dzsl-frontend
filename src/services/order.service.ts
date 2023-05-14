@@ -31,11 +31,11 @@ export const OrderService = {
 		return axiosAuth.get<IOrder[]>(ORDERS_URL)
 	},
 
-	async getById(id: string) {
+	async getById(id: number) {
 		return axiosAuth.get<IOrder>(`${ORDERS_URL}/${id}`)
 	},
 
-	async updateStatus(id: string, status: EnumOrderStatus) {
+	async updateStatus(id: number, status: EnumOrderStatus) {
 		return axiosAuth.patch<IOrder>(`${ORDERS_URL}/${id}`, { status })
 	},
 

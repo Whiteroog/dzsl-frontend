@@ -8,12 +8,12 @@ import { EnumLinks } from '@/types/links.enum'
 import { CategoryService } from '@/services/category.service'
 
 const NavProducts: FC = () => {
-	const queryCategories = useQuery({
+	const queryGetAllCategories = useQuery({
 		queryKey: ['get all categories'],
 		queryFn: CategoryService.getAll
 	})
 
-	const categories = queryCategories.data?.data ?? ([] as ICategory[])
+	const categories = queryGetAllCategories.data?.data ?? ([] as ICategory[])
 
 	return (
 		<Dropdown>

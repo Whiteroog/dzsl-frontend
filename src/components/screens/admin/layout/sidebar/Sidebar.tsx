@@ -1,11 +1,16 @@
 import { Link } from '@nextui-org/react'
+import { useRouter } from 'next/router'
 import { FC } from 'react'
 
 import Logo from '@/components/layout/header/logo/Logo'
 
+import { useActions } from '@/hooks/useActions'
+
 import { EnumLinks } from '@/types/links.enum'
 
 const Sidebar: FC = () => {
+	const { logout } = useActions()
+	const { replace } = useRouter()
 	return (
 		<>
 			<Logo />
@@ -18,7 +23,15 @@ const Sidebar: FC = () => {
 					<Link href={EnumLinks.TABLE_USERS}>Пользователи</Link>
 				</div>
 				<div className='mt-20'>
-					<Link href={EnumLinks.LOGIN}>Выйти</Link>
+					<Link
+						href={EnumLinks.HOME_PAGE}
+						onClick={async e => {
+							await replace(EnumLinks.HOME_PAGE)
+							await logout()
+						}}
+					>
+						Выйти
+					</Link>
 				</div>
 			</div>
 		</>

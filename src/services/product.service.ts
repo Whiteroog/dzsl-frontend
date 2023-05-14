@@ -61,7 +61,7 @@ export const ProductService = {
 		return axiosAuth.get<IProduct>(`${PRODUCTS_URL}/by-slug/${slug}`)
 	},
 
-	async getById(id: string) {
+	async getById(id: number) {
 		return axiosAuth.get<IProduct>(`${PRODUCTS_URL}/${id}`)
 	},
 
@@ -69,11 +69,11 @@ export const ProductService = {
 		return axiosAuth.post<IProduct>(PRODUCTS_URL, data)
 	},
 
-	async update(id: string, data: TypeUpdateProductData) {
+	async update(id: number, data: TypeUpdateProductData) {
 		return axiosAuth.put<IProduct>(`${PRODUCTS_URL}/${id}`, data)
 	},
 
-	async delete(id: string) {
+	async delete(id: number) {
 		return axiosAuth.delete<IProduct>(`${PRODUCTS_URL}/${id}`)
 	}
 }
