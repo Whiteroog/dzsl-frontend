@@ -10,7 +10,6 @@ const axiosOptions = {
 }
 
 export const axiosClassic = axios.create(axiosOptions)
-
 export const axiosAuth = axios.create(axiosOptions)
 
 axiosAuth.interceptors.request.use(config => {
@@ -25,6 +24,7 @@ axiosAuth.interceptors.request.use(config => {
 axiosAuth.interceptors.response.use(
 	config => config,
 	async error => {
+		// полученный запрос
 		const originalRequest = error.config
 
 		if (
@@ -37,6 +37,8 @@ axiosAuth.interceptors.response.use(
 			originalRequest._isRetry = true
 			try {
 				await AuthService.getNewTokens()
+
+				// необработанный запрос
 				return axiosAuth.request(originalRequest)
 			} catch (error) {
 				if (errorCatch(error) === 'jwt expired') removeFromStorage()

@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { IUser } from '@/types/user.interface'
-
 import { getStoreLocal } from '@/utils/local-storage'
 
 import { checkAuth, login, logout } from './user.actions'
+import { IUserState } from './user.interface'
 
-const initialState: { user: IUser | null } = {
-	user: getStoreLocal('user')
+const initialState: IUserState = {
+	user: getStoreLocal('user'),
+	status: null
 }
 
 export const userSlice = createSlice({
@@ -18,9 +18,11 @@ export const userSlice = createSlice({
 		builder
 			.addCase(login.fulfilled, (state, { payload }) => {
 				state.user = payload.user
+				state.status = 200
 			})
 			.addCase(login.rejected, state => {
 				state.user = null
+				state.status = 404
 			})
 			.addCase(logout.fulfilled, state => {
 				state.user = null

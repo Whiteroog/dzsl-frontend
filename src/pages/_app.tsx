@@ -27,7 +27,7 @@ export default function App({
 		isBrowser && (
 			<QueryClientProvider client={queryClient}>
 				<Provider store={store}>
-					<AuthProvider Component={{ isOnlyUser: Component.isOnlyUser }}>
+					<AuthProvider Component={{ isOnlyAdmin: Component.isOnlyAdmin }}>
 						<NextUIProvider>
 							<Component {...pageProps} />
 						</NextUIProvider>

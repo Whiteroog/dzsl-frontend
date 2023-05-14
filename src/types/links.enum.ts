@@ -8,6 +8,10 @@ export enum EnumLinks {
 
 	IMAGES = 'http://localhost:3000/images/',
 
-	HOME_ADMIN_PAGE = '/admin/panel/products',
-	LOGOUT = '/admin/login/'
+	TABLE_PRODUCTS = '/admin/panel/products',
+	TABLE_CATEGORIES = '/admin/panel/categories',
+	TABLE_ORDERS = '/admin/panel/orders',
+	TABLE_USERS = '/admin/panel/users',
+
+	LOGIN = '/admin/login/'
 }

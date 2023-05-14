@@ -13,3 +13,8 @@ export interface ITokens {
 export interface IAuthResponse extends ITokens {
 	user: IUser
 }
+
+export interface IUserState {
+	user: IUser | null
+	status: number | null
+}

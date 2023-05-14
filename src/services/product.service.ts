@@ -52,11 +52,13 @@ export const ProductService = {
 	},
 
 	async getByCategory(categorySlug: string) {
-		return axiosClassic.get<IProduct[]>(`${PRODUCTS_URL}/${categorySlug}`)
+		return axiosClassic.get<IProduct[]>(
+			`${PRODUCTS_URL}/by-category/${categorySlug}`
+		)
 	},
 
 	async getBySlug(slug: string) {
-		return axiosAuth.get<IProduct>(`${PRODUCTS_URL}/${slug}`)
+		return axiosAuth.get<IProduct>(`${PRODUCTS_URL}/by-slug/${slug}`)
 	},
 
 	async getById(id: string) {

@@ -1,17 +1,27 @@
 import { Dropdown, Link, Navbar } from '@nextui-org/react'
+import { useQuery } from '@tanstack/react-query'
 import { FC } from 'react'
 
-import { testCategory } from '@/types/category.interface'
+import { ICategory } from '@/types/category.interface'
 import { EnumLinks } from '@/types/links.enum'
 
+import { CategoryService } from '@/services/category.service'
+
 const NavProducts: FC = () => {
+	const queryCategories = useQuery({
+		queryKey: ['get all categories'],
+		queryFn: CategoryService.getAll
+	})
+
+	const categories = queryCategories.data?.data ?? ([] as ICategory[])
+
 	return (
 		<Dropdown>
 			<Navbar.Item>
 				<Dropdown.Button light>Продукция</Dropdown.Button>
 			</Navbar.Item>
 			<Dropdown.Menu>
-				{testCategory.map(category => (
+				{categories.map(category => (
 					<Dropdown.Item key={category.id}>
 						<Link href={EnumLinks.PRODUCTS + category.slug}>
 							{category.name}

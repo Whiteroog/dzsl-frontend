@@ -1,11 +1,10 @@
 import { Card, Grid, Image, Link, Row } from '@nextui-org/react'
-import { FC } from 'react'
+import { FC, SyntheticEvent } from 'react'
 
 import { EnumLinks } from '@/types/links.enum'
+import { IProduct } from '@/types/product.interface'
 
 import Specifications from '../specifications/Specifications'
-
-import { IProduct } from '@/interfaces/product.interface'
 
 interface IProductProps {
 	product: IProduct
@@ -28,6 +27,9 @@ const CardProduct: FC<IProductProps> = ({ product }) => {
 							height={375}
 							autoResize={true}
 							className='rounded-lg'
+							onError={(e: SyntheticEvent & { target: HTMLImageElement }) =>
+								(e.target.src = EnumLinks.IMAGES + 'No-Image-Placeholder.svg')
+							}
 						/>
 					</Grid>
 					<Grid xs={12} sm={8} justify='center'>

@@ -1,5 +1,5 @@
 import { Grid } from '@nextui-org/react'
-import cn from 'classnames'
+import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 
@@ -7,25 +7,26 @@ import Layout from '@/components/layout/Layout'
 import CardProduct from '@/components/ui/card-product/CardProduct'
 import TitlePage from '@/components/ui/title-page/TitlePage'
 
-import { testCategory } from '@/types/category.interface'
-import { testProducts } from '@/types/product.interface'
+import { ProductService } from '@/services/product.service'
 
 const ProductsByCategory: FC = () => {
-	const slug = useRouter().query.slug
-	const category = testCategory.find(category => category.slug === slug)
-	const products = testProducts.filter(
-		product => product.category.id === category?.id
-	)
+	const slug = (useRouter().query.slug as string) ?? ''
+
+	const queryProductsByCategory = useQuery({
+		queryKey: ['get products by category', slug],
+		queryFn: () => ProductService.getByCategory(slug)
+	})
+
+	const products = queryProductsByCategory.data?.data ?? []
+
+	const title = products.length ? products[0].category.name : 'Нет категории'
+
 	return (
 		<Layout>
-			<TitlePage title={category?.name} />
+			<TitlePage title={title} />
 			<Grid.Container gap={4}>
-				{products.map((product, index) => (
-					<Grid
-						xs={12}
-						justify='center'
-						className={cn('mt-10', { 'mt-0': index === 0 })}
-					>
+				{products.map(product => (
+					<Grid key={product.id} xs={12} justify='center'>
 						<CardProduct product={product} />
 					</Grid>
 				))}
