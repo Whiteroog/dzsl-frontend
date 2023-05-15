@@ -31,14 +31,15 @@ const ProductDetail: FC = () => {
 			<Grid.Container gap={2}>
 				<Grid xs={12} sm={4}>
 					<Image
-						src={EnumLinks.IMAGES + product.image}
+						src={EnumLinks.PRODUCT_IMAGES + product.image}
 						alt={product.name}
 						width={250}
 						height={375}
 						autoResize={true}
 						className='rounded-lg'
 						onError={(e: SyntheticEvent & { target: HTMLImageElement }) =>
-							(e.target.src = EnumLinks.IMAGES + 'No-Image-Placeholder.svg')
+							(e.target.src =
+								EnumLinks.PRODUCT_IMAGES + 'no-image-placeholder.svg')
 						}
 					/>
 				</Grid>

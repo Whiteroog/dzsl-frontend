@@ -1,0 +1,21 @@
+.table {
+	thead {
+		tr {
+			th {
+				@apply text-start text-lg text-gray;
+			}
+		}
+	}
+
+	tbody {
+		tr {
+			td {
+				@apply text-start text-base text-gray;
+
+				&::after {
+					@apply bg-gray bg-opacity-30 #{!important};
+				}
+			}
+		}
+	}
+}

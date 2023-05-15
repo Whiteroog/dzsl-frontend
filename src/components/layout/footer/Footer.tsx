@@ -19,7 +19,7 @@ const Footer: FC = () => {
 					<div className='flex flex-col items-start'>
 						<span>Принимаем к оплате:</span>
 						<Image
-							src='http://localhost:3000/images/pay.png'
+							src={EnumLinks.STATIC_IMAGES + 'pay.png'}
 							width={350}
 							height={45}
 							alt='Способы оплаты'

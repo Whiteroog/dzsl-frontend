@@ -23,8 +23,20 @@ td,
 	font-family: 'Nunito', sans-serif;
 }
 
+h1 {
+	@apply p-2 text-2xl font-bold;
+}
+
+h2 {
+	@apply p-2 text-xl font-bold;
+}
+
+h3 {
+	@apply p-2 text-lg font-bold;
+}
+
 p {
-	@apply p-4 indent-4 text-lg;
+	@apply p-4;
 }
 
 strong {
@@ -89,6 +101,26 @@ strong {
 		}
 
 		@apply text-primary;
+	}
+}
+
+thead {
+	tr {
+		th {
+			@apply text-start text-lg text-gray;
+		}
+	}
+}
+
+tbody {
+	tr {
+		td {
+			@apply text-start text-base text-gray;
+
+			&::after {
+				@apply bg-gray bg-opacity-30 #{!important};
+			}
+		}
 	}
 }
 

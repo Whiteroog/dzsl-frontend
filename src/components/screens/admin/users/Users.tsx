@@ -18,7 +18,7 @@ import useInput from '@/hooks/useInput'
 
 import { INewPassword, IUser } from '@/types/user.interface'
 
-import styles from '../tables/Table.module.scss'
+import tableStyle from '../tables/Table.module.scss'
 
 import { UserService } from '@/services/user.service'
 
@@ -133,7 +133,7 @@ const Users: FC = () => {
 						shadow={false}
 						lined={true}
 						lineWeight='light'
-						className={styles.table}
+						className={tableStyle.table}
 					>
 						<Table.Header>
 							<Table.Column width={80}>Id</Table.Column>
