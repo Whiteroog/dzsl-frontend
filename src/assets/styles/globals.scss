@@ -127,4 +127,18 @@ tbody {
 	}
 }
 
+.rrt-title {
+	@apply text-white;
+}
+
+.rrt-text {
+	@apply text-white;
+}
+
+.close-toastr {
+	span {
+		@apply text-white;
+	}
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&display=swap');

@@ -2,7 +2,7 @@
 
 const colors = {
 	primary: '#F45050',
-	white: '#F0F0F0',
+	'gray-white': '#F0F0F0',
 	gray: '#3C486B',
 	yellow: '#F9D949'
 }
@@ -16,7 +16,8 @@ module.exports = {
 	theme: {
 		colors: {
 			primary: colors.primary,
-			white: colors.white,
+			white: 'white',
+			'gray-white': colors['gray-white'],
 			gray: colors.gray,
 			yellow: colors.yellow,
 			transparent: 'transparent',

@@ -28,84 +28,23 @@ import { ProductService } from '@/services/product.service'
 type ProductData = {
 	items: IProduct[]
 	sortDescriptor: SortDescriptor
-	sort: (descriptor: SortDescriptor) => any
 }
 
 const Products: FC = () => {
-	const [_products, _setProducts] = useState<IProduct[]>([])
-	const [products, setProducts] = useState<ProductData>({
-		items: [],
-		sortDescriptor: {
-			column: 'id',
-			direction: 'ascending'
-		},
-		sort(descriptor) {
-			return null
-		}
-	} as ProductData)
-
-	const [selectedProduct, setSelectedProduct] = useState<IProduct>(
-		{} as IProduct
-	)
-
-	const selectProductHandler = (id: number) => {
-		setSelectedProduct(
-			products.items.find(item => item.id === id) ?? ({} as IProduct)
-		)
-	}
-
-	/* Get all */
-	const queryGetAllProducts = useQuery({
-		queryKey: ['get all users'],
-		queryFn: ProductService.getAll,
-		onSuccess(data) {
-			_setProducts(data.data)
-			setProducts(
-				setProductsWithParam(
-					data.data,
-					{
-						column: 'id',
-						direction: 'ascending'
-					},
-					sortProduct
-				)
-			)
-		}
-	})
-
-	/* Get categories */
-	const queryGetAllCategories = useQuery({
-		queryKey: ['get all categories for products'],
-		queryFn: CategoryService.getAll,
-		onSuccess(data) {
-			setCategories(data.data)
-			setCheckCategories(data.data.map(item => String(item.id)))
-		}
-	})
-
-	const [categories, setCategories] = useState<ICategory[]>([])
-	const [checkCategories, setCheckCategories] = useState<string[]>([])
-
 	/* sort */
 	const setProductsWithParam = (
 		items: IProduct[],
-		sortDescriptor = products.sortDescriptor,
-		sort = products.sort
+		sortDescriptor = products.sortDescriptor
 	): ProductData => ({
 		items,
-		sortDescriptor,
-		sort
+		sortDescriptor
 	})
 
-	let collator = useCollator()
+	const collator = useCollator()
 
 	const sortProduct = (descriptor: SortDescriptor) => {
-		console.log(descriptor)
-
 		const { column, direction } = descriptor
 		let sortProducts = _products
-
-		console.log(sortProducts)
 
 		if (!sortProducts) return
 
@@ -133,8 +72,50 @@ const Products: FC = () => {
 			if (direction === 'descending') cmp *= -1
 			return cmp
 		})
-		return { items: products.items }
+		setProducts(setProductsWithParam(sortProducts, descriptor))
 	}
+
+	const [_products, _setProducts] = useState<IProduct[]>([])
+	const [products, setProducts] = useState<ProductData>({
+		items: [],
+		sortDescriptor: {
+			column: 'id',
+			direction: 'ascending'
+		}
+	})
+
+	const [selectedProduct, setSelectedProduct] = useState<IProduct>(
+		{} as IProduct
+	)
+
+	const selectProductHandler = (id: number) => {
+		setSelectedProduct(
+			products.items.find(item => item.id === id) ?? ({} as IProduct)
+		)
+	}
+
+	/* Get all */
+	const queryGetAllProducts = useQuery({
+		queryKey: ['get all users'],
+		queryFn: ProductService.getAll,
+		onSuccess(data) {
+			_setProducts(data.data)
+			setProducts(setProductsWithParam(data.data))
+		}
+	})
+
+	/* Get categories */
+	const queryGetAllCategories = useQuery({
+		queryKey: ['get all categories for products'],
+		queryFn: CategoryService.getAll,
+		onSuccess(data) {
+			setCategories(data.data)
+			setCheckCategories(data.data.map(item => String(item.id)))
+		}
+	})
+
+	const [categories, setCategories] = useState<ICategory[]>([])
+	const [checkCategories, setCheckCategories] = useState<string[]>([])
 
 	/* filter */
 	const categoryFilterHandler = (checks: string[]) => {
@@ -259,7 +240,7 @@ const Products: FC = () => {
 						lined={true}
 						lineWeight='light'
 						sortDescriptor={products.sortDescriptor}
-						onSortChange={products.sort}
+						onSortChange={sortProduct}
 						className={tableStyles.table}
 					>
 						<Table.Header>
@@ -279,36 +260,40 @@ const Products: FC = () => {
 								Действия
 							</Table.Column>
 						</Table.Header>
-						<Table.Body items={products.items}>
-							{item => (
-								<Table.Row key={item.id}>
-									<Table.Cell>{item.id}</Table.Cell>
-									<Table.Cell>{item.name}</Table.Cell>
-									<Table.Cell>{item.category.name}</Table.Cell>
-									<Table.Cell>{item.price}</Table.Cell>
-									<Table.Cell>
-										<Button
-											auto
-											icon={<AiOutlineEye />}
-											className='button-icon'
-											onClick={() => {
-												setShowModel(true)
-												selectProductHandler(item.id)
-											}}
-										></Button>
-										<Button
-											auto
-											icon={<AiOutlineEdit />}
-											className='button-icon'
-										></Button>
-										<Button
-											auto
-											icon={<AiOutlineDelete color='red' />}
-											className='button-icon'
-											onClick={() => deleteProduct(item.id)}
-										></Button>
-									</Table.Cell>
-								</Table.Row>
+						<Table.Body>
+							{products ? (
+								products.items.map(item => (
+									<Table.Row key={item.id}>
+										<Table.Cell>{item.id}</Table.Cell>
+										<Table.Cell>{item.name}</Table.Cell>
+										<Table.Cell>{item.category.name}</Table.Cell>
+										<Table.Cell>{item.price}</Table.Cell>
+										<Table.Cell>
+											<Button
+												auto
+												icon={<AiOutlineEye />}
+												className='button-icon'
+												onClick={() => {
+													setShowModel(true)
+													selectProductHandler(item.id)
+												}}
+											></Button>
+											<Button
+												auto
+												icon={<AiOutlineEdit />}
+												className='button-icon'
+											></Button>
+											<Button
+												auto
+												icon={<AiOutlineDelete color='red' />}
+												className='button-icon'
+												onClick={() => deleteProduct(item.id)}
+											></Button>
+										</Table.Cell>
+									</Table.Row>
+								))
+							) : (
+								<></>
 							)}
 						</Table.Body>
 					</Table>

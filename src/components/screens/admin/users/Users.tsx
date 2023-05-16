@@ -9,6 +9,7 @@ import {
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { FC, KeyboardEvent, useState } from 'react'
 import { AiOutlineDelete } from 'react-icons/ai'
+import { toastr } from 'react-redux-toastr'
 
 import { ILoginPassword } from '@/store/user/user.interface'
 
@@ -46,6 +47,10 @@ const Users: FC = () => {
 	/* Delete */
 	const deleteHandler = (id: number) => {
 		if (user?.id === id) {
+			toastr.error(
+				'Удаление пользователя',
+				'Нельзя удалить авторизированного пользователя'
+			)
 			return
 		}
 
