@@ -58,7 +58,7 @@ export const ProductService = {
 	},
 
 	async getBySlug(slug: string) {
-		return axiosAuth.get<IProduct>(`${PRODUCTS_URL}/by-slug/${slug}`)
+		return axiosClassic.get<IProduct>(`${PRODUCTS_URL}/by-slug/${slug}`)
 	},
 
 	async getById(id: number) {

@@ -23,7 +23,7 @@ const ProductDetail: FC = () => {
 
 	const product = queryGetProductsBySlug.data?.data ?? ({} as IProduct)
 
-	const title = product ? product.category?.name : 'Нет категории'
+	const title = product ? product?.name : 'Нет названия'
 
 	return (
 		<Layout>
@@ -47,7 +47,7 @@ const ProductDetail: FC = () => {
 					<Specifications specifications={product.specifications ?? []} />
 				</Grid>
 			</Grid.Container>
-			<p>{product.description}</p>
+			<p className='mb-6 p-4'>{product.description}</p>
 			<FormOrder product={product} />
 		</Layout>
 	)

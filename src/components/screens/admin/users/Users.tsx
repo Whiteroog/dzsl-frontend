@@ -4,7 +4,6 @@ import {
 	Grid,
 	Input,
 	Modal,
-	Popover,
 	Table
 } from '@nextui-org/react'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -25,21 +24,28 @@ import { UserService } from '@/services/user.service'
 const Users: FC = () => {
 	const { user } = useAuth()
 
+	const [_users, _setUsers] = useState<IUser[]>([])
+	const [users, setUsers] = useState<IUser[]>([])
+
+	const [selectedUser, setSelectedUser] = useState<IUser>({} as IUser)
+
+	const selectUserHandler = (id: number) => {
+		setSelectedUser(users.find(item => item.id === id) ?? ({} as IUser))
+	}
+
 	/* Get all */
 	const queryGetAllUsers = useQuery({
 		queryKey: ['get all users'],
 		queryFn: UserService.getAll,
 		onSuccess(data) {
+			_setUsers(data.data)
 			setUsers(data.data)
 		}
 	})
 
-	const [users, setUsers] = useState<IUser[]>([])
-
 	/* Delete */
 	const deleteHandler = (id: number) => {
 		if (user?.id === id) {
-			setIsOpenPopover(true)
 			return
 		}
 
@@ -56,7 +62,7 @@ const Users: FC = () => {
 
 	/* new password */
 	const [modalPassword, setModalPassword] = useState(false)
-	const [selectId, setSelectId] = useState(-1)
+
 	const passwordInput = useInput('')
 
 	const { mutateAsync: setNewPassword } = useMutation({
@@ -88,24 +94,23 @@ const Users: FC = () => {
 		setModalCreateUser(false)
 	}
 
-	/* Error popover */
-	const [isOpenPopover, setIsOpenPopover] = useState(false)
-
 	/* search */
-	const searchFilter = (term: string) => {
-		const filteredUsers = users.filter(user =>
+	const search = (term: string) => {
+		term = term.toLowerCase()
+
+		const searchedUsers = _users.filter(user =>
 			user.login.toLowerCase().includes(term)
 		)
 
-		setUsers(filteredUsers)
+		setUsers(searchedUsers)
 	}
 
 	const handleKeyDown = (e: KeyboardEvent<FormElement>) => {
 		if (e.key === 'Enter') {
 			if (e.currentTarget.value.length === 0) {
-				setUsers(queryGetAllUsers.data?.data as IUser[])
+				setUsers(_users)
 			} else {
-				searchFilter(e.currentTarget.value)
+				search(e.currentTarget.value)
 			}
 		}
 	}
@@ -153,28 +158,17 @@ const Users: FC = () => {
 											size={'sm'}
 											onClick={() => {
 												setModalPassword(true)
-												setSelectId(user.id)
+												selectUserHandler(user.id)
 											}}
 										>
 											Сбросить пароль
 										</Button>
-										<Popover
-											isOpen={isOpenPopover}
-											onOpenChange={setIsOpenPopover}
-											placement='bottom-right'
-										>
-											<Popover.Trigger>
-												<Button
-													auto
-													icon={<AiOutlineDelete color='red' />}
-													className='button-icon'
-													onClick={() => deleteHandler(user.id)}
-												/>
-											</Popover.Trigger>
-											<Popover.Content>
-												<p>Нельзя удалить авторизированного пользователя</p>
-											</Popover.Content>
-										</Popover>
+										<Button
+											auto
+											icon={<AiOutlineDelete color='red' />}
+											className='button-icon'
+											onClick={() => deleteHandler(user.id)}
+										/>
 									</Table.Cell>
 								</Table.Row>
 							))}
@@ -206,7 +200,10 @@ const Users: FC = () => {
 						className='mt-6'
 						auto
 						onClick={() => {
-							setNewPassword({ id: selectId, newPassword: passwordInput.value })
+							setNewPassword({
+								id: selectedUser.id,
+								newPassword: passwordInput.value
+							})
 							closeModelPasswordHandler()
 						}}
 					>

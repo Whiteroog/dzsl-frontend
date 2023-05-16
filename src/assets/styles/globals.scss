@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'react-redux-toastr/src/styles/index';
+
 h1,
 h2,
 h3,
@@ -11,6 +13,7 @@ a,
 span,
 th,
 td,
+li,
 .nextui-collapse-title,
 .nextui-link,
 .nextui-button,
@@ -36,7 +39,7 @@ h3 {
 }
 
 p {
-	@apply p-4;
+	@apply p-2;
 }
 
 strong {

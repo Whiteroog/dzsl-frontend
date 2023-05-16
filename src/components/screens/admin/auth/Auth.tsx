@@ -55,14 +55,14 @@ const Auth: FC = () => {
 								type='text'
 								label='Логин'
 								clearable
-								width='200px'
+								width='70%'
 								required
 							/>
 							<Input.Password
 								{...formRegister('password')}
 								label='Пароль'
 								clearable
-								width='200px'
+								width='70%'
 								required
 							/>
 						</div>

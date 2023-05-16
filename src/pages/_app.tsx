@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { AppProps } from 'next/app'
 import { Provider } from 'react-redux'
 
+import ReduxToastr from '@/providers/ReduxToastr'
 import AuthProvider from '@/providers/auth/AuthProvider'
 import { TypeComponentAuthFields } from '@/providers/auth/auth-page.types'
 
@@ -25,15 +26,16 @@ export default function App({
 	const { isBrowser } = useSSR()
 	return (
 		isBrowser && (
-			<QueryClientProvider client={queryClient}>
-				<Provider store={store}>
+			<Provider store={store}>
+				<QueryClientProvider client={queryClient}>
+					<ReduxToastr />
 					<AuthProvider Component={{ isOnlyAdmin: Component.isOnlyAdmin }}>
 						<NextUIProvider>
 							<Component {...pageProps} />
 						</NextUIProvider>
 					</AuthProvider>
-				</Provider>
-			</QueryClientProvider>
+				</QueryClientProvider>
+			</Provider>
 		)
 	)
 }

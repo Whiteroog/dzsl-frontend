@@ -13,13 +13,13 @@ export interface IProduct {
 }
 
 export interface ISpecifications {
-	id: number
+	id?: number
 	name: string
 	value: number
 }
 
 export interface IProductItem {
-	id: number
+	id?: number
 	name: string
 	quantity: number
 	price: number

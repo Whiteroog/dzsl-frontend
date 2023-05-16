@@ -32,3 +32,5 @@ export const userSlice = createSlice({
 			})
 	}
 })
+
+export const { reducer } = userSlice
