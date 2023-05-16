@@ -1,12 +1,26 @@
 import { Button, Dropdown, Grid, Input, Table } from '@nextui-org/react'
-import { FC } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { FC, useState } from 'react'
 import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from 'react-icons/ai'
 
-import { testOrders } from '@/types/order.interface'
+import { IOrder } from '@/types/order.interface'
 
 import styles from '../tables/Table.module.scss'
 
+import { OrderService } from '@/services/order.service'
+
 const Orders: FC = () => {
+	const [_orders, _setOrders] = useState<IOrder[]>([])
+
+	const queryGetAllOrders = useQuery({
+		queryKey: ['get all orders'],
+		queryFn: OrderService.getAll,
+		onSuccess(data) {
+			_setOrders(data.data)
+			console.log(data.data)
+		}
+	})
+
 	return (
 		<>
 			<h1 className='ml-[17%]'>Заказы</h1>
@@ -31,33 +45,29 @@ const Orders: FC = () => {
 							<Table.Column>Email</Table.Column>
 							<Table.Column>Телефон</Table.Column>
 							<Table.Column>Товар</Table.Column>
-							<Table.Column>Кол-во</Table.Column>
-							<Table.Column>Сумма</Table.Column>
 							<Table.Column>Статус</Table.Column>
 							<Table.Column hideHeader={true} width={100}>
 								Действия
 							</Table.Column>
 						</Table.Header>
 						<Table.Body>
-							{testOrders.map(order => (
-								<Table.Row key={order.id}>
-									<Table.Cell>{order.id}</Table.Cell>
-									<Table.Cell>{order.createdAt}</Table.Cell>
-									<Table.Cell>{order.fullName}</Table.Cell>
-									<Table.Cell>{order.email}</Table.Cell>
-									<Table.Cell>{order.phone}</Table.Cell>
-									<Table.Cell>{order.orderProduct.name}</Table.Cell>
-									<Table.Cell>{order.orderProduct.quantity}</Table.Cell>
-									<Table.Cell>{order.totalPrice}</Table.Cell>
+							{_orders.map(item => (
+								<Table.Row key={item.id}>
+									<Table.Cell>{item.id}</Table.Cell>
+									<Table.Cell>{item.createdAt}</Table.Cell>
+									<Table.Cell>{item.fullName}</Table.Cell>
+									<Table.Cell>{item.email}</Table.Cell>
+									<Table.Cell>{item.phone}</Table.Cell>
+									<Table.Cell>{item.orderProduct?.name}</Table.Cell>
 									<Table.Cell>
 										<Dropdown>
 											<Dropdown.Button className={styles.dropdownButtonFlat}>
-												Новый
+												{item.status}
 											</Dropdown.Button>
 											<Dropdown.Menu
 												disallowEmptySelection
 												selectionMode='single'
-												selectedKeys='NEW'
+												selectedKeys={item.status}
 											>
 												<Dropdown.Item key='NEW'>Новый</Dropdown.Item>
 												<Dropdown.Item key='MAKING'>Готовится</Dropdown.Item>

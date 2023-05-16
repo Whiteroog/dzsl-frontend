@@ -6,7 +6,6 @@ import {
 	Modal,
 	SortDescriptor,
 	Table,
-	useCollator,
 	useModal
 } from '@nextui-org/react'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -28,6 +27,11 @@ type CategoryData = {
 
 const Category: FC = () => {
 	/* sort */
+	const defaultSortDescriptor: SortDescriptor = {
+		column: 'id',
+		direction: 'descending'
+	}
+
 	const setCategoriesWithParam = (
 		items: ICategory[],
 		sortDescriptor = categories.sortDescriptor
@@ -38,7 +42,6 @@ const Category: FC = () => {
 		})
 	}
 
-	const collator = useCollator()
 	const sortCategory = (descriptor: SortDescriptor) => {
 		const { column, direction } = descriptor
 		if (!categories.items) return
@@ -46,16 +49,16 @@ const Category: FC = () => {
 			let cmp = 1
 			switch (column) {
 				case 'id':
-					cmp = collator.compare(String(a.id), String(b.id))
+					cmp = a.id - b.id
 					break
 				case 'name':
-					cmp = collator.compare(a.name, b.name)
+					cmp = a.name.localeCompare(b.name)
 					break
 				case 'slug':
-					cmp = collator.compare(a.slug, b.slug)
+					cmp = a.slug.localeCompare(b.slug)
 					break
 				default:
-					cmp = collator.compare(String(a.id), String(b.id))
+					cmp = a.id - b.id
 					break
 			}
 			if (direction === 'descending') cmp *= -1
@@ -92,10 +95,7 @@ const Category: FC = () => {
 	const [_categories, _setCategories] = useState<ICategory[]>([])
 	const [categories, setCategories] = useState<CategoryData>({
 		items: [],
-		sortDescriptor: {
-			column: 'id',
-			direction: 'ascending'
-		}
+		sortDescriptor: defaultSortDescriptor
 	})
 
 	/* Get categories */
@@ -104,7 +104,7 @@ const Category: FC = () => {
 		queryFn: CategoryService.getAll,
 		onSuccess(data) {
 			_setCategories(data.data)
-			setCategoriesWithParam(data.data)
+			setCategoriesWithParam(data.data, defaultSortDescriptor)
 		}
 	})
 
@@ -143,10 +143,93 @@ const Category: FC = () => {
 			toastr.error('Поле Путь', 'Значение поля занято')
 			return
 		}
+		if (data.slug.split(' ').length > 1) {
+			toastr.error(
+				'Поле Путь',
+				'Значение введено не правильно. Путь должен быть введен слитно'
+			)
+			return
+		}
 
 		createCategory(data)
 		resetFormCreate()
 		setVisibleModalCreate(false)
+	}
+
+	/* delete */
+	const { mutateAsync: deleteCategory } = useMutation({
+		mutationKey: ['delete category'],
+		mutationFn: (id: number) => CategoryService.delete(id),
+		onSuccess() {
+			queryGetAllCategories.refetch()
+		}
+	})
+
+	/* select item */
+	const [selectItem, setSelectItem] = useState<ICategory>({} as ICategory)
+
+	/* modal show */
+	const { setVisible: setVisibleModalShow, bindings: bindingsModalShow } =
+		useModal()
+
+	/* modal edit */
+	const { setVisible: setVisibleModalEdit, bindings: bindingsModalEdit } =
+		useModal()
+
+	bindingsModalEdit.onClose = () => {
+		setVisibleModalEdit(false)
+		resetFormEdit()
+	}
+
+	const { mutateAsync: editCategory } = useMutation({
+		mutationKey: ['edit category'],
+		mutationFn: (data: ICategory) => CategoryService.update(data),
+		onSuccess() {
+			queryGetAllCategories.refetch()
+		}
+	})
+
+	const {
+		register: formEdit,
+		handleSubmit: handleSubmitOnEdit,
+		reset: resetFormEdit,
+		setValue: setValueEdit
+	} = useForm<ICategory>()
+
+	const onSubmitEdit: SubmitHandler<ICategory> = data => {
+		console.log(data)
+
+		if (_categories.some(item => item.name === data.name)) {
+			toastr.error('Поле Название', 'Значение поля занято')
+			return
+		}
+		if (_categories.some(item => item.slug === data.slug)) {
+			toastr.error('Поле Путь', 'Значение поля занято')
+			return
+		}
+
+		if (data.slug.split(' ').length > 1) {
+			toastr.error(
+				'Поле Путь',
+				'Значение введено не правильно. Путь должен быть введен слитно'
+			)
+			return
+		}
+
+		editCategory(data)
+		resetFormEdit()
+		setVisibleModalEdit(false)
+	}
+
+	const getItemById = (id: number) =>
+		_categories.find(item => item.id === id) ?? ({} as ICategory)
+
+	const onClickEditButton = (item: ICategory) => {
+		setValueEdit('id', item.id)
+		setValueEdit('name', item.name)
+		setValueEdit('slug', item.slug)
+
+		setVisibleModalEdit(true)
 	}
 
 	return (
@@ -202,16 +285,24 @@ const Category: FC = () => {
 												auto
 												icon={<AiOutlineEye />}
 												className='button-icon'
+												onClick={() => {
+													setSelectItem(item)
+													setVisibleModalShow(true)
+												}}
 											></Button>
 											<Button
 												auto
 												icon={<AiOutlineEdit />}
 												className='button-icon'
+												onClick={() => {
+													onClickEditButton(item)
+												}}
 											></Button>
 											<Button
 												auto
 												icon={<AiOutlineDelete color='red' />}
 												className='button-icon'
+												onClick={() => deleteCategory(item.id)}
 											></Button>
 										</Table.Cell>
 									</Table.Row>
@@ -223,6 +314,8 @@ const Category: FC = () => {
 					</Table>
 				</Grid>
 			</Grid.Container>
+
+			{/* model create */}
 
 			<Modal className='p-6' closeButton width='50%' {...bindingsModalCreate}>
 				<form onSubmit={handleSubmitOnCreate(onSubmitCreate)}>
@@ -247,6 +340,53 @@ const Category: FC = () => {
 					</Modal.Body>
 					<Modal.Footer className='flex flex-col items-center py-10'>
 						<Button type='submit'>Создать</Button>
+					</Modal.Footer>
+				</form>
+			</Modal>
+
+			{/* model show */}
+
+			<Modal className='p-6' closeButton width='50%' {...bindingsModalShow}>
+				<Modal.Header>
+					<h2 className='py-4 text-lg'>{`[${selectItem.id}] ${selectItem.name}`}</h2>
+				</Modal.Header>
+				<Modal.Body className='flex flex-col items-start'>
+					<span>Id: {selectItem.id}</span>
+					<span>Название: {selectItem.name}</span>
+					<span>Путь: {selectItem.slug}</span>
+				</Modal.Body>
+				<Modal.Footer className='flex flex-col items-center py-10'>
+					<Button type='button' onClick={() => setVisibleModalShow(false)}>
+						Закрыть
+					</Button>
+				</Modal.Footer>
+			</Modal>
+
+			{/* model edit */}
+
+			<Modal className='p-6' closeButton width='50%' {...bindingsModalEdit}>
+				<form onSubmit={handleSubmitOnEdit(onSubmitEdit)}>
+					<Modal.Header>
+						<h2 className='py-4 text-lg'>Создание категории</h2>
+					</Modal.Header>
+					<Modal.Body className='flex flex-col items-start'>
+						<Input
+							type='text'
+							label='Название'
+							width='100%'
+							required
+							{...formEdit('name')}
+						/>
+						<Input
+							type='text'
+							label='Путь'
+							width='100%'
+							required
+							{...formEdit('slug')}
+						/>
+					</Modal.Body>
+					<Modal.Footer className='flex flex-col items-center py-10'>
+						<Button type='submit'>Изменить</Button>
 					</Modal.Footer>
 				</form>
 			</Modal>

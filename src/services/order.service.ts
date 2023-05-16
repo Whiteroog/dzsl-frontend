@@ -24,7 +24,7 @@ export type TypeOrderProductItem = {
 	price: number
 }
 
-const ORDERS_URL = 'products'
+const ORDERS_URL = 'orders'
 
 export const OrderService = {
 	async getAll() {
