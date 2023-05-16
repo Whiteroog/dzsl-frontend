@@ -22,8 +22,8 @@ export const CategoryService = {
 		return axiosAuth<ICategory>(`${CATEGORIES_URL}/${id}`)
 	},
 
-	async create() {
-		return axiosAuth.post<ICategory>(CATEGORIES_URL)
+	async create(data: TypeCategoryData) {
+		return axiosAuth.post<ICategory>(CATEGORIES_URL, data)
 	},
 
 	async update(id: number, data: TypeCategoryData) {

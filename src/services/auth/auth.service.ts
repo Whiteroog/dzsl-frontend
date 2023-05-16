@@ -22,11 +22,9 @@ export const AuthService = {
 
 	async getNewTokens() {
 		const refreshToken = Cookies.get(EnumAuth.REFRESH_TOKEN)
-
 		const response = await axiosClassic.post<IAuthResponse>(ACCESS_TOKEN_URL, {
 			refreshToken
 		})
-
 		if (response.data.accessToken) saveToStorage(response.data)
 
 		return response
