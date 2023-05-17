@@ -42,10 +42,10 @@ const Category: FC = () => {
 		})
 	}
 
-	const sortCategory = (descriptor: SortDescriptor) => {
+	const sortCategories = (descriptor: SortDescriptor) => {
 		const { column, direction } = descriptor
 		if (!categories.items) return
-		const sortCategories = categories.items.sort((a, b) => {
+		const sortedCategories = categories.items.sort((a, b) => {
 			let cmp = 1
 			switch (column) {
 				case 'id':
@@ -64,7 +64,7 @@ const Category: FC = () => {
 			if (direction === 'descending') cmp *= -1
 			return cmp
 		})
-		setCategoriesWithParam(sortCategories, descriptor)
+		setCategoriesWithParam(sortedCategories, descriptor)
 	}
 
 	/* Search */
@@ -98,7 +98,10 @@ const Category: FC = () => {
 		sortDescriptor: defaultSortDescriptor
 	})
 
-	/* Get categories */
+	/* select item */
+	const [selectItem, setSelectItem] = useState<ICategory>({} as ICategory)
+
+	/* Get all categories */
 	const queryGetAllCategories = useQuery({
 		queryKey: ['get all categories'],
 		queryFn: CategoryService.getAll,
@@ -165,9 +168,6 @@ const Category: FC = () => {
 		}
 	})
 
-	/* select item */
-	const [selectItem, setSelectItem] = useState<ICategory>({} as ICategory)
-
 	/* modal show */
 	const { setVisible: setVisibleModalShow, bindings: bindingsModalShow } =
 		useModal()
@@ -221,10 +221,7 @@ const Category: FC = () => {
 		setVisibleModalEdit(false)
 	}
 
-	const getItemById = (id: number) =>
-		_categories.find(item => item.id === id) ?? ({} as ICategory)
-
-	const onClickEditButton = (item: ICategory) => {
+	const editHandler = (item: ICategory) => {
 		setValueEdit('id', item.id)
 		setValueEdit('name', item.name)
 		setValueEdit('slug', item.slug)
@@ -257,7 +254,7 @@ const Category: FC = () => {
 						lineWeight='light'
 						className={styles.table}
 						sortDescriptor={categories.sortDescriptor}
-						onSortChange={sortCategory}
+						onSortChange={sortCategories}
 					>
 						<Table.Header>
 							<Table.Column key='id' allowsSorting width={80}>
@@ -295,7 +292,7 @@ const Category: FC = () => {
 												icon={<AiOutlineEdit />}
 												className='button-icon'
 												onClick={() => {
-													onClickEditButton(item)
+													editHandler(item)
 												}}
 											></Button>
 											<Button

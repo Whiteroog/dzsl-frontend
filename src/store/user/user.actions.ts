@@ -33,6 +33,7 @@ export const checkAuth = createAsyncThunk<IAuthResponse>(
 			return response.data
 		} catch (error) {
 			const errorMessage = errorCatch(error)
+			console.log(errorMessage)
 			if (
 				errorMessage === 'jwt expired' ||
 				errorMessage === 'Internal server error'

@@ -4,17 +4,19 @@ import {
 	Grid,
 	Input,
 	Modal,
-	Table
+	SortDescriptor,
+	Table,
+	useModal
 } from '@nextui-org/react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { FC, KeyboardEvent, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { toastr } from 'react-redux-toastr'
 
 import { ILoginPassword } from '@/store/user/user.interface'
 
 import { useAuth } from '@/hooks/useAuth'
-import useInput from '@/hooks/useInput'
 
 import { INewPassword, IUser } from '@/types/user.interface'
 
@@ -22,29 +24,140 @@ import tableStyle from '../tables/Table.module.scss'
 
 import { UserService } from '@/services/user.service'
 
+type UserData = {
+	items: IUser[]
+	sortDescriptor: SortDescriptor
+}
+
 const Users: FC = () => {
+	/* sort */
+	const defaultSortDescriptor: SortDescriptor = {
+		column: 'id',
+		direction: 'descending'
+	}
+
+	const setUsersWithParam = (
+		items: IUser[],
+		sortDescriptor = users.sortDescriptor
+	) => {
+		setUsers({
+			items,
+			sortDescriptor
+		})
+	}
+
+	const sortUsers = (descriptor: SortDescriptor) => {
+		const { column, direction } = descriptor
+		if (!users.items) return
+		const sortedUsers = users.items.sort((a, b) => {
+			let cmp = 1
+			switch (column) {
+				case 'id':
+					cmp = a.id - b.id
+					break
+				case 'login':
+					cmp = a.login.localeCompare(b.login)
+					break
+				default:
+					cmp = a.id - b.id
+					break
+			}
+			if (direction === 'descending') cmp *= -1
+			return cmp
+		})
+		setUsersWithParam(sortedUsers, descriptor)
+	}
+
+	/* search */
+	const search = (term: string) => {
+		term = term.toLowerCase()
+
+		const searchedUsers = _users.filter(
+			user =>
+				String(user.id).includes(term) ||
+				user.login.toLowerCase().includes(term)
+		)
+
+		const sortedUsers = users.items.filter(item => searchedUsers.includes(item))
+
+		setUsersWithParam(sortedUsers)
+	}
+
+	const handleKeyDown = (e: KeyboardEvent<FormElement>) => {
+		if (e.key === 'Enter') {
+			if (e.currentTarget.value.length === 0) {
+				setUsersWithParam(_users)
+			} else {
+				search(e.currentTarget.value)
+			}
+		}
+	}
+
+	/* initial */
 	const { user } = useAuth()
 
 	const [_users, _setUsers] = useState<IUser[]>([])
-	const [users, setUsers] = useState<IUser[]>([])
+	const [users, setUsers] = useState<UserData>({
+		items: [],
+		sortDescriptor: defaultSortDescriptor
+	})
 
-	const [selectedUser, setSelectedUser] = useState<IUser>({} as IUser)
-
-	const selectUserHandler = (id: number) => {
-		setSelectedUser(users.find(item => item.id === id) ?? ({} as IUser))
-	}
-
-	/* Get all */
+	/* Get all users */
 	const queryGetAllUsers = useQuery({
 		queryKey: ['get all users'],
 		queryFn: UserService.getAll,
 		onSuccess(data) {
 			_setUsers(data.data)
-			setUsers(data.data)
+			setUsersWithParam(data.data, defaultSortDescriptor)
 		}
 	})
 
+	/* modal create */
+
+	const { setVisible: setVisibleModalCreate, bindings: bindingsModalCreate } =
+		useModal()
+
+	bindingsModalCreate.onClose = () => {
+		setVisibleModalCreate(false)
+		resetFormCreate()
+	}
+
+	const { mutateAsync: createUser } = useMutation({
+		mutationKey: ['create user'],
+		mutationFn: (data: ILoginPassword) => UserService.create(data),
+		onSuccess() {
+			queryGetAllUsers.refetch()
+		}
+	})
+
+	const {
+		register: formCreate,
+		handleSubmit: handleSubmitOnCreate,
+		reset: resetFormCreate
+	} = useForm<ILoginPassword>()
+
+	const onSubmitCreate: SubmitHandler<ILoginPassword> = data => {
+		console.log(data)
+
+		if (_users.some(item => item.login === data.login)) {
+			toastr.error('Поле Логин', 'Значение поля занято')
+			return
+		}
+
+		createUser(data)
+		resetFormCreate()
+		setVisibleModalCreate(false)
+	}
+
 	/* Delete */
+	const { mutateAsync: deleteUser } = useMutation({
+		mutationKey: ['delete user'],
+		mutationFn: (id: number) => UserService.delete(id),
+		onSuccess() {
+			queryGetAllUsers.refetch()
+		}
+	})
+
 	const deleteHandler = (id: number) => {
 		if (user?.id === id) {
 			toastr.error(
@@ -57,67 +170,42 @@ const Users: FC = () => {
 		deleteUser(id)
 	}
 
-	const { mutateAsync: deleteUser } = useMutation({
-		mutationKey: ['delete user'],
-		mutationFn: (id: number) => UserService.delete(id),
-		onSuccess() {
-			queryGetAllUsers.refetch()
-		}
-	})
+	/* modal change password */
 
-	/* new password */
-	const [modalPassword, setModalPassword] = useState(false)
+	const {
+		setVisible: setVisibleModalChangePassword,
+		bindings: bindingsModalChangePassword
+	} = useModal()
 
-	const passwordInput = useInput('')
+	bindingsModalChangePassword.onClose = () => {
+		setVisibleModalChangePassword(false)
+		resetFormChangePassword()
+	}
 
 	const { mutateAsync: setNewPassword } = useMutation({
 		mutationKey: ['set new password'],
 		mutationFn: (data: INewPassword) => UserService.setNewPassword(data)
 	})
 
-	const closeModelPasswordHandler = () => {
-		passwordInput.setValue('')
-		setModalPassword(false)
+	const {
+		register: formChangePassword,
+		handleSubmit: handleSubmitOnChangePassword,
+		reset: resetFormChangePassword,
+		setValue: setValueDelete
+	} = useForm<INewPassword>()
+
+	const onSubmitChangePassword: SubmitHandler<INewPassword> = data => {
+		console.log(data)
+
+		setNewPassword(data)
+		resetFormChangePassword()
+		setVisibleModalChangePassword(false)
 	}
 
-	/* create user */
-	const [modalCreateUser, setModalCreateUser] = useState(false)
+	const changePasswordHandler = (item: IUser) => {
+		setValueDelete('id', item.id)
 
-	const loginInput = useInput('')
-
-	const { mutateAsync: createUser } = useMutation({
-		mutationKey: ['create user'],
-		mutationFn: (data: ILoginPassword) => UserService.create(data),
-		onSuccess() {
-			queryGetAllUsers.refetch()
-		}
-	})
-
-	const closeModelCreateUserHandler = () => {
-		passwordInput.setValue('')
-		loginInput.setValue('')
-		setModalCreateUser(false)
-	}
-
-	/* search */
-	const search = (term: string) => {
-		term = term.toLowerCase()
-
-		const searchedUsers = _users.filter(user =>
-			user.login.toLowerCase().includes(term)
-		)
-
-		setUsers(searchedUsers)
-	}
-
-	const handleKeyDown = (e: KeyboardEvent<FormElement>) => {
-		if (e.key === 'Enter') {
-			if (e.currentTarget.value.length === 0) {
-				setUsers(_users)
-			} else {
-				search(e.currentTarget.value)
-			}
-		}
+		setVisibleModalChangePassword(true)
 	}
 
 	return (
@@ -131,7 +219,7 @@ const Users: FC = () => {
 					width='250px'
 					onKeyDown={handleKeyDown}
 				/>
-				<Button auto onClick={() => setModalCreateUser(true)}>
+				<Button auto onClick={() => setVisibleModalCreate(true)}>
 					Создать
 				</Button>
 			</div>
@@ -144,119 +232,104 @@ const Users: FC = () => {
 						lined={true}
 						lineWeight='light'
 						className={tableStyle.table}
+						sortDescriptor={users.sortDescriptor}
+						onSortChange={sortUsers}
 					>
 						<Table.Header>
-							<Table.Column width={80}>Id</Table.Column>
-							<Table.Column>login</Table.Column>
+							<Table.Column key='id' allowsSorting width={80}>
+								Id
+							</Table.Column>
+							<Table.Column key='login' allowsSorting>
+								login
+							</Table.Column>
 							<Table.Column hideHeader={true} width={100}>
 								Действия
 							</Table.Column>
 						</Table.Header>
 						<Table.Body>
-							{users.map(user => (
-								<Table.Row key={user.id}>
-									<Table.Cell>{user.id}</Table.Cell>
-									<Table.Cell>{user.login}</Table.Cell>
-									<Table.Cell>
-										<Button
-											auto
-											size={'sm'}
-											onClick={() => {
-												setModalPassword(true)
-												selectUserHandler(user.id)
-											}}
-										>
-											Сбросить пароль
-										</Button>
-										<Button
-											auto
-											icon={<AiOutlineDelete color='red' />}
-											className='button-icon'
-											onClick={() => deleteHandler(user.id)}
-										/>
-									</Table.Cell>
-								</Table.Row>
-							))}
+							{users ? (
+								users.items.map(item => (
+									<Table.Row key={item.id}>
+										<Table.Cell>{item.id}</Table.Cell>
+										<Table.Cell>{item.login}</Table.Cell>
+										<Table.Cell>
+											<Button
+												auto
+												size='sm'
+												onClick={() => {
+													changePasswordHandler(item)
+												}}
+											>
+												Сбросить пароль
+											</Button>
+											<Button
+												auto
+												icon={<AiOutlineDelete color='red' />}
+												className='button-icon'
+												onClick={() => deleteHandler(item.id)}
+											/>
+										</Table.Cell>
+									</Table.Row>
+								))
+							) : (
+								<></>
+							)}
 						</Table.Body>
 					</Table>
 				</Grid>
 			</Grid.Container>
 
-			<Modal
-				className='p-6'
-				closeButton
-				open={modalPassword}
-				onClose={() => {
-					closeModelPasswordHandler()
-				}}
-			>
-				<Modal.Header>
-					<h2 className='py-4 text-lg'>Новый пароль</h2>
-				</Modal.Header>
-				<Modal.Body className='flex flex-col items-center'>
-					<Input
-						size='sm'
-						type='text'
-						label='Пароль'
-						width='250px'
-						{...passwordInput}
-					/>
-					<Button
-						className='mt-6'
-						auto
-						onClick={() => {
-							setNewPassword({
-								id: selectedUser.id,
-								newPassword: passwordInput.value
-							})
-							closeModelPasswordHandler()
-						}}
-					>
-						Изменить
-					</Button>
-				</Modal.Body>
+			{/* modal create */}
+
+			<Modal className='p-6' closeButton width='50%' {...bindingsModalCreate}>
+				<form onSubmit={handleSubmitOnCreate(onSubmitCreate)}>
+					<Modal.Header>
+						<h2 className='py-4 text-lg'>Новый пользователь</h2>
+					</Modal.Header>
+					<Modal.Body className='flex flex-col items-center'>
+						<Input
+							type='text'
+							label='Логин'
+							width='100%'
+							{...formCreate('login')}
+						/>
+						<Input
+							type='text'
+							label='Пароль'
+							width='100%'
+							{...formCreate('password')}
+						/>
+					</Modal.Body>
+					<Modal.Footer className='flex flex-col items-center py-10'>
+						<Button type='submit'>Создать</Button>
+					</Modal.Footer>
+				</form>
 			</Modal>
 
+			{/* modal change password */}
+
 			<Modal
-				closeButton
-				open={modalCreateUser}
-				onClose={() => {
-					closeModelCreateUserHandler()
-				}}
 				className='p-6'
+				closeButton
+				width='50%'
+				{...bindingsModalChangePassword}
 			>
-				<Modal.Header>
-					<h2 className='py-4 text-lg'>Новый пользователь</h2>
-				</Modal.Header>
-				<Modal.Body className='flex flex-col items-center'>
-					<Input
-						size='sm'
-						type='text'
-						label='Логин'
-						width='250px'
-						{...loginInput}
-					/>
-					<Input
-						size='sm'
-						type='text'
-						label='Пароль'
-						width='250px'
-						{...passwordInput}
-					/>
-					<Button
-						className='mt-6'
-						auto
-						onClick={() => {
-							createUser({
-								login: loginInput.value,
-								password: passwordInput.value
-							})
-							closeModelCreateUserHandler()
-						}}
-					>
-						Создать
-					</Button>
-				</Modal.Body>
+				<form onSubmit={handleSubmitOnChangePassword(onSubmitChangePassword)}>
+					<Modal.Header>
+						<h2 className='py-4 text-lg'>Новый пароль</h2>
+					</Modal.Header>
+					<Modal.Body className='flex flex-col items-center'>
+						<Input
+							type='text'
+							label='Пароль'
+							width='100%'
+							{...formChangePassword('newPassword')}
+						/>
+					</Modal.Body>
+					<Modal.Footer className='flex flex-col items-center py-10'>
+						<Button type='submit'>Изменить</Button>
+					</Modal.Footer>
+				</form>
 			</Modal>
 		</>
 	)

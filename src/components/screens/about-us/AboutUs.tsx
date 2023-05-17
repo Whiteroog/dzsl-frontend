@@ -11,9 +11,9 @@ const AboutUs: FC = () => {
 			<TitlePage title='О Нашей Компании' />
 			<Grid.Container gap={2}>
 				<Grid
-					xs={2}
-					justify='center'
-					className='border-r border-gray border-opacity-30'
+					xs={0}
+					sm={2}
+					className='flex flex-col border-r border-gray border-opacity-30'
 				>
 					<div>
 						<h2>Содержание</h2>
@@ -46,7 +46,7 @@ const AboutUs: FC = () => {
 						</ol>
 					</div>
 				</Grid>
-				<Grid xs={10} justify='center'>
+				<Grid xs={12} sm={10} className='flex flex-col'>
 					<div>
 						<h2 id='brief-company-history'>Краткая история компании</h2>
 						<p>
