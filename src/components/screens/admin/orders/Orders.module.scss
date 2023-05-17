@@ -1,0 +1,18 @@
+.checkboxGrouped {
+	@apply max-w-[400px];
+	div {
+		@apply flex-wrap;
+		label {
+			@apply w-[110px] p-1;
+		}
+	}
+}
+
+.dropdownButtonFlat {
+	@apply mx-auto bg-primary bg-opacity-10 px-3;
+
+	div,
+	span {
+		@apply text-xs text-primary #{!important};
+	}
+}

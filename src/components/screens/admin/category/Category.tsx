@@ -65,6 +65,7 @@ const Category: FC = () => {
 			return cmp
 		})
 		setCategoriesWithParam(sortedCategories, descriptor)
+		_setCategories(sortedCategories)
 	}
 
 	/* Search */
@@ -72,10 +73,10 @@ const Category: FC = () => {
 		term = term.toLowerCase()
 
 		const searchedCategories = categories.items.filter(
-			cat =>
-				String(cat.id).includes(term) ||
-				cat.name.toLowerCase().includes(term) ||
-				cat.slug.toLowerCase().includes(term)
+			item =>
+				String(item.id).includes(term) ||
+				item.name.toLowerCase().includes(term) ||
+				item.slug.toLowerCase().includes(term)
 		)
 
 		setCategoriesWithParam(searchedCategories)

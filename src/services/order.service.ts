@@ -35,8 +35,10 @@ export const OrderService = {
 		return axiosAuth.get<IOrder>(`${ORDERS_URL}/${id}`)
 	},
 
-	async updateStatus(id: number, status: EnumOrderStatus) {
-		return axiosAuth.patch<IOrder>(`${ORDERS_URL}/${id}`, { status })
+	async updateStatus(data: { id: number; status: EnumOrderStatus }) {
+		return axiosAuth.patch<IOrder>(`${ORDERS_URL}/${data.id}`, {
+			status: data.status
+		})
 	},
 
 	async create(data: TypeOrderData) {

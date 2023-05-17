@@ -66,6 +66,7 @@ const Users: FC = () => {
 			return cmp
 		})
 		setUsersWithParam(sortedUsers, descriptor)
+		_setUsers(sortedUsers)
 	}
 
 	/* search */
@@ -78,9 +79,7 @@ const Users: FC = () => {
 				user.login.toLowerCase().includes(term)
 		)
 
-		const sortedUsers = users.items.filter(item => searchedUsers.includes(item))
-
-		setUsersWithParam(sortedUsers)
+		setUsersWithParam(searchedUsers)
 	}
 
 	const handleKeyDown = (e: KeyboardEvent<FormElement>) => {
