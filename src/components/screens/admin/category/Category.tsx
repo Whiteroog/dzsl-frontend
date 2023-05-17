@@ -19,6 +19,8 @@ import { ICategory } from '@/types/category.interface'
 import styles from '../tables/Table.module.scss'
 
 import { CategoryService, TypeCategoryData } from '@/services/category.service'
+import { ProductService } from '@/services/product.service'
+import { IProduct } from '@/types/product.interface'
 
 type CategoryData = {
 	items: ICategory[]
@@ -160,6 +162,12 @@ const Category: FC = () => {
 		setVisibleModalCreate(false)
 	}
 
+	/* get products */
+	const {data: productsData} = useQuery({
+		queryKey: ['get product for check category'],
+		queryFn: ProductService.getAll
+	})
+
 	/* delete */
 	const { mutateAsync: deleteCategory } = useMutation({
 		mutationKey: ['delete category'],
@@ -168,6 +176,18 @@ const Category: FC = () => {
 			queryGetAllCategories.refetch()
 		}
 	})
+
+	const deleteHandler = (id: number) => {
+		const products = productsData?.data ?? [] as IProduct[]
+
+		if(products.some(prod => prod.category.id === id))
+			{
+				toastr.error('Ошибка удаления категории', 'К данной категории привязаны товары')
+				return 
+			}
+
+		deleteCategory(id)
+	}
 
 	/* modal show */
 	const { setVisible: setVisibleModalShow, bindings: bindingsModalShow } =
@@ -300,7 +320,7 @@ const Category: FC = () => {
 												auto
 												icon={<AiOutlineDelete color='red' />}
 												className='button-icon'
-												onClick={() => deleteCategory(item.id)}
+												onClick={() => deleteHandler(item.id)}
 											></Button>
 										</Table.Cell>
 									</Table.Row>

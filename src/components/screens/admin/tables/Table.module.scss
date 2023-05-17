@@ -35,3 +35,25 @@
 		}
 	}
 }
+
+.tableWithoutActions {
+	thead {
+		tr {
+			th {
+				@apply text-center text-sm text-gray;
+			}
+		}
+	}
+
+	tbody {
+		tr {
+			td {
+				@apply text-center text-xs text-gray;
+
+				&::after {
+					@apply bg-gray bg-opacity-30 #{!important};
+				}
+			}
+		}
+	}
+}

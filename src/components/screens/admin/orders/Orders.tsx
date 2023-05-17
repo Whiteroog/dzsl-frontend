@@ -5,8 +5,10 @@ import {
 	FormElement,
 	Grid,
 	Input,
+	Modal,
 	SortDescriptor,
-	Table
+	Table,
+	useModal
 } from '@nextui-org/react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { FC, KeyboardEvent, useState } from 'react'
@@ -179,6 +181,13 @@ const Orders: FC = () => {
 			OrderService.updateStatus(data)
 	})
 
+	/* modal show */
+	const { setVisible: setVisibleModalShow, bindings: bindingsModalShow } =
+		useModal()
+
+	/* select item */
+	const [selectItem, setSelectItem] = useState<IOrder>({} as IOrder)
+
 	return (
 		<>
 			<h1 className='ml-[17%]'>Заказы</h1>
@@ -301,6 +310,10 @@ const Orders: FC = () => {
 												auto
 												icon={<AiOutlineEye />}
 												className='button-icon'
+												onClick={() => {
+													setSelectItem(item)
+													setVisibleModalShow(true)
+												}}
 											></Button>
 										</Table.Cell>
 									</Table.Row>
@@ -312,6 +325,74 @@ const Orders: FC = () => {
 					</Table>
 				</Grid>
 			</Grid.Container>
+
+			{/* model show */}
+
+			<Modal className='p-6' closeButton width='50%' {...bindingsModalShow}>
+				<Modal.Header>
+					<h2 className='py-4 text-lg'>{`[${selectItem.id}] ${new Date(
+						selectItem.createdAt
+					).toLocaleDateString()}`}</h2>
+				</Modal.Header>
+				<Modal.Body className='flex flex-col items-start'>
+					<div className='flex flex-col border-b border-gray border-opacity-30'>
+						<span>Id: {selectItem.id}</span>
+						<span>
+							Дата: {new Date(selectItem.createdAt).toLocaleDateString()}
+						</span>
+						<span>ф и о: {selectItem.fullName}</span>
+						<span>Email: {selectItem.email}</span>
+						<span>Телефон: {selectItem.phone}</span>
+						<span>Статус: {getTranslatedStatus(selectItem.status)}</span>
+						<span>Итоговая цена: {selectItem.totalPrice}</span>
+					</div>
+					<div className='flex flex-col'>
+						<span className='font-bold'>Заказываемый товар</span>
+						<span>Id товара: {selectItem.orderProduct?.id}</span>
+						<span>Название: {selectItem.orderProduct?.name}</span>
+						<span>Количество: {selectItem.orderProduct?.quantity}</span>
+						<span>Цена товара: {selectItem.orderProduct?.price}</span>
+					</div>
+					<div className='w-full'>
+						<span className='font-bold'>Элементы товара</span>
+						<Table
+							bordered={true}
+							borderWeight='light'
+							shadow={false}
+							headerLined={true}
+							lineWeight='light'
+							lined={true}
+							className={stylesTable.tableWithoutActions}
+						>
+							<Table.Header>
+								<Table.Column>Id</Table.Column>
+								<Table.Column>Название</Table.Column>
+								<Table.Column>Количество</Table.Column>
+								<Table.Column>Цена</Table.Column>
+							</Table.Header>
+							<Table.Body>
+								{selectItem.orderProduct?.orderProductItems ? (
+									selectItem.orderProduct?.orderProductItems.map(item => (
+										<Table.Row key={item.id}>
+											<Table.Cell>{item.id}</Table.Cell>
+											<Table.Cell>{item.name}</Table.Cell>
+											<Table.Cell>{item.quantity}</Table.Cell>
+											<Table.Cell>{item.price}</Table.Cell>
+										</Table.Row>
+									))
+								) : (
+									<></>
+								)}
+							</Table.Body>
+						</Table>
+					</div>
+				</Modal.Body>
+				<Modal.Footer className='flex flex-col items-center py-10'>
+					<Button type='button' onClick={() => setVisibleModalShow(false)}>
+						Закрыть
+					</Button>
+				</Modal.Footer>
+			</Modal>
 		</>
 	)
 }
