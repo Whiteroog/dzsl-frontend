@@ -15,12 +15,12 @@ import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from 'react-icons/ai'
 import { toastr } from 'react-redux-toastr'
 
 import { ICategory } from '@/types/category.interface'
+import { IProduct } from '@/types/product.interface'
 
 import styles from '../tables/Table.module.scss'
 
-import { CategoryService, TypeCategoryData } from '@/services/category.service'
+import { CategoryService, ICreateCategory } from '@/services/category.service'
 import { ProductService } from '@/services/product.service'
-import { IProduct } from '@/types/product.interface'
 
 type CategoryData = {
 	items: ICategory[]
@@ -126,7 +126,7 @@ const Category: FC = () => {
 
 	const { mutateAsync: createCategory } = useMutation({
 		mutationKey: ['create category'],
-		mutationFn: (data: TypeCategoryData) => CategoryService.create(data),
+		mutationFn: (data: ICreateCategory) => CategoryService.create(data),
 		onSuccess() {
 			queryGetAllCategories.refetch()
 		}
@@ -136,9 +136,9 @@ const Category: FC = () => {
 		register: formCreate,
 		handleSubmit: handleSubmitOnCreate,
 		reset: resetFormCreate
-	} = useForm<TypeCategoryData>()
+	} = useForm<ICreateCategory>()
 
-	const onSubmitCreate: SubmitHandler<TypeCategoryData> = data => {
+	const onSubmitCreate: SubmitHandler<ICreateCategory> = data => {
 		console.log(data)
 
 		if (_categories.some(item => item.name === data.name)) {
@@ -163,7 +163,7 @@ const Category: FC = () => {
 	}
 
 	/* get products */
-	const {data: productsData} = useQuery({
+	const { data: productsData } = useQuery({
 		queryKey: ['get product for check category'],
 		queryFn: ProductService.getAll
 	})
@@ -178,13 +178,15 @@ const Category: FC = () => {
 	})
 
 	const deleteHandler = (id: number) => {
-		const products = productsData?.data ?? [] as IProduct[]
+		const products = productsData?.data ?? ([] as IProduct[])
 
-		if(products.some(prod => prod.category.id === id))
-			{
-				toastr.error('Ошибка удаления категории', 'К данной категории привязаны товары')
-				return 
-			}
+		if (products.some(prod => prod.category.id === id)) {
+			toastr.error(
+				'Ошибка удаления категории',
+				'К данной категории привязаны товары'
+			)
+			return
+		}
 
 		deleteCategory(id)
 	}

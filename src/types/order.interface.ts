@@ -19,7 +19,7 @@ export interface IOrder {
 }
 
 export interface IOrderProduct {
-	id: number
+	id?: number
 	name: string
 	category: string
 	quantity: number
@@ -28,7 +28,7 @@ export interface IOrderProduct {
 }
 
 export interface IOrderProductItem {
-	id: number
+	id?: number
 	name: string
 	quantity: number
 	price: number

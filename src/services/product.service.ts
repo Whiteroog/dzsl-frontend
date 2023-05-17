@@ -1,47 +1,33 @@
-import { IProduct } from '@/types/product.interface'
+import { ICategory } from '@/types/category.interface'
+import {
+	IProduct,
+	IProductItem,
+	ISpecifications
+} from '@/types/product.interface'
 
 import { axiosAuth, axiosClassic } from '@/api/api.interceptor'
 
-export type TypeProductData = {
+export interface ICreateProduct {
 	name: string
 	slug: string
 	price: number
 	image: string
 	description: string
-	category: TypeCategoryData
-	specifications?: TypeSpecificationsData[]
-	productItems?: TypeProductItemData[]
+	category: ICategory
+	specifications?: ISpecifications[]
+	productItems?: IProductItem[]
 }
 
-export type TypeSpecificationsData = {
-	id?: number
-	name: string
-	value: number
-}
+export interface IUpdateProduct {
+	product: ICreateProduct
 
-export type TypeProductItemData = {
-	id?: number
-	name: string
-	quantity: number
-	price: number
-}
+	createSpecifications?: ISpecifications[]
+	updateSpecifications?: ISpecifications[]
+	deleteSpecifications?: ISpecifications[]
 
-export type TypeCategoryData = {
-	id?: number
-	name: string
-	slug: string
-}
-
-export type TypeUpdateProductData = {
-	product: TypeProductData
-
-	createSpecifications?: TypeSpecificationsData[]
-	updateSpecifications?: TypeSpecificationsData[]
-	deleteSpecifications?: TypeSpecificationsData[]
-
-	createProductItems?: TypeProductItemData[]
-	updateProductItems?: TypeProductItemData[]
-	deleteProductItems?: TypeProductItemData[]
+	createProductItems?: IProductItem[]
+	updateProductItems?: IProductItem[]
+	deleteProductItems?: IProductItem[]
 }
 
 const PRODUCTS_URL = 'products'
@@ -65,11 +51,11 @@ export const ProductService = {
 		return axiosAuth.get<IProduct>(`${PRODUCTS_URL}/${id}`)
 	},
 
-	async create(data: TypeProductData) {
+	async create(data: ICreateProduct) {
 		return axiosAuth.post<IProduct>(PRODUCTS_URL, data)
 	},
 
-	async update(id: number, data: TypeUpdateProductData) {
+	async update(id: number, data: IUpdateProduct) {
 		return axiosAuth.put<IProduct>(`${PRODUCTS_URL}/${id}`, data)
 	},
 

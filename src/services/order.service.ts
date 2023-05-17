@@ -1,27 +1,13 @@
-import { EnumOrderStatus, IOrder } from '@/types/order.interface'
+import { EnumOrderStatus, IOrder, IOrderProduct } from '@/types/order.interface'
 
 import { axiosAuth } from '@/api/api.interceptor'
 
-export type TypeOrderData = {
+export interface ICreateOrder {
 	fullName: string
 	email: string
 	phone: string
 	totalPrice: number
-	orderProduct: TypeOrderProduct
-}
-
-export type TypeOrderProduct = {
-	name: string
-	category: string
-	quantity: number
-	price: number
-	orderProductItems: TypeOrderProductItem[]
-}
-
-export type TypeOrderProductItem = {
-	name: string
-	quantity: number
-	price: number
+	orderProduct: IOrderProduct
 }
 
 const ORDERS_URL = 'orders'
@@ -41,7 +27,7 @@ export const OrderService = {
 		})
 	},
 
-	async create(data: TypeOrderData) {
+	async create(data: ICreateOrder) {
 		return axiosAuth.post<IOrder>(ORDERS_URL, data)
 	}
 }

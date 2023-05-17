@@ -2,7 +2,7 @@ import { ICategory } from '@/types/category.interface'
 
 import { axiosAuth, axiosClassic } from '@/api/api.interceptor'
 
-export type TypeCategoryData = {
+export interface ICreateCategory {
 	name: string
 	slug: string
 }
@@ -22,7 +22,7 @@ export const CategoryService = {
 		return axiosAuth<ICategory>(`${CATEGORIES_URL}/${id}`)
 	},
 
-	async create(data: TypeCategoryData) {
+	async create(data: ICreateCategory) {
 		return axiosAuth.post<ICategory>(CATEGORIES_URL, data)
 	},
 
