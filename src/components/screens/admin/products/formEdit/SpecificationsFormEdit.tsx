@@ -160,110 +160,101 @@ const SpecificationsForm = ({
 							<Table.Column hideHeader={true}>Удалить</Table.Column>
 						</Table.Header>
 						<Table.Body>
-							<>
-								{existsSpecifications ? (
-									existsSpecifications.map(item => {
-										return (
-											<Table.Row key={item.id}>
-												<Table.Cell>
-													<Input
-														type='text'
-														required
-														value={item.name}
-														onChange={newValue =>
-															onChange(
-																setInputNameExistsHandler(
-																	item,
-																	newValue.currentTarget.value
-																)
+							{[
+								...existsSpecifications.map(item => {
+									return (
+										<Table.Row key={item.id}>
+											<Table.Cell>
+												<Input
+													type='text'
+													required
+													value={item.name}
+													onChange={newValue =>
+														onChange(
+															setInputNameExistsHandler(
+																item,
+																newValue.currentTarget.value
 															)
-														}
-													/>
-												</Table.Cell>
-												<Table.Cell>
-													<Input
-														type='number'
-														required
-														value={item.value}
-														onChange={newValue =>
-															onChange(
-																setInputValueExistsHandler(
-																	item,
-																	newValue.currentTarget.value
-																)
+														)
+													}
+												/>
+											</Table.Cell>
+											<Table.Cell>
+												<Input
+													type='number'
+													required
+													value={item.value}
+													onChange={newValue =>
+														onChange(
+															setInputValueExistsHandler(
+																item,
+																newValue.currentTarget.value
 															)
-														}
-													/>
-												</Table.Cell>
-												<Table.Cell>
-													<Button
-														auto
-														icon={<AiOutlineDelete color='red' />}
-														className='button-icon'
-														onClick={() => {
-															onChange(removeExistsFieldHandler(item))
-														}}
-													></Button>
-												</Table.Cell>
-											</Table.Row>
-										)
-									})
-								) : (
-									<></>
-								)}
-							</>
-							<>
-								{editSpecifications.createSpecifications ? (
-									editSpecifications.createSpecifications.map(item => {
-										return (
-											<Table.Row key={item.id}>
-												<Table.Cell>
-													<Input
-														type='text'
-														required
-														value={item.name}
-														onChange={newValue =>
-															onChange(
-																setInputNameCreatedHandler(
-																	item,
-																	newValue.currentTarget.value
-																)
+														)
+													}
+												/>
+											</Table.Cell>
+											<Table.Cell>
+												<Button
+													auto
+													icon={<AiOutlineDelete color='red' />}
+													className='button-icon'
+													onClick={() => {
+														onChange(removeExistsFieldHandler(item))
+													}}
+												></Button>
+											</Table.Cell>
+										</Table.Row>
+									)
+								}),
+
+								...editSpecifications.createSpecifications.map(item => {
+									return (
+										<Table.Row key={item.id}>
+											<Table.Cell>
+												<Input
+													type='text'
+													required
+													value={item.name}
+													onChange={newValue =>
+														onChange(
+															setInputNameCreatedHandler(
+																item,
+																newValue.currentTarget.value
 															)
-														}
-													/>
-												</Table.Cell>
-												<Table.Cell>
-													<Input
-														type='number'
-														required
-														value={item.value}
-														onChange={newValue =>
-															onChange(
-																setInputValueCreatedHandler(
-																	item,
-																	newValue.currentTarget.value
-																)
+														)
+													}
+												/>
+											</Table.Cell>
+											<Table.Cell>
+												<Input
+													type='number'
+													required
+													value={item.value}
+													onChange={newValue =>
+														onChange(
+															setInputValueCreatedHandler(
+																item,
+																newValue.currentTarget.value
 															)
-														}
-													/>
-												</Table.Cell>
-												<Table.Cell>
-													<Button
-														auto
-														icon={<AiOutlineDelete color='red' />}
-														className='button-icon'
-														onClick={() => {
-															onChange(removeCreateFieldHandler(item.id ?? -1))
-														}}
-													></Button>
-												</Table.Cell>
-											</Table.Row>
-										)
-									})
-								) : (
-									<></>
-								)}
-							</>
+														)
+													}
+												/>
+											</Table.Cell>
+											<Table.Cell>
+												<Button
+													auto
+													icon={<AiOutlineDelete color='red' />}
+													className='button-icon'
+													onClick={() => {
+														onChange(removeCreateFieldHandler(item.id ?? -1))
+													}}
+												></Button>
+											</Table.Cell>
+										</Table.Row>
+									)
+								})
+							]}
 						</Table.Body>
 					</Table>
 				</div>
