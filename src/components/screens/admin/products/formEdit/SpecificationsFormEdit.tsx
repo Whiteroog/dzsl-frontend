@@ -54,6 +54,11 @@ const SpecificationsForm = ({
 		)
 		setExistsSpecifications(filteredSpecifications)
 
+		editSpecifications.updateSpecifications =
+			editSpecifications.updateSpecifications.filter(
+				item => item.id !== field.id
+			)
+
 		setEditSpecifications(editSpecifications)
 
 		return editSpecifications
