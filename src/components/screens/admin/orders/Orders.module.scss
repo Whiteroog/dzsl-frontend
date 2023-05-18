@@ -7,12 +7,3 @@
 		}
 	}
 }
-
-.dropdownButtonFlat {
-	@apply mx-auto bg-primary bg-opacity-10 px-3;
-
-	div,
-	span {
-		@apply text-xs text-primary #{!important};
-	}
-}

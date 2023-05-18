@@ -11,8 +11,8 @@ export interface ICreateProduct {
 	name: string
 	slug: string
 	price: number
-	image: string
-	description: string
+	image?: string
+	description?: string
 	category: ICategory
 	specifications?: ISpecifications[]
 	productItems?: IProductItem[]
@@ -21,13 +21,20 @@ export interface ICreateProduct {
 export interface IUpdateProduct {
 	product: ICreateProduct
 
-	createSpecifications?: ISpecifications[]
-	updateSpecifications?: ISpecifications[]
-	deleteSpecifications?: ISpecifications[]
+	specifications: IEditSpecifications
+	productItems: IEditProductItems
+}
 
-	createProductItems?: IProductItem[]
-	updateProductItems?: IProductItem[]
-	deleteProductItems?: IProductItem[]
+export interface IEditSpecifications {
+	createSpecifications: ISpecifications[]
+	updateSpecifications: ISpecifications[]
+	deleteSpecifications: ISpecifications[]
+}
+
+export interface IEditProductItems {
+	createProductItems: IProductItem[]
+	updateProductItems: IProductItem[]
+	deleteProductItems: IProductItem[]
 }
 
 const PRODUCTS_URL = 'products'
@@ -55,8 +62,11 @@ export const ProductService = {
 		return axiosAuth.post<IProduct>(PRODUCTS_URL, data)
 	},
 
-	async update(id: number, data: IUpdateProduct) {
-		return axiosAuth.put<IProduct>(`${PRODUCTS_URL}/${id}`, data)
+	async update(data: { id: number; updateData: IUpdateProduct }) {
+		return axiosAuth.put<IProduct>(
+			`${PRODUCTS_URL}/${data.id}`,
+			data.updateData
+		)
 	},
 
 	async delete(id: number) {

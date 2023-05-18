@@ -18,6 +18,7 @@ import { EnumOrderStatus, IOrder } from '@/types/order.interface'
 
 import { getTranslatedStatus } from '@/utils/status-translate'
 
+import stylesDropdown from '../../../ui/dropdown/Dropdown.module.scss'
 import stylesTable from '../tables/Table.module.scss'
 
 import styles from './Orders.module.scss'
@@ -266,7 +267,9 @@ const Orders: FC = () => {
 										<Table.Cell>{item.orderProduct?.name}</Table.Cell>
 										<Table.Cell>
 											<Dropdown>
-												<Dropdown.Button className={styles.dropdownButtonFlat}>
+												<Dropdown.Button
+													className={stylesDropdown.dropdownButtonFlat}
+												>
 													{getTranslatedStatus(
 														orderStatuses.get(item.id) ?? EnumOrderStatus.NEW
 													)}
