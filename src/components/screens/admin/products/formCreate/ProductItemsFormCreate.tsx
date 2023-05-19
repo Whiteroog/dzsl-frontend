@@ -1,6 +1,6 @@
 import { Button, Input, Table } from '@nextui-org/react'
 import { useState } from 'react'
-import { Control, Controller } from 'react-hook-form'
+import { Control, Controller, UseFormSetValue } from 'react-hook-form'
 import { AiOutlineDelete } from 'react-icons/ai'
 
 import { IProductItem } from '@/types/product.interface'
@@ -11,10 +11,12 @@ import { ICreateProduct } from '@/services/product.service'
 
 const ProductItemsFormCreate = ({
 	control,
-	lastIdProductItem
+	lastIdProductItem,
+	setValueCreate
 }: {
 	control: Control<ICreateProduct>
 	lastIdProductItem: number
+	setValueCreate: UseFormSetValue<ICreateProduct>
 }) => {
 	const [lastId, setLastId] = useState(lastIdProductItem + 1)
 	const [productItems, setProductItems] = useState<IProductItem[]>([])
@@ -60,6 +62,11 @@ const ProductItemsFormCreate = ({
 		return productItems
 	}
 
+	const calculatePrice = () => {
+			const totalPrice = productItems.reduce((sum, item) => sum + (item.quantity * item.price), 0)
+			setValueCreate('price', totalPrice)
+	}
+
 	return (
 		<Controller
 			control={control}
@@ -68,6 +75,15 @@ const ProductItemsFormCreate = ({
 				<div className='w-full'>
 					<div className='flex items-center justify-between py-4'>
 						<span className='font-bold'>Элементы товара</span>
+						<Button
+							auto
+							size='sm'
+							onClick={() => {
+								calculatePrice()
+							}}
+						>
+							Рассчитать цену
+						</Button>
 						<Button
 							auto
 							size='sm'

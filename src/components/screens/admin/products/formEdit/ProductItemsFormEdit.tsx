@@ -1,6 +1,6 @@
 import { Button, Input, Table } from '@nextui-org/react'
 import { useState } from 'react'
-import { Control, Controller } from 'react-hook-form'
+import { Control, Controller, UseFormSetValue } from 'react-hook-form'
 import { AiOutlineDelete } from 'react-icons/ai'
 
 import { IProductItem } from '@/types/product.interface'
@@ -12,11 +12,13 @@ import { IEditProductItems, IUpdateProduct } from '@/services/product.service'
 const ProductItemsForm = ({
 	control,
 	defaultProductItems,
-	lastIdProductItem
+	lastIdProductItem,
+	setValueEdit
 }: {
 	control: Control<IUpdateProduct>
 	defaultProductItems: IProductItem[]
 	lastIdProductItem: number
+	setValueEdit: UseFormSetValue<IUpdateProduct>
 }) => {
 	const [lastId, setLastId] = useState(lastIdProductItem + 1)
 
@@ -148,6 +150,19 @@ const ProductItemsForm = ({
 		return editProductItems
 	}
 
+	const calculatePrice = () => {
+		const totalPriceExistsItems = existsProductItems.reduce(
+			(sum, item) => sum + item.quantity * item.price,
+			0
+		)
+		const totalPriceCreatedItems = editProductItems.createProductItems.reduce(
+			(sum, item) => sum + item.quantity * item.price,
+			0
+		)
+		const totalPrice = totalPriceExistsItems + totalPriceCreatedItems
+		setValueEdit('product.price', totalPrice)
+	}
+
 	return (
 		<Controller
 			control={control}
@@ -156,6 +171,15 @@ const ProductItemsForm = ({
 				<div className='w-full'>
 					<div className='flex items-center justify-between py-4'>
 						<span className='font-bold'>Элементы товара</span>
+						<Button
+							auto
+							size='sm'
+							onClick={() => {
+								calculatePrice()
+							}}
+						>
+							Рассчитать цену
+						</Button>
 						<Button
 							auto
 							size='sm'

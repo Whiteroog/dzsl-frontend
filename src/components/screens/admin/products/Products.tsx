@@ -629,6 +629,7 @@ const Products: FC = () => {
 									.map(item => item.productItems as IProductItem[])
 									.flat()
 							)}
+							setValueCreate={setValueCreate}
 						/>
 					</Modal.Body>
 					<Modal.Footer className='flex flex-col items-center py-10'>
@@ -720,6 +721,7 @@ const Products: FC = () => {
 									.map(item => item.productItems as IProductItem[])
 									.flat()
 							)}
+							setValueEdit={setValueEdit}
 						/>
 					</Modal.Body>
 					<Modal.Footer className='flex flex-col items-center py-10'>
