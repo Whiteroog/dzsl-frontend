@@ -222,11 +222,15 @@ const Category: FC = () => {
 	const onSubmitEdit: SubmitHandler<ICategory> = data => {
 		console.log(data)
 
-		if (_categories.some(item => item.name === data.name)) {
+		if (
+			_categories.some(item => item.name === data.name && item.id !== data.id)
+		) {
 			toastr.error('Поле Название', 'Значение поля занято')
 			return
 		}
-		if (_categories.some(item => item.slug === data.slug)) {
+		if (
+			_categories.some(item => item.slug === data.slug && item.id !== data.id)
+		) {
 			toastr.error('Поле Путь', 'Значение поля занято')
 			return
 		}

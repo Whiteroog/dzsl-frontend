@@ -34,6 +34,8 @@ import SpecificationsFormEdit from './formEdit/SpecificationsFormEdit'
 import { CategoryService } from '@/services/category.service'
 import {
 	ICreateProduct,
+	IEditProductItems,
+	IEditSpecifications,
 	IUpdateProduct,
 	ProductService
 } from '@/services/product.service'
@@ -290,6 +292,14 @@ const Products: FC = () => {
 			return
 		}
 
+		if (!data.specifications) {
+			data.specifications = {} as IEditSpecifications
+		}
+
+		if (!data.productItems) {
+			data.productItems = {} as IEditProductItems
+		}
+
 		console.log(data)
 
 		updateProduct(data)
@@ -298,11 +308,11 @@ const Products: FC = () => {
 	}
 
 	const getLastIdSpecifications = (specifications: ISpecifications[]) => {
-		return Math.max(...(specifications.map(item => item.id) as number[]))
+		return Math.max(...((specifications.map(item => item.id) as number[]) ?? 0))
 	}
 
 	const getLastIdProductItems = (productItems: IProductItem[]) => {
-		return Math.max(...(productItems.map(item => item.id) as number[]))
+		return Math.max(...((productItems.map(item => item.id) as number[]) ?? 0))
 	}
 
 	return (
