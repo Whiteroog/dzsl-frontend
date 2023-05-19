@@ -19,7 +19,7 @@ export interface ICreateProduct {
 }
 
 export interface IUpdateProduct {
-	product: ICreateProduct
+	product: IProduct
 
 	specifications: IEditSpecifications
 	productItems: IEditProductItems
@@ -62,11 +62,8 @@ export const ProductService = {
 		return axiosAuth.post<IProduct>(PRODUCTS_URL, data)
 	},
 
-	async update(data: { id: number; updateData: IUpdateProduct }) {
-		return axiosAuth.put<IProduct>(
-			`${PRODUCTS_URL}/${data.id}`,
-			data.updateData
-		)
+	async update(data: IUpdateProduct) {
+		return axiosAuth.put<IProduct>(`${PRODUCTS_URL}/${data.product.id}`, data)
 	},
 
 	async delete(id: number) {

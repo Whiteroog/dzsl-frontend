@@ -5,11 +5,11 @@ export interface IProduct {
 	name: string
 	slug: string
 	price: number
-	image: string
-	description: string
+	image?: string
+	description?: string
 	category: ICategory
-	specifications: ISpecifications[]
-	productItems: IProductItem[]
+	specifications?: ISpecifications[]
+	productItems?: IProductItem[]
 }
 
 export interface ISpecifications {

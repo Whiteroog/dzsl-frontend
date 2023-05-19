@@ -239,8 +239,7 @@ const Products: FC = () => {
 
 	const { mutateAsync: updateProduct } = useMutation({
 		mutationKey: ['update product'],
-		mutationFn: (data: { id: number; updateData: IUpdateProduct }) =>
-			ProductService.update(data),
+		mutationFn: (data: IUpdateProduct) => ProductService.update(data),
 		onSuccess() {
 			queryGetAllProducts.refetch()
 		}
@@ -263,11 +262,19 @@ const Products: FC = () => {
 			return
 		}
 
-		if (_products.some(item => item.name === data.product.name)) {
+		if (
+			_products.some(
+				item => item.name === data.product.name && item.id !== data.product.id
+			)
+		) {
 			toastr.error('Поле Название', 'Значение поля занято')
 			return
 		}
-		if (_products.some(item => item.slug === data.product.slug)) {
+		if (
+			_products.some(
+				item => item.slug === data.product.slug && item.id !== data.product.id
+			)
+		) {
 			toastr.error('Поле Путь', 'Значение поля занято')
 			return
 		}
@@ -281,7 +288,7 @@ const Products: FC = () => {
 
 		console.log(data)
 
-		updateProduct({ id: selectItem.id, updateData: data })
+		updateProduct(data)
 		resetFormEdit()
 		setVisibleModalEdit(false)
 	}
@@ -643,10 +650,13 @@ const Products: FC = () => {
 								getValueEdit('product.specifications') ?? []
 							}
 						/>
-						<ProductItemsFormEdit control={controlEdit} />
+						<ProductItemsFormEdit
+							control={controlEdit}
+							defaultProductItems={getValueEdit('product.productItems') ?? []}
+						/>
 					</Modal.Body>
 					<Modal.Footer className='flex flex-col items-center py-10'>
-						<Button type='submit'>Создать</Button>
+						<Button type='submit'>Изменить</Button>
 					</Modal.Footer>
 				</form>
 			</Modal>

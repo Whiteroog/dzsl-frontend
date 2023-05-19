@@ -7,66 +7,145 @@ import { IProductItem } from '@/types/product.interface'
 
 import stylesTable from '../../tables/Table.module.scss'
 
-import { IUpdateProduct } from '@/services/product.service'
+import { IEditProductItems, IUpdateProduct } from '@/services/product.service'
 
 const ProductItemsForm = ({
-	control
+	control,
+	defaultProductItems
 }: {
 	control: Control<IUpdateProduct>
+	defaultProductItems: IProductItem[]
 }) => {
-	const [lastId, setLastId] = useState(1)
-	const [productItems, setProductItems] = useState<IProductItem[]>([])
+	const [lastId, setLastId] = useState(
+		Math.max(...(defaultProductItems.map(item => item.id) as number[])) + 1
+	)
 
-	const getProductItem = (id: number) =>
-		productItems.find(item => item.id === id) as IProductItem
+	const [existsProductItems, setExistsProductItems] =
+		useState(defaultProductItems)
 
-	const setInputNameHandler = (id: number, newValue: string) => {
-		const findProductItem = getProductItem(id)
-		if (!findProductItem) return
-		findProductItem.name = newValue
-		setProductItems(productItems)
-		return productItems
-	}
-
-	const setInputQuantityHandler = (id: number, newValue: string) => {
-		const valueNumber = Number(newValue)
-
-		const valueNumberValidated =
-			valueNumber < 0 ? 0 : valueNumber > 999 ? 999 : valueNumber
-
-		const findProductItem = getProductItem(id)
-		if (!findProductItem) return
-		findProductItem.quantity = valueNumberValidated
-		setProductItems(productItems)
-		return productItems
-	}
-
-	const setInputPriceHandler = (id: number, newValue: string) => {
-		const valueNumber = Number(newValue)
-
-		const valueNumberValidated =
-			valueNumber < 0 ? 0 : valueNumber > 999 ? 999 : valueNumber
-
-		const findProductItem = getProductItem(id)
-		if (!findProductItem) return
-		findProductItem.price = valueNumberValidated
-		setProductItems(productItems)
-		return productItems
-	}
+	const [editProductItems, setEditProductItems] = useState<IEditProductItems>({
+		createProductItems: [],
+		updateProductItems: [],
+		deleteProductItems: []
+	} as IEditProductItems)
 
 	const addFieldHandler = () => {
-		productItems.push({ id: lastId, name: '', quantity: 0, price: 0 })
-		setProductItems(productItems)
+		editProductItems.createProductItems.push({
+			id: lastId,
+			name: '',
+			quantity: 0,
+			price: 0
+		})
+
+		setEditProductItems(editProductItems)
 		setLastId(lastId + 1)
 
-		return productItems
+		console.log(editProductItems)
+
+		return editProductItems
 	}
 
-	const removeFieldHandler = (id: number) => {
-		const filteredProductItems = productItems.filter(item => item.id !== id)
-		setProductItems(filteredProductItems)
+	const removeExistsFieldHandler = (field: IProductItem) => {
+		editProductItems.deleteProductItems.push(field)
 
-		return productItems
+		const filteredProductItems = existsProductItems.filter(
+			item => item.id !== field.id
+		)
+		setExistsProductItems(filteredProductItems)
+
+		editProductItems.updateProductItems =
+			editProductItems.updateProductItems.filter(item => item.id !== field.id)
+
+		setEditProductItems(editProductItems)
+
+		return editProductItems
+	}
+
+	const removeCreateFieldHandler = (id: number) => {
+		editProductItems.createProductItems =
+			editProductItems.createProductItems.filter(item => item.id !== id)
+		setEditProductItems(editProductItems)
+
+		return editProductItems
+	}
+
+	const updateExistsProductItems = (editedProductItems: IProductItem) => {
+		let foundedExistsDataProductItems =
+			editProductItems.updateProductItems.find(
+				item => item.id === editedProductItems.id
+			)
+
+		if (foundedExistsDataProductItems) {
+			foundedExistsDataProductItems = editedProductItems
+			return editProductItems
+		} else {
+			editProductItems.updateProductItems.push(editedProductItems)
+			return editProductItems
+		}
+	}
+
+	const setInputNameExistsHandler = (item: IProductItem, newValue: string) => {
+		item.name = newValue
+		setExistsProductItems(existsProductItems)
+
+		return updateExistsProductItems(item)
+	}
+
+	const setInputQuantityExistsHandler = (
+		item: IProductItem,
+		newValue: string
+	) => {
+		const valueNumber = Number(newValue)
+
+		const valueNumberValidated = valueNumber < 0 ? 0 : valueNumber
+
+		item.quantity = valueNumberValidated
+		setExistsProductItems(existsProductItems)
+
+		return updateExistsProductItems(item)
+	}
+
+	const setInputPriceExistsHandler = (item: IProductItem, newValue: string) => {
+		const valueNumber = Number(newValue)
+
+		const valueNumberValidated = valueNumber < 0 ? 0 : valueNumber
+
+		item.price = valueNumberValidated
+		setExistsProductItems(existsProductItems)
+
+		return updateExistsProductItems(item)
+	}
+
+	const setInputNameCreatedHandler = (item: IProductItem, newValue: string) => {
+		item.name = newValue
+
+		return editProductItems
+	}
+
+	const setInputQuantityCreatedHandler = (
+		item: IProductItem,
+		newValue: string
+	) => {
+		const valueNumber = Number(newValue)
+
+		const valueNumberValidated = valueNumber < 0 ? 0 : valueNumber
+
+		item.quantity = valueNumberValidated
+
+		return editProductItems
+	}
+
+	const setInputPriceCreatedHandler = (
+		item: IProductItem,
+		newValue: string
+	) => {
+		const valueNumber = Number(newValue)
+
+		const valueNumberValidated = valueNumber < 0 ? 0 : valueNumber
+
+		item.price = valueNumberValidated
+
+		return editProductItems
 	}
 
 	return (
@@ -103,8 +182,8 @@ const ProductItemsForm = ({
 							<Table.Column hideHeader={true}>Удалить</Table.Column>
 						</Table.Header>
 						<Table.Body>
-							{productItems ? (
-								productItems.map(item => {
+							{[
+								...existsProductItems.map(item => {
 									return (
 										<Table.Row key={item.id}>
 											<Table.Cell>
@@ -114,8 +193,8 @@ const ProductItemsForm = ({
 													value={item.name}
 													onChange={newValue =>
 														onChange(
-															setInputNameHandler(
-																item.id ?? -1,
+															setInputNameExistsHandler(
+																item,
 																newValue.currentTarget.value
 															)
 														)
@@ -129,8 +208,8 @@ const ProductItemsForm = ({
 													value={item.quantity}
 													onChange={newValue =>
 														onChange(
-															setInputQuantityHandler(
-																item.id ?? -1,
+															setInputQuantityExistsHandler(
+																item,
 																newValue.currentTarget.value
 															)
 														)
@@ -144,8 +223,8 @@ const ProductItemsForm = ({
 													value={item.price}
 													onChange={newValue =>
 														onChange(
-															setInputPriceHandler(
-																item.id ?? -1,
+															setInputPriceExistsHandler(
+																item,
 																newValue.currentTarget.value
 															)
 														)
@@ -158,16 +237,76 @@ const ProductItemsForm = ({
 													icon={<AiOutlineDelete color='red' />}
 													className='button-icon'
 													onClick={() => {
-														onChange(removeFieldHandler(item.id ?? -1))
+														onChange(removeExistsFieldHandler(item))
+													}}
+												></Button>
+											</Table.Cell>
+										</Table.Row>
+									)
+								}),
+
+								...editProductItems.createProductItems.map(item => {
+									return (
+										<Table.Row key={item.id}>
+											<Table.Cell>
+												<Input
+													type='text'
+													required
+													value={item.name}
+													onChange={newValue =>
+														onChange(
+															setInputNameCreatedHandler(
+																item,
+																newValue.currentTarget.value
+															)
+														)
+													}
+												/>
+											</Table.Cell>
+											<Table.Cell>
+												<Input
+													type='number'
+													required
+													value={item.quantity}
+													onChange={newValue =>
+														onChange(
+															setInputQuantityCreatedHandler(
+																item,
+																newValue.currentTarget.value
+															)
+														)
+													}
+												/>
+											</Table.Cell>
+											<Table.Cell>
+												<Input
+													type='number'
+													required
+													value={item.price}
+													onChange={newValue =>
+														onChange(
+															setInputPriceCreatedHandler(
+																item,
+																newValue.currentTarget.value
+															)
+														)
+													}
+												/>
+											</Table.Cell>
+											<Table.Cell>
+												<Button
+													auto
+													icon={<AiOutlineDelete color='red' />}
+													className='button-icon'
+													onClick={() => {
+														onChange(removeExistsFieldHandler(item))
 													}}
 												></Button>
 											</Table.Cell>
 										</Table.Row>
 									)
 								})
-							) : (
-								<></>
-							)}
+							]}
 						</Table.Body>
 					</Table>
 				</div>

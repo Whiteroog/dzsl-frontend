@@ -29,8 +29,7 @@ const ProductItemsFormCreate = ({
 	const setInputQuantityHandler = (item: IProductItem, newValue: string) => {
 		const valueNumber = Number(newValue)
 
-		const valueNumberValidated =
-			valueNumber < 0 ? 0 : valueNumber > 999 ? 999 : valueNumber
+		const valueNumberValidated = valueNumber < 0 ? 0 : valueNumber
 
 		item.quantity = valueNumberValidated
 		setProductItems(productItems)
@@ -40,8 +39,7 @@ const ProductItemsFormCreate = ({
 	const setInputPriceHandler = (item: IProductItem, newValue: string) => {
 		const valueNumber = Number(newValue)
 
-		const valueNumberValidated =
-			valueNumber < 0 ? 0 : valueNumber > 999 ? 999 : valueNumber
+		const valueNumberValidated = valueNumber < 0 ? 0 : valueNumber
 
 		item.price = valueNumberValidated
 		setProductItems(productItems)
