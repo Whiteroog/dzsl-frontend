@@ -95,6 +95,18 @@ const Products: FC = () => {
 		_setProducts(sortedProducts)
 	}
 
+	const sortSpecificationsByIdAsc = (specifications: ISpecifications[]) => {
+		if (!specifications) return
+
+		return specifications.sort((a, b) => a.id! - b.id!) ?? []
+	}
+
+	const sortProductItemsByIdAsc = (productItems: IProductItem[]) => {
+		if (!productItems) return
+
+		return productItems.sort((a, b) => a.id! - b.id!) ?? []
+	}
+
 	/* Search */
 	const search = (term: string) => {
 		term = term.toLowerCase()
@@ -155,6 +167,15 @@ const Products: FC = () => {
 		queryKey: ['get all products'],
 		queryFn: ProductService.getAll,
 		onSuccess(data) {
+			data.data.forEach(item => {
+				item.specifications = sortSpecificationsByIdAsc(
+					item.specifications ?? []
+				)
+			})
+			data.data.forEach(item => {
+				item.productItems = sortProductItemsByIdAsc(item.productItems ?? [])
+			})
+
 			_setProducts(data.data)
 			setProductsWithParam(data.data)
 		}
