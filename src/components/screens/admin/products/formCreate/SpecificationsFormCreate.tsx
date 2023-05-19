@@ -10,15 +10,14 @@ import stylesTable from '../../tables/Table.module.scss'
 import { ICreateProduct } from '@/services/product.service'
 
 const SpecificationsFormCreate = ({
-	control
+	control,
+	lastIdSpecifications
 }: {
 	control: Control<ICreateProduct>
+	lastIdSpecifications: number
 }) => {
-	const [lastId, setLastId] = useState(1)
+	const [lastId, setLastId] = useState(lastIdSpecifications + 1)
 	const [specifications, setSpecifications] = useState<ISpecifications[]>([])
-
-	const getSpecifications = (id: number) =>
-		specifications.find(item => item.id === id) as ISpecifications
 
 	const setInputNameHandler = (item: ISpecifications, newValue: string) => {
 		item.name = newValue

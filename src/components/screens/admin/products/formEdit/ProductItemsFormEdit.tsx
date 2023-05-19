@@ -11,14 +11,14 @@ import { IEditProductItems, IUpdateProduct } from '@/services/product.service'
 
 const ProductItemsForm = ({
 	control,
-	defaultProductItems
+	defaultProductItems,
+	lastIdProductItem
 }: {
 	control: Control<IUpdateProduct>
 	defaultProductItems: IProductItem[]
+	lastIdProductItem: number
 }) => {
-	const [lastId, setLastId] = useState(
-		Math.max(...(defaultProductItems.map(item => item.id) as number[])) + 1
-	)
+	const [lastId, setLastId] = useState(lastIdProductItem + 1)
 
 	const [existsProductItems, setExistsProductItems] =
 		useState(defaultProductItems)
@@ -151,7 +151,7 @@ const ProductItemsForm = ({
 	return (
 		<Controller
 			control={control}
-			name='product.productItems'
+			name='productItems'
 			render={({ field: { value, onChange } }) => (
 				<div className='w-full'>
 					<div className='flex items-center justify-between py-4'>
@@ -299,7 +299,7 @@ const ProductItemsForm = ({
 													icon={<AiOutlineDelete color='red' />}
 													className='button-icon'
 													onClick={() => {
-														onChange(removeExistsFieldHandler(item))
+														onChange(removeCreateFieldHandler(item.id ?? -1))
 													}}
 												></Button>
 											</Table.Cell>

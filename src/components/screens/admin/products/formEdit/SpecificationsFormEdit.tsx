@@ -11,14 +11,14 @@ import { IEditSpecifications, IUpdateProduct } from '@/services/product.service'
 
 const SpecificationsForm = ({
 	control,
-	defaultSpecifications
+	defaultSpecifications,
+	lastIdSpecifications
 }: {
 	control: Control<IUpdateProduct>
 	defaultSpecifications: ISpecifications[]
+	lastIdSpecifications: number
 }) => {
-	const [lastId, setLastId] = useState(
-		Math.max(...(defaultSpecifications.map(item => item.id) as number[])) + 1
-	)
+	const [lastId, setLastId] = useState(lastIdSpecifications + 1)
 
 	const [existsSpecifications, setExistsSpecifications] = useState(
 		defaultSpecifications

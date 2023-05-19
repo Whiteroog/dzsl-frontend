@@ -17,7 +17,11 @@ import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from 'react-icons/ai'
 import { toastr } from 'react-redux-toastr'
 
 import { ICategory } from '@/types/category.interface'
-import { IProduct } from '@/types/product.interface'
+import {
+	IProduct,
+	IProductItem,
+	ISpecifications
+} from '@/types/product.interface'
 
 import stylesTable from '../tables/Table.module.scss'
 
@@ -291,6 +295,14 @@ const Products: FC = () => {
 		updateProduct(data)
 		resetFormEdit()
 		setVisibleModalEdit(false)
+	}
+
+	const getLastIdSpecifications = (specifications: ISpecifications[]) => {
+		return Math.max(...(specifications.map(item => item.id) as number[]))
+	}
+
+	const getLastIdProductItems = (productItems: IProductItem[]) => {
+		return Math.max(...(productItems.map(item => item.id) as number[]))
 	}
 
 	return (
@@ -571,8 +583,22 @@ const Products: FC = () => {
 								fullWidth
 							/>
 						</div>
-						<SpecificationsFormCreate control={controlCreate} />
-						<ProductItemsFormCreate control={controlCreate} />
+						<SpecificationsFormCreate
+							control={controlCreate}
+							lastIdSpecifications={getLastIdSpecifications(
+								_products
+									.map(item => item.specifications as ISpecifications[])
+									.flat()
+							)}
+						/>
+						<ProductItemsFormCreate
+							control={controlCreate}
+							lastIdProductItem={getLastIdProductItems(
+								_products
+									.map(item => item.productItems as IProductItem[])
+									.flat()
+							)}
+						/>
 					</Modal.Body>
 					<Modal.Footer className='flex flex-col items-center py-10'>
 						<Button type='submit'>Создать</Button>
@@ -649,10 +675,20 @@ const Products: FC = () => {
 							defaultSpecifications={
 								getValueEdit('product.specifications') ?? []
 							}
+							lastIdSpecifications={getLastIdSpecifications(
+								_products
+									.map(item => item.specifications as ISpecifications[])
+									.flat()
+							)}
 						/>
 						<ProductItemsFormEdit
 							control={controlEdit}
 							defaultProductItems={getValueEdit('product.productItems') ?? []}
+							lastIdProductItem={getLastIdProductItems(
+								_products
+									.map(item => item.productItems as IProductItem[])
+									.flat()
+							)}
 						/>
 					</Modal.Body>
 					<Modal.Footer className='flex flex-col items-center py-10'>
