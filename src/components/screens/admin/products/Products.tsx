@@ -95,7 +95,6 @@ const Products: FC = () => {
 		})
 
 		setProductsWithParam(sortedProducts, descriptor)
-		_setProducts(sortedProducts)
 	}
 
 	const sortSpecificationsByIdAsc = (specifications: ISpecifications[]) => {

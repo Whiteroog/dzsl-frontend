@@ -81,7 +81,6 @@ const Orders: FC = () => {
 		})
 
 		setOrdersWithParam(sortedOrders, descriptor)
-		_setOrders(sortedOrders)
 	}
 
 	/* Search */

@@ -66,7 +66,6 @@ const Users: FC = () => {
 			return cmp
 		})
 		setUsersWithParam(sortedUsers, descriptor)
-		_setUsers(sortedUsers)
 	}
 
 	/* search */

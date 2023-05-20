@@ -67,7 +67,6 @@ const Category: FC = () => {
 			return cmp
 		})
 		setCategoriesWithParam(sortedCategories, descriptor)
-		_setCategories(sortedCategories)
 	}
 
 	/* Search */
