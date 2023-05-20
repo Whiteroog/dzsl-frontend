@@ -70,17 +70,25 @@ const FormOrder: FC<{ product: IProduct }> = ({ product }) => {
 
 	const { mutateAsync: createOrder } = useMutation({
 		mutationKey: ['create order'],
-		mutationFn: (data: ICreateOrder) => OrderService.create(data)
+		mutationFn: (data: ICreateOrder) => OrderService.create(data),
+		onSuccess(data, variables, context) {
+			toastr.success(
+				'Форма отправлена',
+				'Форма заказа успешно получена компанией'
+			)
+		},
+		onError(error, variables, context) {
+			toastr.success(
+				'Ошибка на сервере',
+				'Произошли внутренние проблемы на сервере'
+			)
+		}
 	})
 
 	const onSubmit: SubmitHandler<ICreateOrder> = data => {
 		createOrder(data)
 		reset()
 		resetValues()
-		toastr.success(
-			'Форма отправлена',
-			'Форма заказа успешно получена компанией'
-		)
 	}
 
 	return (
