@@ -339,11 +339,15 @@ const Products: FC = () => {
 	}
 
 	const getLastIdSpecifications = (specifications: ISpecifications[]) => {
-		return Math.max(...((specifications.map(item => item.id) as number[]) ?? 0))
+		return specifications.length
+			? Math.max(...(specifications.map(item => item.id) as number[]))
+			: 0
 	}
 
 	const getLastIdProductItems = (productItems: IProductItem[]) => {
-		return Math.max(...((productItems.map(item => item.id) as number[]) ?? 0))
+		return productItems.length
+			? Math.max(...(productItems.map(item => item.id) as number[]))
+			: 0
 	}
 
 	return (
