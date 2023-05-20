@@ -280,7 +280,7 @@ const Users: FC = () => {
 
 			{/* modal create */}
 
-			<Modal className='p-6' closeButton width='50%' {...bindingsModalCreate}>
+			<Modal className='p-6' closeButton width='800px' {...bindingsModalCreate}>
 				<form onSubmit={handleSubmitOnCreate(onSubmitCreate)}>
 					<Modal.Header>
 						<h2 className='py-4 text-lg'>Новый пользователь</h2>
@@ -310,7 +310,7 @@ const Users: FC = () => {
 			<Modal
 				className='p-6'
 				closeButton
-				width='50%'
+				width='800px'
 				{...bindingsModalChangePassword}
 			>
 				<form onSubmit={handleSubmitOnChangePassword(onSubmitChangePassword)}>

@@ -469,7 +469,7 @@ const Products: FC = () => {
 
 			{/* model show */}
 
-			<Modal className='p-6' closeButton width='50%' {...bindingsModalShow}>
+			<Modal className='p-6' closeButton width='800px' {...bindingsModalShow}>
 				<Modal.Header>
 					<h2 className='py-4 text-lg'>{`[${selectItem.id}] ${selectItem.name}`}</h2>
 				</Modal.Header>
@@ -665,7 +665,7 @@ const Products: FC = () => {
 
 			{/* model edit */}
 
-			<Modal className='p-6' closeButton width='50%' {...bindingsModalEdit}>
+			<Modal className='p-6' closeButton width='800px' {...bindingsModalEdit}>
 				<form onSubmit={handleSubmitOnEdit(onSubmitEdit)}>
 					<Modal.Header>
 						<h2 className='py-4 text-lg'>{`[${selectItem.id}] ${selectItem.name}`}</h2>

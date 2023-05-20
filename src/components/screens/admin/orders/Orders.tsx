@@ -331,7 +331,7 @@ const Orders: FC = () => {
 
 			{/* model show */}
 
-			<Modal className='p-6' closeButton width='50%' {...bindingsModalShow}>
+			<Modal className='p-6' closeButton width='800px' {...bindingsModalShow}>
 				<Modal.Header>
 					<h2 className='py-4 text-lg'>{`[${selectItem.id}] ${new Date(
 						selectItem.createdAt
