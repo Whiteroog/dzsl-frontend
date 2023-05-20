@@ -7,7 +7,7 @@ export enum EnumLinks {
 	CONTACTS = '/contacts',
 
 	STATIC_IMAGES = 'http://localhost:3000/images/static/',
-	PRODUCT_IMAGES = 'http://localhost:3000/images/products/',
+	PRODUCT_IMAGES = 'http://localhost:4200/uploads/products/',
 
 	TABLE_PRODUCTS = '/admin/panel/products',
 	TABLE_CATEGORIES = '/admin/panel/categories',
@@ -16,5 +16,5 @@ export enum EnumLinks {
 
 	LOGIN = '/admin/login',
 
-	HOME_PAGE = 'http://localhost:3000/'
+	DOMAIN = 'http://localhost:3000/'
 }

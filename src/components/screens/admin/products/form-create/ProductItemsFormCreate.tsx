@@ -1,5 +1,5 @@
 import { Button, Input, Table } from '@nextui-org/react'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { Control, Controller, UseFormSetValue } from 'react-hook-form'
 import { AiOutlineDelete } from 'react-icons/ai'
 
@@ -9,15 +9,11 @@ import stylesTable from '../../../../ui/tables/Table.module.scss'
 
 import { ICreateProduct } from '@/services/product.service'
 
-const ProductItemsFormCreate = ({
-	control,
-	lastIdProductItem,
-	setValueCreate
-}: {
+const ProductItemsFormCreate: FC<{
 	control: Control<ICreateProduct>
 	lastIdProductItem: number
 	setValueCreate: UseFormSetValue<ICreateProduct>
-}) => {
+}> = ({ control, lastIdProductItem, setValueCreate }) => {
 	const [lastId, setLastId] = useState(lastIdProductItem + 1)
 	const [productItems, setProductItems] = useState<IProductItem[]>([])
 

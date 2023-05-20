@@ -1,6 +1,6 @@
 import { EnumOrderStatus, IOrder, IOrderProduct } from '@/types/order.interface'
 
-import { axiosAuth } from '@/api/api.interceptor'
+import { axiosAuth, axiosClassic } from '@/api/api.interceptor'
 
 export interface ICreateOrder {
 	fullName: string
@@ -28,6 +28,6 @@ export const OrderService = {
 	},
 
 	async create(data: ICreateOrder) {
-		return axiosAuth.post<IOrder>(ORDERS_URL, data)
+		return axiosClassic.post<IOrder>(ORDERS_URL, data)
 	}
 }

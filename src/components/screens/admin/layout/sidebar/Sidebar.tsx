@@ -24,9 +24,9 @@ const Sidebar: FC = () => {
 				</div>
 				<div className='mt-20'>
 					<Link
-						href={EnumLinks.HOME_PAGE}
+						href={EnumLinks.DOMAIN}
 						onClick={async e => {
-							await replace(EnumLinks.HOME_PAGE)
+							await replace(EnumLinks.DOMAIN)
 							await logout()
 						}}
 					>

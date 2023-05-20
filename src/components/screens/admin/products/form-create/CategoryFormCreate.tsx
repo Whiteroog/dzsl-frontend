@@ -1,5 +1,5 @@
 import { Dropdown } from '@nextui-org/react'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
 
 import { ICategory } from '@/types/category.interface'
@@ -8,15 +8,11 @@ import stylesDropdown from '../../../../ui/dropdown/Dropdown.module.scss'
 
 import { ICreateProduct } from '@/services/product.service'
 
-const CategoryFormCreate = ({
-	control,
-	categories,
-	defaultSelectCategory
-}: {
+const CategoryFormCreate: FC<{
 	control: Control<ICreateProduct>
 	categories: ICategory[]
 	defaultSelectCategory: ICategory
-}) => {
+}> = ({ control, categories, defaultSelectCategory }) => {
 	const [selectCategory, setSelectCategory] = useState<ICategory>(
 		defaultSelectCategory
 	)

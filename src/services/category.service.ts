@@ -19,7 +19,7 @@ export const CategoryService = {
 	},
 
 	async getById(id: number) {
-		return axiosAuth<ICategory>(`${CATEGORIES_URL}/${id}`)
+		return axiosAuth.get<ICategory>(`${CATEGORIES_URL}/${id}`)
 	},
 
 	async create(data: ICreateCategory) {

@@ -3,6 +3,7 @@ import {
 	Checkbox,
 	FormElement,
 	Grid,
+	Image,
 	Input,
 	Modal,
 	SortDescriptor,
@@ -12,11 +13,12 @@ import {
 } from '@nextui-org/react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { FC, KeyboardEvent, SyntheticEvent, useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from 'react-icons/ai'
 import { toastr } from 'react-redux-toastr'
 
 import { ICategory } from '@/types/category.interface'
+import { EnumLinks } from '@/types/links.enum'
 import {
 	IProduct,
 	IProductItem,
@@ -25,12 +27,13 @@ import {
 
 import stylesTable from '../../../ui/tables/Table.module.scss'
 
-import CategoryFormCreate from './formCreate/CategoryFormCreate'
-import ProductItemsFormCreate from './formCreate/ProductItemsFormCreate'
-import SpecificationsFormCreate from './formCreate/SpecificationsFormCreate'
-import CategoryFormEdit from './formEdit/CategoryFormEdit'
-import ProductItemsFormEdit from './formEdit/ProductItemsFormEdit'
-import SpecificationsFormEdit from './formEdit/SpecificationsFormEdit'
+import CategoryFormCreate from './form-create/CategoryFormCreate'
+import ProductItemsFormCreate from './form-create/ProductItemsFormCreate'
+import SpecificationsFormCreate from './form-create/SpecificationsFormCreate'
+import CategoryFormEdit from './form-edit/CategoryFormEdit'
+import ProductItemsFormEdit from './form-edit/ProductItemsFormEdit'
+import SpecificationsFormEdit from './form-edit/SpecificationsFormEdit'
+import UploadImage from './upload-image/UploadImage'
 import { CategoryService } from '@/services/category.service'
 import {
 	ICreateProduct,
@@ -358,8 +361,10 @@ const Products: FC = () => {
 				<Button
 					auto
 					onClick={() => {
-						setValueCreate('category', categories[0])
-						setVisibleModalCreate(true)
+						if (categories.length) {
+							setValueCreate('category', categories[0])
+							setVisibleModalCreate(true)
+						}
 					}}
 				>
 					Создать
@@ -475,10 +480,21 @@ const Products: FC = () => {
 						<span>Категория: {selectItem.category?.name}</span>
 						<span>Путь: {selectItem.slug}</span>
 						<span>Цена: {selectItem.price}</span>
-						<span>
-							Изображение:{' '}
-							{selectItem.image === '' ? 'Нет изображения' : selectItem.image}
-						</span>
+						<div>
+							<span>Изображение:</span>
+							<div className='p-6'>
+								<Image
+									src={EnumLinks.PRODUCT_IMAGES + selectItem.image}
+									autoResize
+									width='200px'
+									onError={(e: SyntheticEvent) => {
+										console.log(EnumLinks.PRODUCT_IMAGES + selectItem.image)
+										;(e.target as HTMLImageElement).src =
+											EnumLinks.STATIC_IMAGES + 'no-image-placeholder.svg'
+									}}
+								/>
+							</div>
+						</div>
 						<span>
 							Описание:{' '}
 							{selectItem.description === ''
@@ -560,12 +576,12 @@ const Products: FC = () => {
 
 			{/* model create */}
 
-			<Modal className='p-6' closeButton width='50%' {...bindingsModalCreate}>
+			<Modal className='p-6' closeButton width='800px' {...bindingsModalCreate}>
 				<form onSubmit={handleSubmitOnCreate(onSubmitCreate)}>
 					<Modal.Header>
 						<h2 className='py-4 text-lg'>Создание товара</h2>
 					</Modal.Header>
-					<Modal.Body className='flex flex-col items-start'>
+					<Modal.Body className='flex flex-col items-stretch'>
 						<div className='space-y-2'>
 							<Input
 								type='text'
@@ -608,11 +624,12 @@ const Products: FC = () => {
 							/>
 
 							{/* load image */}
-							<Input
-								type='text'
-								label='Изображение'
-								width='100%'
-								{...formCreate('image')}
+							<Controller
+								control={controlCreate}
+								name='image'
+								render={({ field: { onChange } }) => (
+									<UploadImage onChange={onChange} />
+								)}
 							/>
 
 							<Textarea
@@ -696,11 +713,15 @@ const Products: FC = () => {
 							/>
 
 							{/* load image */}
-							<Input
-								type='text'
-								label='Изображение'
-								width='100%'
-								{...formEdit('product.image')}
+							<Controller
+								control={controlEdit}
+								name='product.image'
+								render={({ field: { onChange } }) => (
+									<UploadImage
+										onChange={onChange}
+										existsImageSrc={selectItem.image}
+									/>
+								)}
 							/>
 
 							<Textarea

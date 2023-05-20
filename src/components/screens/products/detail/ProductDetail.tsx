@@ -43,15 +43,19 @@ const ProductDetail: FC = () => {
 						height={375}
 						autoResize={true}
 						className='rounded-lg'
-						onError={(e: SyntheticEvent & { target: HTMLImageElement }) =>
-							(e.target.src =
+						onError={(e: SyntheticEvent) =>
+							((e.target as HTMLImageElement).src =
 								EnumLinks.STATIC_IMAGES + 'no-image-placeholder.svg')
 						}
 					/>
 				</Grid>
-				<Grid xs={12} sm={8} justify='center'>
-					<Specifications specifications={product.specifications ?? []} />
-				</Grid>
+				{product.specifications?.length ? (
+					<Grid xs={12} sm={8} justify='center'>
+						<Specifications specifications={product.specifications ?? []} />
+					</Grid>
+				) : (
+					<></>
+				)}
 			</Grid.Container>
 			<p className='mb-6 p-4'>{product.description}</p>
 			<FormOrder product={product} />
