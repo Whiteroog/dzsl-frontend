@@ -20,7 +20,7 @@ import { useAuth } from '@/hooks/useAuth'
 
 import { INewPassword, IUser } from '@/types/user.interface'
 
-import tableStyle from '../tables/Table.module.scss'
+import stylesTable from '../../../ui/tables/Table.module.scss'
 
 import { UserService } from '@/services/user.service'
 
@@ -230,7 +230,7 @@ const Users: FC = () => {
 						shadow={false}
 						lined={true}
 						lineWeight='light'
-						className={tableStyle.table}
+						className={stylesTable.table}
 						sortDescriptor={users.sortDescriptor}
 						onSortChange={sortUsers}
 					>

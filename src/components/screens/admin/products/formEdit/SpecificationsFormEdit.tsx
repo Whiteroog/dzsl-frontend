@@ -5,7 +5,7 @@ import { AiOutlineDelete } from 'react-icons/ai'
 
 import { ISpecifications } from '@/types/product.interface'
 
-import stylesTable from '../../tables/Table.module.scss'
+import stylesTable from '../../../../ui/tables/Table.module.scss'
 
 import { IEditSpecifications, IUpdateProduct } from '@/services/product.service'
 

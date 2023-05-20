@@ -19,7 +19,7 @@ import { EnumOrderStatus, IOrder } from '@/types/order.interface'
 import { getTranslatedStatus } from '@/utils/status-translate'
 
 import stylesDropdown from '../../../ui/dropdown/Dropdown.module.scss'
-import stylesTable from '../tables/Table.module.scss'
+import stylesTable from '../../../ui/tables/Table.module.scss'
 
 import styles from './Orders.module.scss'
 import { OrderService } from '@/services/order.service'
@@ -337,8 +337,8 @@ const Orders: FC = () => {
 						selectItem.createdAt
 					).toLocaleDateString()}`}</h2>
 				</Modal.Header>
-				<Modal.Body className='flex flex-col items-start'>
-					<div className='flex flex-col border-b border-gray border-opacity-30'>
+				<Modal.Body className='flex flex-col items-stretch'>
+					<div className='flex flex-col border-b border-gray border-opacity-30 pb-3'>
 						<span>Id: {selectItem.id}</span>
 						<span>
 							Дата: {new Date(selectItem.createdAt).toLocaleDateString()}
@@ -351,7 +351,6 @@ const Orders: FC = () => {
 					</div>
 					<div className='flex flex-col'>
 						<span className='font-bold'>Заказываемый товар</span>
-						<span>Id товара: {selectItem.orderProduct?.id}</span>
 						<span>Название: {selectItem.orderProduct?.name}</span>
 						<span>Количество: {selectItem.orderProduct?.quantity}</span>
 						<span>Цена товара: {selectItem.orderProduct?.price}</span>
@@ -368,7 +367,6 @@ const Orders: FC = () => {
 							className={stylesTable.tableWithoutActions}
 						>
 							<Table.Header>
-								<Table.Column>Id</Table.Column>
 								<Table.Column>Название</Table.Column>
 								<Table.Column>Количество</Table.Column>
 								<Table.Column>Цена</Table.Column>
@@ -377,7 +375,6 @@ const Orders: FC = () => {
 								{selectItem.orderProduct?.orderProductItems ? (
 									selectItem.orderProduct?.orderProductItems.map(item => (
 										<Table.Row key={item.id}>
-											<Table.Cell>{item.id}</Table.Cell>
 											<Table.Cell>{item.name}</Table.Cell>
 											<Table.Cell>{item.quantity}</Table.Cell>
 											<Table.Cell>{item.price}</Table.Cell>

@@ -17,7 +17,7 @@ import { toastr } from 'react-redux-toastr'
 import { ICategory } from '@/types/category.interface'
 import { IProduct } from '@/types/product.interface'
 
-import styles from '../tables/Table.module.scss'
+import styles from '../../../ui/tables/Table.module.scss'
 
 import { CategoryService, ICreateCategory } from '@/services/category.service'
 import { ProductService } from '@/services/product.service'
@@ -139,8 +139,6 @@ const Category: FC = () => {
 	} = useForm<ICreateCategory>()
 
 	const onSubmitCreate: SubmitHandler<ICreateCategory> = data => {
-		console.log(data)
-
 		if (_categories.some(item => item.name === data.name)) {
 			toastr.error('Поле Название', 'Значение поля занято')
 			return
@@ -149,11 +147,20 @@ const Category: FC = () => {
 			toastr.error('Поле Путь', 'Значение поля занято')
 			return
 		}
-		if (data.slug.split(' ').length > 1) {
-			toastr.error(
-				'Поле Путь',
-				'Значение введено не правильно. Путь должен быть введен слитно'
-			)
+
+		const slug = data.slug
+		if (
+			slug.includes(' ') ||
+			slug.includes('/') ||
+			slug.includes('?') ||
+			slug.includes('=') ||
+			slug.includes('+') ||
+			slug.includes(',') ||
+			slug.includes('.') ||
+			slug.includes('|') ||
+			slug.includes('\\')
+		) {
+			toastr.error('Поле Путь', 'Поле введено не правильно')
 			return
 		}
 
@@ -235,11 +242,19 @@ const Category: FC = () => {
 			return
 		}
 
-		if (data.slug.split(' ').length > 1) {
-			toastr.error(
-				'Поле Путь',
-				'Значение введено не правильно. Путь должен быть введен слитно'
-			)
+		const slug = data.slug
+		if (
+			slug.includes(' ') ||
+			slug.includes('/') ||
+			slug.includes('?') ||
+			slug.includes('=') ||
+			slug.includes('+') ||
+			slug.includes(',') ||
+			slug.includes('.') ||
+			slug.includes('|') ||
+			slug.includes('\\')
+		) {
+			toastr.error('Поле Путь', 'Поле введено не правильно')
 			return
 		}
 

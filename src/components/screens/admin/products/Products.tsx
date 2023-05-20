@@ -23,7 +23,7 @@ import {
 	ISpecifications
 } from '@/types/product.interface'
 
-import stylesTable from '../tables/Table.module.scss'
+import stylesTable from '../../../ui/tables/Table.module.scss'
 
 import CategoryFormCreate from './formCreate/CategoryFormCreate'
 import ProductItemsFormCreate from './formCreate/ProductItemsFormCreate'
@@ -224,8 +224,6 @@ const Products: FC = () => {
 	} = useForm<ICreateProduct>()
 
 	const onSubmitCreate: SubmitHandler<ICreateProduct> = data => {
-		console.log(data)
-
 		if (!data.category) {
 			toastr.error('Ошибка отправки', 'Значения Категория нет')
 			return
@@ -239,15 +237,21 @@ const Products: FC = () => {
 			toastr.error('Поле Путь', 'Значение поля занято')
 			return
 		}
-		if (data.slug.split(' ').length > 1) {
-			toastr.error(
-				'Поле Путь',
-				'Значение введено не правильно. Путь должен быть введен слитно'
-			)
+		const slug = data.slug
+		if (
+			slug.includes(' ') ||
+			slug.includes('/') ||
+			slug.includes('?') ||
+			slug.includes('=') ||
+			slug.includes('+') ||
+			slug.includes(',') ||
+			slug.includes('.') ||
+			slug.includes('|') ||
+			slug.includes('\\')
+		) {
+			toastr.error('Поле Путь', 'Поле введено не правильно')
 			return
 		}
-
-		console.log(data)
 
 		createProduct(data)
 		resetFormCreate()
@@ -282,8 +286,6 @@ const Products: FC = () => {
 	} = useForm<IUpdateProduct>()
 
 	const onSubmitEdit: SubmitHandler<IUpdateProduct> = data => {
-		console.log(data)
-
 		if (!data.product.category) {
 			toastr.error('Ошибка отправки', 'Значения Категория нет')
 			return
@@ -305,11 +307,19 @@ const Products: FC = () => {
 			toastr.error('Поле Путь', 'Значение поля занято')
 			return
 		}
-		if (data.product.slug.split(' ').length > 1) {
-			toastr.error(
-				'Поле Путь',
-				'Значение введено не правильно. Путь должен быть введен слитно'
-			)
+		const slug = data.product.slug
+		if (
+			slug.includes(' ') ||
+			slug.includes('/') ||
+			slug.includes('?') ||
+			slug.includes('=') ||
+			slug.includes('+') ||
+			slug.includes(',') ||
+			slug.includes('.') ||
+			slug.includes('|') ||
+			slug.includes('\\')
+		) {
+			toastr.error('Поле Путь', 'Поле введено не правильно')
 			return
 		}
 
@@ -320,8 +330,6 @@ const Products: FC = () => {
 		if (!data.productItems) {
 			data.productItems = {} as IEditProductItems
 		}
-
-		console.log(data)
 
 		updateProduct(data)
 		resetFormEdit()

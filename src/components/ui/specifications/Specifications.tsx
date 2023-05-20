@@ -3,7 +3,7 @@ import { FC } from 'react'
 
 import { ISpecifications } from '@/types/product.interface'
 
-import styles from './Specifications.module.scss'
+import stylesTable from '../tables/Table.module.scss'
 
 interface ISpecificationsProps {
 	specifications: ISpecifications[]
@@ -22,7 +22,7 @@ const Specifications: FC<ISpecificationsProps> = ({ specifications }) => {
 				headerLined={true}
 				lineWeight='light'
 				lined={true}
-				className={styles.specifications}
+				className={stylesTable.tableFontBs}
 			>
 				<Table.Header>
 					<Table.Column>Название</Table.Column>

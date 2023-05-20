@@ -5,7 +5,7 @@ import { AiOutlineDelete } from 'react-icons/ai'
 
 import { IProductItem } from '@/types/product.interface'
 
-import stylesTable from '../../tables/Table.module.scss'
+import stylesTable from '../../../../ui/tables/Table.module.scss'
 
 import { ICreateProduct } from '@/services/product.service'
 
@@ -63,8 +63,11 @@ const ProductItemsFormCreate = ({
 	}
 
 	const calculatePrice = () => {
-			const totalPrice = productItems.reduce((sum, item) => sum + (item.quantity * item.price), 0)
-			setValueCreate('price', totalPrice)
+		const totalPrice = productItems.reduce(
+			(sum, item) => sum + item.quantity * item.price,
+			0
+		)
+		setValueCreate('price', totalPrice)
 	}
 
 	return (

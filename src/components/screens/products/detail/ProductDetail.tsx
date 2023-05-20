@@ -1,7 +1,7 @@
 import { Grid, Image } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
-import { FC, SyntheticEvent } from 'react'
+import { FC, SyntheticEvent, useState } from 'react'
 
 import Layout from '@/components/layout/Layout'
 import Specifications from '@/components/ui/specifications/Specifications'
@@ -18,12 +18,18 @@ const ProductDetail: FC = () => {
 
 	const queryGetProductsBySlug = useQuery({
 		queryKey: ['get products by slug', slug],
-		queryFn: () => ProductService.getBySlug(slug)
+		queryFn: () => ProductService.getBySlug(slug),
+		onSuccess(data) {
+			setProduct(data.data)
+			setTitle(data.data.category.name)
+		},
+		onError(err) {
+			setTitle('Нет данных')
+		}
 	})
+	const [product, setProduct] = useState<IProduct>({} as IProduct)
 
-	const product = queryGetProductsBySlug.data?.data ?? ({} as IProduct)
-
-	const title = product ? product?.name : 'Нет названия'
+	const [title, setTitle] = useState<string>('...Загрузка')
 
 	return (
 		<Layout>
@@ -39,7 +45,7 @@ const ProductDetail: FC = () => {
 						className='rounded-lg'
 						onError={(e: SyntheticEvent & { target: HTMLImageElement }) =>
 							(e.target.src =
-								EnumLinks.PRODUCT_IMAGES + 'no-image-placeholder.svg')
+								EnumLinks.STATIC_IMAGES + 'no-image-placeholder.svg')
 						}
 					/>
 				</Grid>

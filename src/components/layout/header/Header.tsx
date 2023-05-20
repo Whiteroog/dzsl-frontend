@@ -1,14 +1,24 @@
 import { Grid, Navbar } from '@nextui-org/react'
+import { useQuery } from '@tanstack/react-query'
 import { FC } from 'react'
 
+import { ICategory } from '@/types/category.interface'
 import { EnumLinks } from '@/types/links.enum'
 
 import styles from './Header.module.scss'
 import DzslNavbarCollapse from './collapse/DzslNavbarCollapse'
 import Logo from './logo/Logo'
 import NavProducts from './nav-products/NavProducts'
+import { CategoryService } from '@/services/category.service'
 
 const Header: FC = () => {
+	const queryGetAllCategories = useQuery({
+		queryKey: ['get all categories'],
+		queryFn: CategoryService.getAll
+	})
+
+	const categories = queryGetAllCategories.data?.data ?? ([] as ICategory[])
+
 	return (
 		<header className={styles.header}>
 			<Grid.Container gap={2} className={styles.businessCard}>
@@ -31,12 +41,12 @@ const Header: FC = () => {
 			<Navbar disableBlur={true} disableShadow={true}>
 				<Navbar.Toggle showIn='sm' className='px-6' />
 				<Navbar.Content hideIn='sm' className=''>
-					<NavProducts />
+					<NavProducts categories={categories} />
 					<Navbar.Link href={EnumLinks.ABOUT_US}>О Нас</Navbar.Link>
 					<Navbar.Link href={EnumLinks.DELIVERY}>Доставка</Navbar.Link>
 					<Navbar.Link href={EnumLinks.CONTACTS}>Контакты</Navbar.Link>
 				</Navbar.Content>
-				<DzslNavbarCollapse />
+				<DzslNavbarCollapse categories={categories} />
 			</Navbar>
 		</header>
 	)

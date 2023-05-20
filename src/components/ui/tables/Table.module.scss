@@ -57,3 +57,25 @@
 		}
 	}
 }
+
+.tableFontBs {
+	thead {
+		tr {
+			th {
+				@apply text-center text-base text-gray;
+			}
+		}
+	}
+
+	tbody {
+		tr {
+			td {
+				@apply text-center text-sm text-gray;
+
+				&::after {
+					@apply bg-gray bg-opacity-30 #{!important};
+				}
+			}
+		}
+	}
+}

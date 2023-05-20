@@ -6,11 +6,7 @@ import { IProduct } from '@/types/product.interface'
 
 import Specifications from '../specifications/Specifications'
 
-interface IProductProps {
-	product: IProduct
-}
-
-const CardProduct: FC<IProductProps> = ({ product }) => {
+const CardProduct: FC<{ product: IProduct }> = ({ product }) => {
 	return (
 		<Card key={product.slug} className='max-w-[916px]' variant='bordered'>
 			<Card.Header className='justify-center'>
@@ -29,12 +25,12 @@ const CardProduct: FC<IProductProps> = ({ product }) => {
 							className='rounded-lg'
 							onError={(e: SyntheticEvent & { target: HTMLImageElement }) =>
 								(e.target.src =
-									EnumLinks.PRODUCT_IMAGES + 'no-image-placeholder.svg')
+									EnumLinks.STATIC_IMAGES + 'no-image-placeholder.svg')
 							}
 						/>
 					</Grid>
 					<Grid xs={12} sm={8} justify='center'>
-						<Specifications specifications={product.specifications} />
+						<Specifications specifications={product.specifications ?? []} />
 					</Grid>
 				</Grid.Container>
 			</Card.Body>
