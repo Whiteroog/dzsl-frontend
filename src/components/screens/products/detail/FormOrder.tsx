@@ -98,7 +98,7 @@ const FormOrder: FC<{ product: IProduct }> = ({ product }) => {
 					<h2 className='text-lg font-bold'>Форма составления заказа</h2>
 				</Card.Header>
 				<Card.Body className='flex flex-col items-center space-y-10'>
-					{orderProduct.productItems ? (
+					{orderProduct.productItems?.length ? (
 						<div className='w-full max-w-[480px]'>
 							<h3 className='py-2 text-center text-lg font-medium'>
 								Элементы товара
