@@ -21,7 +21,7 @@ const ProductDetail: FC = () => {
 		queryFn: () => ProductService.getBySlug(slug),
 		onSuccess(data) {
 			setProduct(data.data)
-			setTitle(data.data.category.name)
+			setTitle(data.data.name)
 		},
 		onError(err) {
 			setTitle('Нет данных')
