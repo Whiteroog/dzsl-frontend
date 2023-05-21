@@ -476,8 +476,8 @@ const Products: FC = () => {
 				<Modal.Header>
 					<h2 className='py-4 text-lg'>{`[${selectItem.id}] ${selectItem.name}`}</h2>
 				</Modal.Header>
-				<Modal.Body className='flex flex-col items-start'>
-					<div className='flex flex-col'>
+				<Modal.Body className='flex flex-col items-stretch'>
+					<div className='flex flex-col items-stretch'>
 						<span>Id: {selectItem.id}</span>
 						<span>Название: {selectItem.name}</span>
 						<span>Категория: {selectItem.category?.name}</span>
