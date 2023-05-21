@@ -13,6 +13,10 @@ export interface ICreateOrder {
 const ORDERS_URL = 'orders'
 
 export const OrderService = {
+	async create(data: ICreateOrder) {
+		return axiosClassic.post<IOrder>(ORDERS_URL, data)
+	},
+
 	async getAll() {
 		return axiosAuth.get<IOrder[]>(ORDERS_URL)
 	},
@@ -25,9 +29,5 @@ export const OrderService = {
 		return axiosAuth.patch<IOrder>(`${ORDERS_URL}/${data.id}`, {
 			status: data.status
 		})
-	},
-
-	async create(data: ICreateOrder) {
-		return axiosClassic.post<IOrder>(ORDERS_URL, data)
 	}
 }
