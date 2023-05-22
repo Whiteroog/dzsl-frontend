@@ -80,7 +80,7 @@ const AboutUs: FC = () => {
 							потребителям только лучшие цены и отличное качество продукции.
 						</p>
 						<div className='flex justify-center p-4'>
-							<ReactPlayer url='https://youtu.be/NndkPBkUg6g' />
+							<ReactPlayer url='https://youtu.be/NndkPBkUg6g' controls />
 						</div>
 
 						<h2 id='production-features'>Особенности производства</h2>
