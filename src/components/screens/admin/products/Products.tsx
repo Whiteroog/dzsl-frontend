@@ -673,7 +673,7 @@ const Products: FC = () => {
 					<Modal.Header>
 						<h2 className='py-4 text-lg'>{`[${selectItem.id}] ${selectItem.name}`}</h2>
 					</Modal.Header>
-					<Modal.Body className='flex flex-col items-start'>
+					<Modal.Body className='flex flex-col items-stretch'>
 						<div className='space-y-2'>
 							<Input
 								type='text'
