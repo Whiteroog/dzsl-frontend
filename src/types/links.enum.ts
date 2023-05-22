@@ -6,7 +6,7 @@ export enum EnumLinks {
 	DELIVERY = '/delivery',
 	CONTACTS = '/contacts',
 
-	STATIC_IMAGES = 'http://localhost:3000/images/static/',
+	STATIC_IMAGES = 'http://localhost:3000/images/',
 	PRODUCT_IMAGES = 'http://localhost:4200/uploads/products/',
 
 	TABLE_PRODUCTS = '/admin/panel/products',
