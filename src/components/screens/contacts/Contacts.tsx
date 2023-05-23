@@ -12,8 +12,8 @@ const Contacts: FC = () => {
 			<TitlePage title='Контактная информация' />
 
 			<Grid.Container>
-				<Grid xs={6} justify='center'>
-					<div>
+				<Grid xs={12} sm={6} justify='center'>
+					<div className='min-w-[460px]'>
 						<h2>Организация</h2>
 						<span>ООО «Дмитровский Завод Строительных Лесов»</span>
 
@@ -50,8 +50,8 @@ const Contacts: FC = () => {
 						</div>
 					</div>
 				</Grid>
-				<Grid xs={6} justify='center'>
-					<div>
+				<Grid xs={12} sm={6} justify='center'>
+					<div className='min-w-[460px]'>
 						<h2>Телефоны</h2>
 						<div className='mb-2'>
 							<span className='block'>8 (800) 555-88-11*</span>
