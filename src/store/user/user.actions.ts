@@ -1,7 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-import { errorCatch } from '@/api/api.helper'
-
 import { IAuthResponse, ILoginPassword } from './user.interface'
 import { removeFromStorage } from '@/services/auth/auth.helper'
 import { AuthService } from '@/services/auth/auth.service'
@@ -33,12 +31,8 @@ export const checkAuth = createAsyncThunk<IAuthResponse>(
 
 			return response.data
 		} catch (error) {
-			const errorMessage = errorCatch(error)
-
-			if (errorMessage === 'jwt expired') {
-				thunkApi.dispatch(logout())
-			}
-
+			removeFromStorage()
+			thunkApi.dispatch(logout())
 			return thunkApi.rejectWithValue(error)
 		}
 	}

@@ -76,12 +76,6 @@ const FormOrder: FC<{ product: IProduct }> = ({ product }) => {
 				'Форма отправлена',
 				'Форма заказа успешно получена компанией'
 			)
-		},
-		onError(error, variables, context) {
-			toastr.error(
-				'Ошибка на сервере',
-				'Произошли внутренние проблемы на сервере'
-			)
 		}
 	})
 

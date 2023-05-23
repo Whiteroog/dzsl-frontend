@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { toastr } from 'react-redux-toastr'
 
 import { errorCatch, getContentType } from './api.helper'
 import { getAccessToken, removeFromStorage } from '@/services/auth/auth.helper'
@@ -41,7 +42,8 @@ axiosAuth.interceptors.response.use(
 				// необработанный запрос
 				return axiosAuth.request(originalRequest)
 			} catch (error) {
-				if (errorCatch(error) === 'jwt expired') removeFromStorage()
+				toastr.error('Ошибка авторизации', 'Ошибка: ' + errorCatch(error))
+				removeFromStorage()
 			}
 		}
 
