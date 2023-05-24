@@ -171,8 +171,13 @@ const Category: FC = () => {
 	/* get products */
 	const { data: productsData } = useQuery({
 		queryKey: ['get product for check category'],
-		queryFn: ProductService.getAll
+		queryFn: ProductService.getAll,
+		onSuccess(data) {
+			setProducts(data.data)
+		}
 	})
+
+	const [products, setProducts] = useState<IProduct[]>([])
 
 	/* delete */
 	const { mutateAsync: deleteCategory } = useMutation({
@@ -184,9 +189,9 @@ const Category: FC = () => {
 	})
 
 	const deleteHandler = (id: number) => {
-		const products = productsData?.data ?? ([] as IProduct[])
+		const countProducts = countProductsByCategory(id)
 
-		if (products.some(prod => prod.category.id === id)) {
+		if (countProducts) {
 			toastr.error(
 				'Ошибка удаления категории',
 				'К данной категории привязаны товары'
@@ -195,6 +200,13 @@ const Category: FC = () => {
 		}
 
 		deleteCategory(id)
+	}
+
+	const countProductsByCategory = (id: number) => {
+		return products.reduce(
+			(count, item) => (item.category.id === id ? count + 1 : count),
+			0
+		)
 	}
 
 	/* modal show */
@@ -392,6 +404,9 @@ const Category: FC = () => {
 					<span>Id: {selectItem.id}</span>
 					<span>Название: {selectItem.name}</span>
 					<span>Путь: {selectItem.slug}</span>
+					<span>
+						Количество товаров: {countProductsByCategory(selectItem.id)}
+					</span>
 				</Modal.Body>
 				<Modal.Footer className='flex flex-col items-center py-10'>
 					<Button type='button' onClick={() => setVisibleModalShow(false)}>
